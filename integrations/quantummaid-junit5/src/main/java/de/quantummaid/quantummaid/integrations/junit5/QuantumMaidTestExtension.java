@@ -22,10 +22,10 @@
 package de.quantummaid.quantummaid.integrations.junit5;
 
 import de.quantummaid.quantummaid.QuantumMaid;
-import io.restassured.RestAssured;
 import org.junit.jupiter.api.extension.*;
 
 import static de.quantummaid.quantummaid.integrations.junit5.FreePortPool.freePort;
+import static de.quantummaid.quantummaid.integrations.junit5.RestAssuredInitializer.initializeRestAssured;
 
 public final class QuantumMaidTestExtension implements
         BeforeEachCallback,
@@ -62,8 +62,7 @@ public final class QuantumMaidTestExtension implements
             final int port = freePort();
             quantumMaid = provider.provide(port);
             quantumMaid.runAsynchronously();
-            RestAssured.baseURI = "http://localhost";
-            RestAssured.port = port;
+            initializeRestAssured(port);
         }
     }
 }
