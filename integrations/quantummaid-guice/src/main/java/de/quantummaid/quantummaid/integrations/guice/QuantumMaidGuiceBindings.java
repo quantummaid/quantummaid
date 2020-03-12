@@ -19,17 +19,18 @@
  * under the License.
  */
 
-package de.quantummaid.quantummaid.integrations.junit5;
+package de.quantummaid.quantummaid.integrations.guice;
 
-import org.junit.jupiter.api.extension.ExtendWith;
+import com.google.inject.AbstractModule;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import static de.quantummaid.quantummaid.integrations.guice.SinglePublicConstructorModule.singlePublicConstructorModule;
 
-@ExtendWith(QuantumMaidTestExtension.class)
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface QuantumMaidTest {
+public final class QuantumMaidGuiceBindings {
+
+    private QuantumMaidGuiceBindings() {
+    }
+
+    public static <T> AbstractModule bindToSinglePublicConstructor(final Class<T> type) {
+        return singlePublicConstructorModule(type);
+    }
 }

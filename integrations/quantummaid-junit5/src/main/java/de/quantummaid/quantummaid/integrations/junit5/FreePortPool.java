@@ -21,15 +21,32 @@
 
 package de.quantummaid.quantummaid.integrations.junit5;
 
-import org.junit.jupiter.api.extension.ExtendWith;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+final class FreePortPool {
+    private static final int START_PORT = 9000;
+    private static final int HIGHEST_PORT = 65535;
+    private static AtomicInteger currentPort = new AtomicInteger(START_PORT);
 
-@ExtendWith(QuantumMaidTestExtension.class)
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface QuantumMaidTest {
+    private FreePortPool() {
+    }
+
+    static int freePort() {
+        final int port = currentPort.incrementAndGet();
+        if (port >= HIGHEST_PORT) {
+            currentPort.set(START_PORT);
+            return freePort();
+        } else {
+            try {
+                final ServerSocket serverSocket = new ServerSocket(port);
+                serverSocket.close();
+                return port;
+            } catch (final IOException ex) {
+                return freePort();
+            }
+        }
+    }
+
 }

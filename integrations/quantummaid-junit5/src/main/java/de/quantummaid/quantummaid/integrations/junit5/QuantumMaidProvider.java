@@ -19,9 +19,11 @@
  * under the License.
  */
 
-package de.quantummaid.quantummaid.integrations.guice;
+package de.quantummaid.quantummaid.integrations.junit5;
 
-public final class GuiceBindings {
-    private GuiceBindings() {
-    }
+import de.quantummaid.quantummaid.QuantumMaid;
+
+public interface QuantumMaidProvider {
+
+    QuantumMaid provide(int port);
 }
