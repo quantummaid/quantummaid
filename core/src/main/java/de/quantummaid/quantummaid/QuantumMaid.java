@@ -23,11 +23,15 @@ package de.quantummaid.quantummaid;
 
 import de.quantummaid.httpmaid.HttpMaid;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static de.quantummaid.httpmaid.HttpMaid.STARTUP_TIME;
 import static de.quantummaid.httpmaid.purejavaendpoint.PureJavaEndpoint.pureJavaEndpointFor;
+import static java.lang.String.format;
 import static java.lang.Thread.currentThread;
 
 public final class QuantumMaid {
@@ -50,14 +54,12 @@ public final class QuantumMaid {
         return this;
     }
 
-    // TODO run daemon
     public void runAsynchronously() {
         this.endpoints.forEach(endpoint -> endpoint.accept(httpMaid));
     }
 
-    // async default, thread cancel bei close
     public void run() {
-        System.out.println(Logo.LOGO);
+        renderSplash();
         try (HttpMaid httpMaid = this.httpMaid) {
             this.endpoints.forEach(endpoint -> endpoint.accept(httpMaid));
             while (true) {
@@ -72,5 +74,12 @@ public final class QuantumMaid {
 
     public void close() {
         httpMaid.close();
+    }
+
+    private void renderSplash() {
+        System.out.println(Logo.LOGO);
+        final Duration startUpTime = httpMaid.getMetaDatum(STARTUP_TIME);
+        final long nanoseconds = startUpTime.get(ChronoUnit.NANOS);
+        System.out.println(format("Startup took: %sns", nanoseconds));
     }
 }
