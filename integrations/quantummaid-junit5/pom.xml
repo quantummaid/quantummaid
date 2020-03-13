@@ -5,11 +5,11 @@
     <parent>
         <groupId>de.quantummaid.quantummaid.integrations</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </parent>
 
     <artifactId>quantummaid-junit5</artifactId>
-    <version>1.0.1</version>
+    <version>${parent.version}</version>
 
     <properties>
         <spotbugs.excludeFilterFile>

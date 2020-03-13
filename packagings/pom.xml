@@ -8,13 +8,13 @@
         <version>1.0.2</version>
     </parent>
 
-    <groupId>de.quantummaid.quantummaid.integrations</groupId>
+    <groupId>de.quantummaid.quantummaid.packagings</groupId>
     <artifactId>parent</artifactId>
     <version>1.0.2</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>quantummaid-junit5</module>
-        <module>quantummaid-guice</module>
+        <module>quantummaid-essentials</module>
+        <module>quantummaid-test-essentials</module>
     </modules>
 </project>

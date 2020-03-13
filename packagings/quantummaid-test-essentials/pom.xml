@@ -3,25 +3,25 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>de.quantummaid.quantummaid</groupId>
+        <groupId>de.quantummaid.quantummaid.packagings</groupId>
         <artifactId>parent</artifactId>
         <version>1.0.2</version>
     </parent>
 
-    <artifactId>core</artifactId>
-    <version>${parent.version}</version>
-
-    <properties>
-        <checkstyle.suppressions.location>
-            ${project.basedir}/src/test/checkstyle/checkstyle-suppressions.xml
-        </checkstyle.suppressions.location>
-    </properties>
+    <artifactId>quantummaid-test-essentials</artifactId>
+    <version>1.0.2</version>
+    <packaging>pom</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>de.quantummaid.httpmaid</groupId>
+            <groupId>de.quantummaid.quantummaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.20</version>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.quantummaid.quantummaid.integrations</groupId>
+            <artifactId>quantummaid-junit5</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
