@@ -11,6 +11,10 @@
     <artifactId>quantummaid-test-essentials</artifactId>
     <version>1.0.3</version>
 
+    <properties>
+        <dependency-update-file-checksum>a949b51c3f94b8f3e02a109cd954d9a5</dependency-update-file-checksum>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>de.quantummaid.quantummaid</groupId>

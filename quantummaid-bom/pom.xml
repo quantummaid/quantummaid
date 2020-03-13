@@ -9,19 +9,33 @@
     </parent>
 
     <artifactId>quantummaid-bom</artifactId>
-    <version>${parent.version}</version>
+    <version>1.0.3</version>
 
     <properties>
-        <dependency-update-file-checksum>42f33b16b7099885cd5becc23c104f35</dependency-update-file-checksum>
+        <dependency-update-file-checksum>8f6ea182969b0fcce9fae1bb13579713</dependency-update-file-checksum>
         <plugin-update-file-checksum>35fe547b725ca8e71b0d13c8c21894df</plugin-update-file-checksum>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>de.quantummaid.httpmaid.integrations</groupId>
-                <artifactId>httpmaid-all</artifactId>
+                <groupId>de.quantummaid.mapmaid</groupId>
+                <artifactId>mapmaid-bom</artifactId>
                 <version>0.9.20</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid</groupId>
+                <artifactId>httpmaid-bom</artifactId>
+                <version>0.9.22</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.eventmaid</groupId>
+                <artifactId>core</artifactId>
+                <version>0.9.18</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

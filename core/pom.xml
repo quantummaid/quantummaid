@@ -21,7 +21,7 @@
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.20</version>
+            <version>0.9.22</version>
         </dependency>
     </dependencies>
 </project>
