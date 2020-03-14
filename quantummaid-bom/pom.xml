@@ -46,7 +46,7 @@
             <dependency>
                 <groupId>de.quantummaid.mapmaid</groupId>
                 <artifactId>mapmaid-bom</artifactId>
-                <version>0.9.20</version>
+                <version>0.9.21</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

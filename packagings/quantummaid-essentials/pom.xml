@@ -40,7 +40,7 @@
         <dependency>
             <groupId>de.quantummaid.mapmaid.integrations</groupId>
             <artifactId>mapmaid-jackson</artifactId>
-            <version>0.9.20</version>
+            <version>0.9.21</version>
         </dependency>
     </dependencies>
 </project>
