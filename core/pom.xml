@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.6</version>
+        <version>1.0.7</version>
     </parent>
 
     <artifactId>core</artifactId>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.22</version>
+            <version>0.9.23</version>
         </dependency>
     </dependencies>
 </project>

@@ -5,11 +5,11 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.6</version>
+        <version>1.0.7</version>
     </parent>
 
     <artifactId>quantummaid-bom</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 
     <properties>
         <dependency-update-file-checksum>8f6ea182969b0fcce9fae1bb13579713</dependency-update-file-checksum>
@@ -53,7 +53,7 @@
             <dependency>
                 <groupId>de.quantummaid</groupId>
                 <artifactId>httpmaid-bom</artifactId>
-                <version>0.9.22</version>
+                <version>0.9.23</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
