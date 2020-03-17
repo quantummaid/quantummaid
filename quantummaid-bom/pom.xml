@@ -46,21 +46,21 @@
             <dependency>
                 <groupId>de.quantummaid.mapmaid</groupId>
                 <artifactId>mapmaid-bom</artifactId>
-                <version>0.9.21</version>
+                <version>0.9.22</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid</groupId>
                 <artifactId>httpmaid-bom</artifactId>
-                <version>0.9.23</version>
+                <version>0.9.24</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.eventmaid</groupId>
                 <artifactId>core</artifactId>
-                <version>0.9.18</version>
+                <version>0.9.19</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

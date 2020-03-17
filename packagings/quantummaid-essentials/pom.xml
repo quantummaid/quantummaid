@@ -25,22 +25,22 @@
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.23</version>
+            <version>0.9.24</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.httpmaid.integrations</groupId>
             <artifactId>httpmaid-usecases</artifactId>
-            <version>0.9.23</version>
+            <version>0.9.24</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.httpmaid.integrations</groupId>
             <artifactId>httpmaid-mapmaid</artifactId>
-            <version>0.9.23</version>
+            <version>0.9.24</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.mapmaid.integrations</groupId>
             <artifactId>mapmaid-jackson</artifactId>
-            <version>0.9.21</version>
+            <version>0.9.22</version>
         </dependency>
     </dependencies>
 </project>
