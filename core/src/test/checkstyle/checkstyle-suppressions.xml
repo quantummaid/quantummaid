@@ -25,4 +25,5 @@
         "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
     <suppress checks="Regex" files="QuantumMaid"/>
+    <suppress checks="MagicNumber|Regex" files="PortUtils" />
 </suppressions>

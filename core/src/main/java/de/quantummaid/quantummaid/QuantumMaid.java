@@ -24,9 +24,10 @@ package de.quantummaid.quantummaid;
 import de.quantummaid.httpmaid.HttpMaid;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static de.quantummaid.httpmaid.HttpMaid.STARTUP_TIME;
@@ -35,10 +36,10 @@ import static java.lang.String.format;
 import static java.lang.Thread.currentThread;
 
 public final class QuantumMaid {
-    private static final int SLEEP_TIME = 10_000;
-
     private volatile HttpMaid httpMaid;
     private final List<Consumer<HttpMaid>> endpoints = new ArrayList<>(1);
+    private final List<String> endpointUrls = new ArrayList<>(1);
+    private final CountDownLatch countDownLatch = new CountDownLatch(1);
 
     public static QuantumMaid quantumMaid() {
         return new QuantumMaid();
@@ -51,35 +52,37 @@ public final class QuantumMaid {
 
     public QuantumMaid withLocalHostEndpointOnPort(final int port) {
         this.endpoints.add(httpMaid -> pureJavaEndpointFor(httpMaid).listeningOnThePort(port));
+        this.endpointUrls.add(format("http://localhost:%d/", port));
         return this;
     }
 
     public void runAsynchronously() {
-        this.endpoints.forEach(endpoint -> endpoint.accept(httpMaid));
+        final Thread thread = new Thread(this::run);
+        thread.start();
     }
 
     public void run() {
         renderSplash();
         try (HttpMaid httpMaid = this.httpMaid) {
             this.endpoints.forEach(endpoint -> endpoint.accept(httpMaid));
-            while (true) {
-                try {
-                    Thread.sleep(SLEEP_TIME);
-                } catch (final InterruptedException e) {
-                    currentThread().interrupt();
-                }
+            try {
+                countDownLatch.await();
+            } catch (final InterruptedException e) {
+                currentThread().interrupt();
             }
         }
     }
 
     public void close() {
-        httpMaid.close();
+        countDownLatch.countDown();
     }
 
     private void renderSplash() {
-        System.out.println(Logo.LOGO);
+        System.out.println(Logo.LOGO + "\n");
         final Duration startUpTime = httpMaid.getMetaDatum(STARTUP_TIME);
-        final long nanoseconds = startUpTime.get(ChronoUnit.NANOS);
-        System.out.println(format("Startup took: %sns", nanoseconds));
+        final long milliseconds = TimeUnit.MILLISECONDS.convert(startUpTime);
+        System.out.println(format("Startup took: %sms", milliseconds));
+        endpointUrls.forEach(url -> System.out.println(format("Serving %s", url)));
+        System.out.println();
     }
 }
