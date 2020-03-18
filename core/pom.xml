@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>core</artifactId>
-    <version>${parent.version}</version>
+    <version>1.0.9</version>
 
     <properties>
         <checkstyle.suppressions.location>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.27</version>
+            <version>${httpmaid-version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

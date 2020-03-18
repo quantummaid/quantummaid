@@ -19,12 +19,12 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid</groupId>
             <artifactId>core</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.quantummaid.integrations</groupId>
             <artifactId>quantummaid-junit5</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 </project>
