@@ -10,7 +10,7 @@
 
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.10</version>
+    <version>1.0.11</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -23,7 +23,7 @@
     <properties>
         <httpmaid-version>0.9.27</httpmaid-version>
         <mapmaid-version>0.9.23</mapmaid-version>
-        <eventmaid-version>0.9.29</eventmaid-version>
+        <eventmaid-version>0.9.20</eventmaid-version>
 
         <junit-version>5.6.0</junit-version>
         <lombok-version>1.18.12</lombok-version>
