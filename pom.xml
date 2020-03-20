@@ -10,7 +10,7 @@
 
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.12</version>
+    <version>0.9.13</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -21,13 +21,13 @@
     </modules>
 
     <properties>
-        <httpmaid-version>0.9.28</httpmaid-version>
-        <mapmaid-version>0.9.23</mapmaid-version>
+        <httpmaid-version>0.9.29</httpmaid-version>
+        <mapmaid-version>0.9.24</mapmaid-version>
         <eventmaid-version>0.9.20</eventmaid-version>
 
         <junit-version>5.6.0</junit-version>
         <lombok-version>1.18.12</lombok-version>
-        <guice-version>4.2.2</guice-version>
+        <guice-version>4.2.3</guice-version>
 
         <plugin-update-file-checksum>35fe547b725ca8e71b0d13c8c21894df</plugin-update-file-checksum>
     </properties>
