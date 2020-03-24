@@ -22,6 +22,10 @@
 package de.quantummaid.quantummaid;
 
 import de.quantummaid.httpmaid.HttpMaid;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -35,6 +39,9 @@ import static de.quantummaid.httpmaid.purejavaendpoint.PureJavaEndpoint.pureJava
 import static java.lang.String.format;
 import static java.lang.Thread.currentThread;
 
+@ToString
+@EqualsAndHashCode
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class QuantumMaid {
     private volatile HttpMaid httpMaid;
     private final List<Consumer<HttpMaid>> endpoints = new ArrayList<>(1);
