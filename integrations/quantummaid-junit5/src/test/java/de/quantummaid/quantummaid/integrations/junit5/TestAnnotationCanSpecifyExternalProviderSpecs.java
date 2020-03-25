@@ -21,20 +21,24 @@
 
 package de.quantummaid.quantummaid.integrations.junit5;
 
-import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
-import de.quantummaid.quantummaid.integrations.testsupport.TestExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
+import de.quantummaid.httpmaid.client.HttpMaidClient;
+import org.junit.jupiter.api.Test;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import static de.quantummaid.httpmaid.client.HttpClientRequest.aGetRequestToThePath;
+import static de.quantummaid.httpmaid.client.HttpMaidClient.aHttpMaidClientForTheHost;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-@ExtendWith(QuantumMaidTestExtension.class)
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface QuantumMaidTest {
-    Class<? extends QuantumMaidProvider> value() default QuantumMaidProvider.class;
-    Class<? extends TestExtension>[] extensions() default {};
-    boolean autoloadExtensions() default true;
+@QuantumMaidTest(ExternalProvider.class)
+public final class TestAnnotationCanSpecifyExternalProviderSpecs {
+
+    @Test
+    public void testAnnotationCanSpecifyExternalProvider(final int port) {
+        final HttpMaidClient client = aHttpMaidClientForTheHost("localhost")
+                .withThePort(port)
+                .viaHttp()
+                .build();
+        final String response = client.issue(aGetRequestToThePath("/").mappedToString());
+        assertThat(response, is("from external provider"));
+    }
 }

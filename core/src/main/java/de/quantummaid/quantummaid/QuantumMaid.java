@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -36,8 +37,10 @@ import java.util.function.Consumer;
 
 import static de.quantummaid.httpmaid.HttpMaid.STARTUP_TIME;
 import static de.quantummaid.httpmaid.purejavaendpoint.PureJavaEndpoint.pureJavaEndpointFor;
+import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
 import static java.lang.Thread.currentThread;
+import static java.time.Duration.between;
 
 @ToString
 @EqualsAndHashCode
@@ -46,7 +49,8 @@ public final class QuantumMaid {
     private volatile HttpMaid httpMaid;
     private final List<Consumer<HttpMaid>> endpoints = new ArrayList<>(1);
     private final List<String> endpointUrls = new ArrayList<>(1);
-    private final CountDownLatch countDownLatch = new CountDownLatch(1);
+    private final CountDownLatch termination = new CountDownLatch(1);
+    private final Thread shutdownHook = new Thread(this::close);
 
     public static QuantumMaid quantumMaid() {
         return new QuantumMaid();
@@ -64,16 +68,31 @@ public final class QuantumMaid {
     }
 
     public void runAsynchronously() {
-        final Thread thread = new Thread(this::run);
+        final CountDownLatch initialization = new CountDownLatch(1);
+        final Thread thread = new Thread(() -> run(initialization));
         thread.start();
+        try {
+            initialization.await();
+        } catch (final InterruptedException e) {
+            currentThread().interrupt();
+        }
     }
 
     public void run() {
-        renderSplash();
+        run(new CountDownLatch(1));
+    }
+
+    private void run(final CountDownLatch initialization) {
         try (HttpMaid httpMaid = this.httpMaid) {
+            final Instant begin = Instant.now();
             this.endpoints.forEach(endpoint -> endpoint.accept(httpMaid));
+            final Instant end = Instant.now();
+            final Duration endpointStartUpTime = between(begin, end);
+            renderSplash(endpointStartUpTime);
+            getRuntime().addShutdownHook(shutdownHook);
+            initialization.countDown();
             try {
-                countDownLatch.await();
+                termination.await();
             } catch (final InterruptedException e) {
                 currentThread().interrupt();
             }
@@ -81,14 +100,18 @@ public final class QuantumMaid {
     }
 
     public void close() {
-        countDownLatch.countDown();
+        termination.countDown();
+        getRuntime().removeShutdownHook(shutdownHook);
     }
 
-    private void renderSplash() {
+    private void renderSplash(final Duration endpointStartupTime) {
         System.out.println(Logo.LOGO + "\n");
-        final Duration startUpTime = httpMaid.getMetaDatum(STARTUP_TIME);
-        final long milliseconds = TimeUnit.MILLISECONDS.convert(startUpTime);
-        System.out.println(format("Startup took: %sms", milliseconds));
+        final Duration httpMaidStartUpTime = httpMaid.getMetaDatum(STARTUP_TIME);
+        final long httpMaidMilliseconds = TimeUnit.MILLISECONDS.convert(httpMaidStartUpTime);
+        final long endpointsMilliseconds = TimeUnit.MILLISECONDS.convert(endpointStartupTime);
+        final long combinedMilliseconds = httpMaidMilliseconds + endpointsMilliseconds;
+        System.out.println(format("Startup took: %sms (%sms initialization, %sms endpoint startup)",
+                combinedMilliseconds, httpMaidMilliseconds, endpointsMilliseconds));
         endpointUrls.forEach(url -> System.out.println(format("Serving %s", url)));
         System.out.println();
     }

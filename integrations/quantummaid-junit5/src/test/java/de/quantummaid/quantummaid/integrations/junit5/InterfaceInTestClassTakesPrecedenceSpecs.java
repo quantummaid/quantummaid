@@ -27,21 +27,18 @@ import de.quantummaid.quantummaid.QuantumMaid;
 import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
 import org.junit.jupiter.api.Test;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import static de.quantummaid.httpmaid.client.HttpClientRequest.aGetRequestToThePath;
 import static de.quantummaid.httpmaid.client.HttpMaidClient.aHttpMaidClientForTheHost;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@QuantumMaidTest
-public final class ParameterResolvingSpecs implements QuantumMaidProvider {
+@QuantumMaidTest(ExternalProvider.class)
+public final class InterfaceInTestClassTakesPrecedenceSpecs implements QuantumMaidProvider {
 
     @Override
     public QuantumMaid provide(final int port) {
         final HttpMaid httpMaid = HttpMaid.anHttpMaid()
-                .get("/", (request, response) -> response.setBody("foo"))
+                .get("/", (request, response) -> response.setBody("from internal provider"))
                 .build();
         return QuantumMaid.quantumMaid()
                 .withHttpMaid(httpMaid)
@@ -49,40 +46,12 @@ public final class ParameterResolvingSpecs implements QuantumMaidProvider {
     }
 
     @Test
-    public void portCanBeProvided(final int port) {
+    public void interfaceInTestClassTakesPrecedence(final int port) {
         final HttpMaidClient client = aHttpMaidClientForTheHost("localhost")
                 .withThePort(port)
                 .viaHttp()
                 .build();
         final String response = client.issue(aGetRequestToThePath("/").mappedToString());
-        assertThat(response, is("foo"));
-    }
-
-    @Test
-    public void portAndHostCanBeProvided(final int port, final String host) {
-        final HttpMaidClient client = aHttpMaidClientForTheHost(host)
-                .withThePort(port)
-                .viaHttp()
-                .build();
-        final String response = client.issue(aGetRequestToThePath("/").mappedToString());
-        assertThat(response, is("foo"));
-    }
-
-    @Test
-    public void urlCanBeProvided(final String url) {
-        final URL urlObject;
-        try {
-            urlObject = new URL(url);
-        } catch (final MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        final String host = urlObject.getHost();
-        final int port = urlObject.getPort();
-        final HttpMaidClient client = aHttpMaidClientForTheHost(host)
-                .withThePort(port)
-                .viaHttp()
-                .build();
-        final String response = client.issue(aGetRequestToThePath("/").mappedToString());
-        assertThat(response, is("foo"));
+        assertThat(response, is("from internal provider"));
     }
 }

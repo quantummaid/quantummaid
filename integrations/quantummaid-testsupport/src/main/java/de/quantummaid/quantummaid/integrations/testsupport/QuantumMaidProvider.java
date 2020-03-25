@@ -19,22 +19,11 @@
  * under the License.
  */
 
-package de.quantummaid.quantummaid.integrations.junit5;
+package de.quantummaid.quantummaid.integrations.testsupport;
 
-import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
-import de.quantummaid.quantummaid.integrations.testsupport.TestExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
+import de.quantummaid.quantummaid.QuantumMaid;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public interface QuantumMaidProvider {
 
-@ExtendWith(QuantumMaidTestExtension.class)
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface QuantumMaidTest {
-    Class<? extends QuantumMaidProvider> value() default QuantumMaidProvider.class;
-    Class<? extends TestExtension>[] extensions() default {};
-    boolean autoloadExtensions() default true;
+    QuantumMaid provide(int port);
 }

@@ -8,7 +8,7 @@
         <version>1.0.16</version>
     </parent>
 
-    <artifactId>quantummaid-junit5</artifactId>
+    <artifactId>quantummaid-restassured</artifactId>
     <version>1.0.16</version>
 
     <properties>
@@ -35,25 +35,14 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit-version}</version>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>4.3.0</version>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>de.quantummaid.httpmaid.integrations</groupId>
-            <artifactId>httpmaid-client</artifactId>
-            <version>${httpmaid-version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-            <version>2.2</version>
+            <groupId>de.quantummaid.quantummaid.integrations</groupId>
+            <artifactId>quantummaid-junit5</artifactId>
+            <version>${project.parent.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

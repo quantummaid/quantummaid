@@ -21,20 +21,19 @@
 
 package de.quantummaid.quantummaid.integrations.junit5;
 
+import de.quantummaid.httpmaid.HttpMaid;
+import de.quantummaid.quantummaid.QuantumMaid;
 import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
-import de.quantummaid.quantummaid.integrations.testsupport.TestExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public final class ExternalProvider implements QuantumMaidProvider {
 
-@ExtendWith(QuantumMaidTestExtension.class)
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface QuantumMaidTest {
-    Class<? extends QuantumMaidProvider> value() default QuantumMaidProvider.class;
-    Class<? extends TestExtension>[] extensions() default {};
-    boolean autoloadExtensions() default true;
+    @Override
+    public QuantumMaid provide(final int port) {
+        final HttpMaid httpMaid = HttpMaid.anHttpMaid()
+                .get("/", (request, response) -> response.setBody("from external provider"))
+                .build();
+        return QuantumMaid.quantumMaid()
+                .withHttpMaid(httpMaid)
+                .withLocalHostEndpointOnPort(port);
+    }
 }

@@ -19,22 +19,16 @@
  * under the License.
  */
 
-package de.quantummaid.quantummaid.integrations.junit5;
+package de.quantummaid.quantummaid.integrations.restassured;
 
-import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
+import de.quantummaid.quantummaid.integrations.testsupport.TestContext;
 import de.quantummaid.quantummaid.integrations.testsupport.TestExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
+import io.restassured.RestAssured;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public final class RestAssuredExtension implements TestExtension {
 
-@ExtendWith(QuantumMaidTestExtension.class)
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface QuantumMaidTest {
-    Class<? extends QuantumMaidProvider> value() default QuantumMaidProvider.class;
-    Class<? extends TestExtension>[] extensions() default {};
-    boolean autoloadExtensions() default true;
+    @Override
+    public void afterInitialization(final TestContext testContext) {
+        RestAssured.baseURI = testContext.url();
+    }
 }

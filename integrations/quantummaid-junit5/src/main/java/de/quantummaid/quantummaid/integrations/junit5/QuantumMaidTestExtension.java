@@ -21,53 +21,49 @@
 
 package de.quantummaid.quantummaid.integrations.junit5;
 
-import de.quantummaid.quantummaid.QuantumMaid;
-import de.quantummaid.quantummaid.integrations.junit5.parameters.Parameters;
+import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
+import de.quantummaid.quantummaid.integrations.testsupport.TestExtension;
+import de.quantummaid.quantummaid.integrations.testsupport.TestSupport;
+import de.quantummaid.quantummaid.integrations.testsupport.reflection.ZeroArgumentConstructorInstantiator;
 import org.junit.jupiter.api.extension.*;
 
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.List;
 
-import static de.quantummaid.quantummaid.integrations.junit5.FreePortPool.freePort;
-import static de.quantummaid.quantummaid.integrations.junit5.RestAssuredInitializer.initializeRestAssured;
-import static de.quantummaid.quantummaid.integrations.junit5.TestContext.testContext;
-import static de.quantummaid.quantummaid.integrations.junit5.parameters.Parameter.parameter;
-import static de.quantummaid.quantummaid.integrations.junit5.parameters.Parameters.parameters;
+import static de.quantummaid.quantummaid.integrations.testsupport.reflection.ZeroArgumentConstructorInstantiator.instantiate;
+import static de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidTestException.quantumMaidTestException;
+import static de.quantummaid.quantummaid.integrations.testsupport.TestSupport.testSupport;
+import static java.lang.String.format;
+import static java.util.stream.Collectors.toList;
 
 public final class QuantumMaidTestExtension implements
+        BeforeAllCallback,
         BeforeEachCallback,
         AfterAllCallback,
         ParameterResolver {
-    private static final Parameters PARAMETERS = parameters(
-            parameter("port", int.class, TestContext::port),
-            parameter("host", String.class, TestContext::host),
-            parameter("url", String.class, TestContext::url)
-    );
-
-    private final TestContext testContext = testContext();
+    private final TestSupport testSupport = testSupport();
+    private volatile QuantumMaidTest annotation;
 
     @Override
-    public void afterAll(final ExtensionContext extensionContext) {
-        final QuantumMaid quantumMaid = testContext.quantumMaid();
-        if (quantumMaid != null) {
-            quantumMaid.close();
-        }
+    public void beforeAll(final ExtensionContext context) {
+        annotation = findTestAnnotation(context);
+        final List<TestExtension> extensions = Arrays.stream(annotation.extensions())
+                .map(ZeroArgumentConstructorInstantiator::instantiate)
+                .collect(toList());
+        final boolean autoloadExtensions = annotation.autoloadExtensions();
+        testSupport.setExtensions(extensions, autoloadExtensions);
     }
 
     @Override
     public void beforeEach(final ExtensionContext extensionContext) {
-        if (testContext.quantumMaid() != null) {
-            return;
-        }
-        final Object testInstance = extensionContext.getRequiredTestInstance();
-        if (testInstance instanceof QuantumMaidProvider) {
-            final QuantumMaidProvider provider = (QuantumMaidProvider) testInstance;
-            final int port = freePort();
-            final String host = "localhost";
-            final QuantumMaid quantumMaid = provider.provide(port);
-            quantumMaid.runAsynchronously();
-            testContext.update(quantumMaid, port, host);
-            initializeRestAssured(port);
-        }
+        final QuantumMaidProvider provider = determineProvider(extensionContext);
+        testSupport.init(provider);
+    }
+
+    @Override
+    public void afterAll(final ExtensionContext extensionContext) {
+        testSupport.close();
     }
 
     @Override
@@ -75,7 +71,7 @@ public final class QuantumMaidTestExtension implements
                                      final ExtensionContext extensionContext) throws ParameterResolutionException {
         final String name = name(parameterContext);
         final Class<?> type = type(parameterContext);
-        return PARAMETERS.supports(name, type);
+        return testSupport.supportsParameter(name, type);
     }
 
     @Override
@@ -83,7 +79,30 @@ public final class QuantumMaidTestExtension implements
                                    final ExtensionContext extensionContext) throws ParameterResolutionException {
         final String name = name(parameterContext);
         final Class<?> type = type(parameterContext);
-        return PARAMETERS.provide(name, type, testContext);
+        return testSupport.resolveParameter(name, type);
+    }
+
+    private QuantumMaidProvider determineProvider(final ExtensionContext extensionContext) {
+        final Object testInstance = extensionContext.getRequiredTestInstance();
+        if (testInstance instanceof QuantumMaidProvider) {
+            return (QuantumMaidProvider) testInstance;
+        } else {
+            final Class<? extends QuantumMaidProvider> providerClass = annotation.value();
+            if (providerClass.equals(QuantumMaidProvider.class)) {
+                throw quantumMaidTestException("unable to find QuantumMaid provider");
+            }
+            return instantiate(providerClass);
+        }
+    }
+
+    private static QuantumMaidTest findTestAnnotation(final ExtensionContext extensionContext) {
+        final Class<?> testClass = extensionContext.getTestClass()
+                .orElseThrow(() -> quantumMaidTestException("test class missing"));
+        final QuantumMaidTest[] annotationsByType = testClass.getAnnotationsByType(QuantumMaidTest.class);
+        if (annotationsByType.length > 1) {
+            throw quantumMaidTestException(format("multiple occurrences of annotation %s", QuantumMaidTest.class.getSimpleName()));
+        }
+        return annotationsByType[0];
     }
 
     private static Class<?> type(final ParameterContext parameterContext) {
