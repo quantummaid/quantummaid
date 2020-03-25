@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
     <suppress>
-        <cpe>2.3:a:apache:groovy:3.0.2:*:*:*:*:*:*:*</cpe>
+        <cpe>cpe:2.3:a:apache:groovy:3.0.2:*:*:*:*:*:*:*</cpe>
     </suppress>
     <suppress>
         <cpe>cpe:2.3:a:apache:sling:0.1.0:*:*:*:*:*:*:*</cpe>
