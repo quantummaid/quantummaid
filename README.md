@@ -6,8 +6,7 @@
 [![Gitter](https://img.shields.io/badge/chat%20on-Gitter-brightgreen)](https://gitter.im/quantum-maid-framework/community)
 [![Twitter](https://img.shields.io/twitter/follow/quantummaid)](https://twitter.com/quantummaid)
 
-<!-- <img src="quantummaid_logo.png" align="left"/> -->
-![Logo](quantummaid_logo.png)
+<img src="quantummaid_logo.png" align="left"/>
 
 # QuantumMaid
 
