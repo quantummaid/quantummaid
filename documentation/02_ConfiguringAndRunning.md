@@ -30,7 +30,7 @@ final HttpMaid httpMaid = HttpMaid.anHttpMaid()
         .build();
 final QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
         .withHttpMaid(httpMaid)
-        .withLocalHostEndpointOnPort(PORT);
+        .withLocalHostEndpointOnPort(port);
 ```
 Please refer to the [HttpMaid documentation](https://github.com/quantummaid/httpmaid/blob/master/README.md) for details on the HttpMaid configuration. 
 
@@ -65,9 +65,9 @@ a try-with-resources statement:
 
 <!---[CodeSnippet](tryWithResources)-->
 ```java
-try (final QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
+try (QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
         .withHttpMaid(httpMaid)
-        .withLocalHostEndpointOnPort(PORT)) {
+        .withLocalHostEndpointOnPort(port)) {
     quantumMaid.runAsynchronously();
     // do something
 }

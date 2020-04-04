@@ -30,7 +30,7 @@
         <lombok-version>1.18.12</lombok-version>
         <guice-version>4.2.3</guice-version>
 
-        <plugin-update-file-checksum>35fe547b725ca8e71b0d13c8c21894df</plugin-update-file-checksum>
+        <plugin-update-file-checksum>915baffd77985e9da0d3cfee67e149eb</plugin-update-file-checksum>
     </properties>
 
     <build>

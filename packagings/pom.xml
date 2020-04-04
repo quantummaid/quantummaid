@@ -17,4 +17,8 @@
         <module>quantummaid-essentials</module>
         <module>quantummaid-test-essentials</module>
     </modules>
+
+    <properties>
+        <plugin-update-file-checksum>35fe547b725ca8e71b0d13c8c21894df</plugin-update-file-checksum>
+    </properties>
 </project>

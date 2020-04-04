@@ -21,23 +21,32 @@
 
 package de.quantummaid.quantummaid.documentation;
 
-import de.quantummaid.quantummaid.integrations.junit5.QuantumMaidTest;
-import org.junit.jupiter.api.Test;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.Is.is;
+final class FreePortPool {
+    private static final int START_PORT = 9000;
+    private static final int HIGHEST_PORT = 65535;
+    private static AtomicInteger currentPort = new AtomicInteger(START_PORT);
 
-@QuantumMaidTest(MyQuantumMaidProvider.class)
-public final class TestWithRestAssured {
-
-    //Showcase start testWithRestAssured
-    @Test
-    public void testWithRestAssured() {
-        given()
-                .when().get("/")
-                .then()
-                .statusCode(200)
-                .body(is("Hello World!"));
+    private FreePortPool() {
     }
-    //Showcase end testWithRestAssured
+
+    static int freePort() {
+        final int port = currentPort.incrementAndGet();
+        if (port >= HIGHEST_PORT) {
+            currentPort.set(START_PORT);
+            return freePort();
+        } else {
+            try {
+                final ServerSocket serverSocket = new ServerSocket(port);
+                serverSocket.close();
+                return port;
+            } catch (final IOException ex) {
+                return freePort();
+            }
+        }
+    }
+
 }
