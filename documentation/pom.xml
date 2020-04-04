@@ -8,14 +8,14 @@
         <version>1.0.21</version>
     </parent>
 
-    <artifactId>core</artifactId>
+    <artifactId>documentation</artifactId>
     <version>1.0.21</version>
 
     <properties>
         <checkstyle.suppressions.location>
             ${project.basedir}/src/test/checkstyle/checkstyle-suppressions.xml
         </checkstyle.suppressions.location>
-        <plugin-update-file-checksum>35fe547b725ca8e71b0d13c8c21894df</plugin-update-file-checksum>
+        <plugin-update-file-checksum>a9c106f16f2d959e2db68534062e7623</plugin-update-file-checksum>
     </properties>
 
     <dependencies>
@@ -30,23 +30,41 @@
             <artifactId>core</artifactId>
             <version>${httpmaid-version}</version>
         </dependency>
+
+        <!-- Showcase start dependency -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.6.1</version>
+            <groupId>de.quantummaid.quantummaid.packagings</groupId>
+            <artifactId>quantummaid-essentials</artifactId>
+            <version>1.0.21</version>
+        </dependency>
+        <!-- Showcase end dependency -->
+
+        <!-- Showcase start testdependency -->
+        <dependency>
+            <groupId>de.quantummaid.quantummaid.packagings</groupId>
+            <artifactId>quantummaid-test-essentials</artifactId>
+            <version>1.0.21</version>
             <scope>test</scope>
         </dependency>
+        <!-- Showcase end testdependency -->
+
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.6.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-            <version>2.2</version>
+            <groupId>de.quantummaid.httpmaid.integrations</groupId>
+            <artifactId>httpmaid-client</artifactId>
+            <version>${httpmaid-version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Showcase start surefire -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M4</version>
+            </plugin>
+            <!-- Showcase end surefire -->
+        </plugins>
+    </build>
 </project>

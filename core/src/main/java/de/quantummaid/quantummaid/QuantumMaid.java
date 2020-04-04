@@ -45,10 +45,11 @@ import static java.time.Duration.between;
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public final class QuantumMaid {
+public final class QuantumMaid implements AutoCloseable {
     private volatile HttpMaid httpMaid;
     private final List<Consumer<HttpMaid>> endpoints = new ArrayList<>(1);
     private final List<String> endpointUrls = new ArrayList<>(1);
+    private final CountDownLatch terminationTrigger = new CountDownLatch(1);
     private final CountDownLatch termination = new CountDownLatch(1);
     private final Thread shutdownHook = new Thread(this::close);
 
@@ -71,11 +72,7 @@ public final class QuantumMaid {
         final CountDownLatch initialization = new CountDownLatch(1);
         final Thread thread = new Thread(() -> run(initialization));
         thread.start();
-        try {
-            initialization.await();
-        } catch (final InterruptedException e) {
-            currentThread().interrupt();
-        }
+        awaitCountDownLatch(initialization);
     }
 
     public void run() {
@@ -91,16 +88,15 @@ public final class QuantumMaid {
             renderSplash(endpointStartUpTime);
             getRuntime().addShutdownHook(shutdownHook);
             initialization.countDown();
-            try {
-                termination.await();
-            } catch (final InterruptedException e) {
-                currentThread().interrupt();
-            }
+            awaitCountDownLatch(terminationTrigger);
         }
+        termination.countDown();
     }
 
+    @Override
     public void close() {
-        termination.countDown();
+        terminationTrigger.countDown();
+        awaitCountDownLatch(terminationTrigger);
         getRuntime().removeShutdownHook(shutdownHook);
     }
 
@@ -114,5 +110,13 @@ public final class QuantumMaid {
                 combinedMilliseconds, httpMaidMilliseconds, endpointsMilliseconds));
         endpointUrls.forEach(url -> System.out.println(format("Serving %s", url)));
         System.out.println();
+    }
+
+    private static void awaitCountDownLatch(final CountDownLatch countDownLatch) {
+        try {
+            countDownLatch.await();
+        } catch (final InterruptedException e) {
+            currentThread().interrupt();
+        }
     }
 }
