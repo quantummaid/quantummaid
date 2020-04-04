@@ -32,3 +32,10 @@ Feel free to join us on [Slack](https://join.slack.com/t/quantummaid/shared_invi
 or [Gitter](https://gitter.im/quantum-maid-framework/community) to ask questions, give feedback or simply discuss software
 architecture with the team behind QuantumMaid. Also, don't forget to visit our [website](https://quantummaid.de) and follow
 us on [Twitter](https://twitter.com/quantummaid)!
+
+## Documentation
+<!---[TOC](./documentation)-->
+1. [Quantum maid](documentation/01_QuantumMaid.md)
+2. [Configuring and running](documentation/02_ConfiguringAndRunning.md)
+3. [Testing](documentation/03_Testing.md)
+<!---EndOfToc-->
