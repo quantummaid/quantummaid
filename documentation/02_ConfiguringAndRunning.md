@@ -3,6 +3,7 @@ This chapter is explains how to configure and run a QuantumMaid application.
 
 ## Dependencies and compiler configuration
 To run an application with the QuantumMaid framework, you need to add the following dependency to your project:
+<!---[CodeSnippet](dependency)-->
 ```xml
 <dependency>
     <groupId>de.quantummaid.quantummaid.packagings</groupId>
@@ -36,7 +37,6 @@ Please refer to the [HttpMaid documentation](https://github.com/quantummaid/http
 
 
 ## Running the application
-
 There are two different options to run a configured QuantumMaid application.
 If you want QuantumMaid to start the application and then block the current thread, you can run it like this: 
 <!---[CodeSnippet](runSynchronously)-->

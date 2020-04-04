@@ -30,11 +30,14 @@
             <artifactId>core</artifactId>
             <version>${httpmaid-version}</version>
         </dependency>
+
+        <!-- Showcase start dependency -->
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-essentials</artifactId>
             <version>1.0.20</version>
         </dependency>
+        <!-- Showcase end dependency -->
 
         <!-- Showcase start testdependency -->
         <dependency>
