@@ -26,7 +26,7 @@ import de.quantummaid.httpmaid.client.HttpMaidClient;
 import de.quantummaid.quantummaid.QuantumMaid;
 import org.junit.jupiter.api.Test;
 
-import java.net.SocketException;
+import java.io.IOException;
 
 import static de.quantummaid.httpmaid.client.HttpClientRequest.aGetRequestToThePath;
 import static de.quantummaid.httpmaid.client.HttpMaidClient.aHttpMaidClientForTheHost;
@@ -69,7 +69,7 @@ public final class ConfigurationTest {
             client.issue(aGetRequestToThePath("/").mappedToString());
             success = true;
         } catch (final RuntimeException e) {
-            assertThat(e.getCause(), instanceOf(SocketException.class));
+            assertThat(e.getCause(), instanceOf(IOException.class));
         }
         assertThat(success, is(false));
     }

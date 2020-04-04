@@ -72,6 +72,3 @@ try (QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
     // do something
 }
 ```
-
-<!---[Nav]-->
-[&larr;](01_QuantumMaid.md)&nbsp;&nbsp;&nbsp;[Overview](../README.md)&nbsp;&nbsp;&nbsp;[&rarr;](03_Testing.md)
