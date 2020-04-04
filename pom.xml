@@ -18,6 +18,7 @@
         <module>integrations</module>
         <module>quantummaid-bom</module>
         <module>packagings</module>
+        <module>documentation</module>
     </modules>
 
     <properties>
@@ -31,4 +32,25 @@
 
         <plugin-update-file-checksum>35fe547b725ca8e71b0d13c8c21894df</plugin-update-file-checksum>
     </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>de.quantummaid</groupId>
+                <artifactId>documaid</artifactId>
+                <version>0.9.14</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

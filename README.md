@@ -13,23 +13,22 @@
 The go-to application framework for Beginners, Domain-Driven Designers, Clean Architects, Monolithics, Microservicers, Servlet Grandpas, Docker Hipsters and Serverless Junkies.
  
 ## Designed for Clean Architecture and Domain-Driven Design
-QuantumMaid stays completely out of your domain code.
+QuantumMaid stays completely out of your business logic.
 It explicitly does **not** require you to:
-- add annotations to your code
-- inherit base classes
-- implement framework interfaces
+- Add annotations to your code
+- Inherit base classes
+- Implement framework interfaces
 
 In fact, you can bundle your entire business logic into a dedicated module without any dependency
 to the application framework.
 This enables you to implement Domain-Driven Design by the book.
 More information can be found [here](https://quantummaid.de).
 
-
 ## Getting started
 You can find easy-to-follow and interesting tutorials [here](https://github.com/quantummaid/quantummaid-tutorials/blob/master/README.md).
 
 ## Get in touch
 Feel free to join us on [Slack](https://join.slack.com/t/quantummaid/shared_invite/zt-cx5qd605-vG10I~WazfgH9WOnXMzl3Q)
-or [Gitter](https://gitter.im/quantum-maid-framework/community) to ask questions, give feedback or just discuss software
+or [Gitter](https://gitter.im/quantum-maid-framework/community) to ask questions, give feedback or simply discuss software
 architecture with the team behind QuantumMaid. Also, don't forget to visit our [website](https://quantummaid.de) and follow
 us on [Twitter](https://twitter.com/quantummaid)!
