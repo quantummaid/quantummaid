@@ -97,7 +97,9 @@ public final class QuantumMaid implements AutoCloseable {
     public void close() {
         terminationTrigger.countDown();
         awaitCountDownLatch(terminationTrigger);
-        getRuntime().removeShutdownHook(shutdownHook);
+        if (!currentThread().equals(shutdownHook)) {
+            getRuntime().removeShutdownHook(shutdownHook);
+        }
     }
 
     private void renderSplash(final Duration endpointStartupTime) {

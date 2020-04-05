@@ -32,6 +32,7 @@ import static de.quantummaid.httpmaid.client.HttpClientRequest.aGetRequestToTheP
 import static de.quantummaid.httpmaid.client.HttpMaidClient.aHttpMaidClientForTheHost;
 import static de.quantummaid.quantummaid.documentation.FreePortPool.freePort;
 import static de.quantummaid.quantummaid.documentation.PortUtils.waitForPortToBeAvailable;
+import static de.quantummaid.quantummaid.documentation.PortUtils.waitForPortToClose;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -63,6 +64,8 @@ public final class ConfigurationTest {
         //Showcase start close
         quantumMaid.close();
         //Showcase end close
+
+        waitForPortToClose(port);
 
         boolean success = false;
         try {
