@@ -145,3 +145,7 @@ allows for very readable test definitions. Despite its widespread use, REST Assu
 introduces the vulnerabilities [CVE-2016-6497](https://nvd.nist.gov/vuln/detail/CVE-2016-6497), [CVE-2016-5394](https://nvd.nist.gov/vuln/detail/CVE-2016-5394)
 and [CVE-2016-6798](https://nvd.nist.gov/vuln/detail/CVE-2016-6798) to your project.
 Please check for your project whether these vulnerabilities pose an actual threat.
+
+## Parallel test execution
+QuantumMaid tests can be run in parallel.
+The only exception is the REST Assured integration because the configuration of REST Assured is global.
