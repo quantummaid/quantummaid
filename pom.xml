@@ -10,7 +10,7 @@
 
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.22</version>
+    <version>1.0.23</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -22,7 +22,7 @@
     </modules>
 
     <properties>
-        <httpmaid-version>0.9.39</httpmaid-version>
+        <httpmaid-version>0.9.40</httpmaid-version>
         <mapmaid-version>0.9.35</mapmaid-version>
         <eventmaid-version>0.9.24</eventmaid-version>
 
