@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Tests for parallel test execution.
 - Documentation for parallel test execution.
+- CII best practices badge.
 
 ## [1.0.23](https://search.maven.org/artifact/de.quantummaid.quantummaid/core/1.0.23/jar) - 2020-04-08
 ### Changed
