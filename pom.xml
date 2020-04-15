@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.quantummaid</groupId>
         <artifactId>quantummaid-opensource-parent</artifactId>
-        <version>0.9.29</version>
+        <version>0.9.30</version>
     </parent>
 
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.25</version>
+    <version>1.0.26</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -22,9 +22,9 @@
     </modules>
 
     <properties>
-        <httpmaid-version>0.9.44</httpmaid-version>
-        <mapmaid-version>0.9.41</mapmaid-version>
-        <eventmaid-version>0.9.30</eventmaid-version>
+        <httpmaid-version>0.9.46</httpmaid-version>
+        <mapmaid-version>0.9.42</mapmaid-version>
+        <eventmaid-version>0.9.31</eventmaid-version>
         <documaid-version>0.9.19</documaid-version>
 
         <junit-version>5.6.2</junit-version>
