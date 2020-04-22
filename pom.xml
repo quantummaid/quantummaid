@@ -28,7 +28,7 @@
         <mapmaid-version>0.9.44</mapmaid-version>
         <eventmaid-version>1.0.32</eventmaid-version>
 
-        <junit-version>5.6.2</junit-version>
+        <junit-version>5.7.0-M1</junit-version>
         <lombok-version>1.18.12</lombok-version>
         <guice-version>4.2.3</guice-version>
 
