@@ -1,5 +1,5 @@
-# Configuring and running a QuantumMaid application
-This chapter is explains how to configure and run a QuantumMaid application.
+# Getting Started
+This chapter describes the most basic way of creating a running QuantumMaid instance.
 
 ## Dependencies and compiler configuration
 To run an application with the QuantumMaid framework, you need to add the following dependency to your project:
@@ -35,6 +35,6 @@ $ curl http://localhost:8080/helloworld
 ## Next Steps
 
 To learn more about handling requests, check out the 
-[15 Minute Tutorial](https://github.com/quantummaid/quantummaid-tutorials/blob/master/basic-tutorial/README.md).
+<a href="https://github.com/quantummaid/quantummaid-tutorials/blob/master/basic-tutorial/README.md" target="_blank">15 Minute Tutorial</a>.
 
-The remainder of this documentation to explains QuantumMaid in depth.
+The remainder of this documentation explains QuantumMaid in depth.

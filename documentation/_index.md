@@ -24,7 +24,9 @@ This enables you to implement Domain-Driven Design by the book.
 ## Quick Start
 This documentation gives an in-depth explanation on all of QuantumMaid's features. 
 
-For an easy start with QuantumMaid, the [15 Minute Tutorial](https://github.com/quantummaid/quantummaid-tutorials/blob/master/basic-tutorial/README.md)
+For an easy start with QuantumMaid, the 
+<a href="https://github.com/quantummaid/quantummaid-tutorials/blob/master/basic-tutorial/README.md" target="_blank">15 Minute Tutorial</a>
 might be the best option.
 
-More advanced tutorials can be found [here](https://github.com/quantummaid/quantummaid-tutorials).
+More tutorials can be found 
+<a href="https://github.com/quantummaid/quantummaid-tutorials" target="_blank">here</a>.

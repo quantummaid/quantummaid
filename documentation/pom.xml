@@ -5,11 +5,11 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.29</version>
+        <version>1.0.30</version>
     </parent>
 
     <artifactId>documentation</artifactId>
-    <version>1.0.29</version>
+    <version>1.0.30</version>
 
     <properties>
         <checkstyle.suppressions.location>
@@ -25,17 +25,35 @@
             <version>1.18.12</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Showcase start httpmaidDependency -->
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>${httpmaid-version}</version>
+            <version>0.9.50</version>
         </dependency>
+        <!-- Showcase end httpmaidDependency -->
+
+        <!-- Showcase start mapmaidDependency -->
+        <dependency>
+            <groupId>de.quantummaid.mapmaid</groupId>
+            <artifactId>core</artifactId>
+            <version>0.9.46</version>
+        </dependency>
+        <!-- Showcase end mapmaidDependency -->
+
+        <!-- Showcase start quantummaidDependency -->
+        <dependency>
+            <groupId>de.quantummaid.quantummaid</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0.30</version>
+        </dependency>
+        <!-- Showcase end quantummaidDependency -->
 
         <!-- Showcase start dependency -->
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-essentials</artifactId>
-            <version>1.0.29</version>
+            <version>1.0.30</version>
         </dependency>
         <!-- Showcase end dependency -->
 
@@ -43,7 +61,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-test-essentials</artifactId>
-            <version>1.0.29</version>
+            <version>1.0.30</version>
             <scope>test</scope>
         </dependency>
         <!-- Showcase end testdependency -->
