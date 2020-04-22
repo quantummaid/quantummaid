@@ -21,7 +21,7 @@ The `quantummaid-essentials` contains the following dependencies:
  - MapMaid Jackson integration
 
 ## The individual dependencies
-The following three modules build the main components of QuantumMaid. 
+The following three modules are the main components of QuantumMaid. 
 
 ### QuantumMaid
 <!---[CodeSnippet](quantummaidDependency)-->

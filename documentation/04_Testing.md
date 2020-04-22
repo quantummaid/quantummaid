@@ -145,8 +145,10 @@ public void testWithRestAssured() {
 
 **Warning:** The REST Assured library is supported because it is well known and
 allows for very readable test definitions. Despite its widespread use, REST Assured
-introduces the vulnerabilities [CVE-2016-6497](https://nvd.nist.gov/vuln/detail/CVE-2016-6497), [CVE-2016-5394](https://nvd.nist.gov/vuln/detail/CVE-2016-5394)
-and [CVE-2016-6798](https://nvd.nist.gov/vuln/detail/CVE-2016-6798) to your project.
+introduces the vulnerabilities 
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2016-6497" target="_blank">CVE-2016-6497</a>,
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2016-5394" target="_blank">CVE-2016-5394</a> and 
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2016-6798" target="_blank">CVE-2016-6798</a> to your project.
 Please check for your project whether these vulnerabilities pose an actual threat.
 
 ## Parallel test execution

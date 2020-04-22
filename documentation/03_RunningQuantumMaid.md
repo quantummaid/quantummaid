@@ -41,10 +41,14 @@ try (QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
 In the last chapter, a lambda function was used to handle the `/` route.
 In case more complex features of HttpMaid and MapMaid are used, 
 QuantumMaid requires your application to be compiled with the `-parameters` compile option.
-Doing so gives QuantumMaid [runtime access to parameter names](http://openjdk.java.net/jeps/118) and
+Doing so gives QuantumMaid 
+<a href="http://openjdk.java.net/jeps/118" target="_blank">runtime access to parameter names</a> and
 enables it to map parameters automatically.
-Take a look [here](https://www.logicbig.com/how-to/java-command/java-compile-with-method-parameter-names.html) to learn
+Take a look
+ <a href="https://www.logicbig.com/how-to/java-command/java-compile-with-method-parameter-names.html" target="_blank">here</a> to learn
 how to configure this.
 Also make sure that your IDE correctly adopted the `-parameters` option.
-If you need to set it manually, look [here](https://www.jetbrains.com/help/idea/specifying-compilation-settings.html#configure_compiler_settings)
-for IntelliJ IDEA and [here](https://stackoverflow.com/questions/9483315/where-do-you-configure-eclipse-java-compiler-javac-flags) for Eclipse.
+If you need to set it manually, look 
+<a href="https://www.jetbrains.com/help/idea/specifying-compilation-settings.html#configure_compiler_settings" target="_blank">here</a>
+for IntelliJ IDEA and
+ <a href="https://stackoverflow.com/questions/9483315/where-do-you-configure-eclipse-java-compiler-javac-flags" target="_blank">here</a> for Eclipse.
