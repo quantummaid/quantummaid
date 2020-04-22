@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static de.quantummaid.httpmaid.HttpMaid.STARTUP_TIME;
-import static de.quantummaid.httpmaid.purejavaendpoint.PureJavaEndpoint.pureJavaEndpointFor;
+import static de.quantummaid.httpmaid.endpoint.purejavaendpoint.PureJavaEndpoint.pureJavaEndpointFor;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
 import static java.lang.Thread.currentThread;
