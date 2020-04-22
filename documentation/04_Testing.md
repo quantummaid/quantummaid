@@ -1,4 +1,7 @@
-# Testing
+---
+title: "Testing"
+weight: 1040400001
+---
 This chapter explains how QuantumMaid supports you in testing your application.
 For a step-by-step example of testing a real application, please check out
 our [basic tutorial](https://github.com/quantummaid/quantummaid-tutorials/blob/master/basic-tutorial/README.md).
@@ -12,7 +15,7 @@ dependency:
 <dependency>
     <groupId>de.quantummaid.quantummaid.packagings</groupId>
     <artifactId>quantummaid-test-essentials</artifactId>
-    <version>1.0.28</version>
+    <version>1.0.29</version>
     <scope>test</scope>
 </dependency>
 ```

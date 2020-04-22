@@ -28,6 +28,8 @@ More information can be found [here](https://quantummaid.de).
 ## Getting started
 You can find easy-to-follow and interesting tutorials [here](https://github.com/quantummaid/quantummaid-tutorials/blob/master/README.md).
 
+The QuantumMaid documentation can be found [here](https://quantummaid.de/docs.html).
+
 ## Get in touch
 Feel free to join us on [Slack](https://join.slack.com/t/quantummaid/shared_invite/zt-cx5qd605-vG10I~WazfgH9WOnXMzl3Q)
 or [Gitter](https://gitter.im/quantum-maid-framework/community) to ask questions, give feedback or simply discuss software

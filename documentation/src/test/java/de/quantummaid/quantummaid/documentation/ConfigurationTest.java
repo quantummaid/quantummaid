@@ -41,18 +41,16 @@ public final class ConfigurationTest {
 
     @Test
     public void configuration() {
-        final int port = freePort();
         //Showcase start configuration
+        final int port = 8080;
         final HttpMaid httpMaid = HttpMaid.anHttpMaid()
                 .get("/", (request, response) -> response.setBody("Hello World!"))
                 .build();
         final QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
                 .withHttpMaid(httpMaid)
                 .withLocalHostEndpointOnPort(port);
-        //Showcase end configuration
-        //Showcase start runAsynchronously
         quantumMaid.runAsynchronously();
-        //Showcase end runAsynchronously
+        //Showcase end configuration
 
         final HttpMaidClient client = aHttpMaidClientForTheHost("localhost")
                 .withThePort(port)
@@ -102,6 +100,39 @@ public final class ConfigurationTest {
         final String response = client.issue(aGetRequestToThePath("/").mappedToString());
         assertThat(response, is("Hello World!"));
         thread.interrupt();
+    }
+
+    @Test
+    public void runAsynchronously() {
+        final int port = freePort();
+        final HttpMaid httpMaid = HttpMaid.anHttpMaid()
+                .get("/", (request, response) -> response.setBody("Hello World!"))
+                .build();
+        final QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
+                .withHttpMaid(httpMaid)
+                .withLocalHostEndpointOnPort(port);
+        //Showcase start runAsynchronously
+        quantumMaid.runAsynchronously();
+        //Showcase end runAsynchronously
+
+        final HttpMaidClient client = aHttpMaidClientForTheHost("localhost")
+                .withThePort(port)
+                .viaHttp()
+                .build();
+        final String response = client.issue(aGetRequestToThePath("/").mappedToString());
+        assertThat(response, is("Hello World!"));
+
+        quantumMaid.close();
+        waitForPortToClose(port);
+
+        boolean success = false;
+        try {
+            client.issue(aGetRequestToThePath("/").mappedToString());
+            success = true;
+        } catch (final RuntimeException e) {
+            assertThat(e.getCause(), instanceOf(IOException.class));
+        }
+        assertThat(success, is(false));
     }
 
     @Test
