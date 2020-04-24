@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>de.quantummaid</groupId>
         <artifactId>quantummaid-opensource-parent</artifactId>
-        <version>0.9.30</version>
+        <version>0.9.33</version>
     </parent>
 
     <groupId>de.quantummaid.quantummaid</groupId>
@@ -13,13 +14,7 @@
     <version>1.0.27</version>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>core</module>
-        <module>integrations</module>
-        <module>quantummaid-bom</module>
-        <module>packagings</module>
-        <module>documentation</module>
-    </modules>
+    <name>QuantumMaid</name>
 
     <properties>
         <httpmaid-version>0.9.47</httpmaid-version>
@@ -32,6 +27,7 @@
         <guice-version>4.2.3</guice-version>
 
         <plugin-update-file-checksum>915baffd77985e9da0d3cfee67e149eb</plugin-update-file-checksum>
+        <sonar.coverage.jacoco.xmlReportPaths>../coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <build>
@@ -54,4 +50,39 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>!deployToMavenCentral</name>
+                </property>
+            </activation>
+            <modules>
+                <module>core</module>
+                <module>integrations</module>
+                <module>quantummaid-bom</module>
+                <module>packagings</module>
+                <module>documentation</module>
+                <module>coverage</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>deployToMavenCentral</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>deployToMavenCentral</name>
+                </property>
+            </activation>
+            <modules>
+                <module>core</module>
+                <module>integrations</module>
+                <module>quantummaid-bom</module>
+                <module>packagings</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

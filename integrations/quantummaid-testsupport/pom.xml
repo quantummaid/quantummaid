@@ -11,6 +11,10 @@
     <artifactId>quantummaid-testsupport</artifactId>
     <version>1.0.27</version>
 
+    <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>../../coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
