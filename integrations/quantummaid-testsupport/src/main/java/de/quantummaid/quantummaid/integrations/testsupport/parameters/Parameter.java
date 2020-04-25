@@ -43,7 +43,9 @@ public final class Parameter {
     }
 
     public boolean supports(final String name, final Class<?> type) {
-        return this.name.equals(name) && this.type.equals(type);
+        final boolean nameIsEqual = this.name.equals(name);
+        final boolean typeIsEqual = this.type.equals(type);
+        return nameIsEqual && typeIsEqual;
     }
 
     public Object provide(final TestContext testContext) {

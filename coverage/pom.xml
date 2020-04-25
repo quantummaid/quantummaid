@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.quantummaid.quantummaid</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.32</version>
+    </parent>
+
+    <artifactId>coverage</artifactId>
+    <version>1.0.32</version>
+
+    <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>de.quantummaid.quantummaid</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0.32</version>
+        </dependency>
+        <dependency>
+            <groupId>de.quantummaid.quantummaid</groupId>
+            <artifactId>documentation</artifactId>
+            <version>1.0.32</version>
+        </dependency>
+        <dependency>
+            <groupId>de.quantummaid.quantummaid.integrations</groupId>
+            <artifactId>quantummaid-junit5</artifactId>
+            <version>1.0.32</version>
+        </dependency>
+        <dependency>
+            <groupId>de.quantummaid.quantummaid.integrations</groupId>
+            <artifactId>quantummaid-restassured</artifactId>
+            <version>1.0.32</version>
+        </dependency>
+        <dependency>
+            <groupId>de.quantummaid.quantummaid.integrations</groupId>
+            <artifactId>quantummaid-testsupport</artifactId>
+            <version>1.0.32</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.5</version>
+                <executions>
+                    <execution>
+                        <id>report-aggregate2</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -29,10 +29,9 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 import static de.quantummaid.quantummaid.integrations.testsupport.FreePortPool.freePort;
@@ -52,7 +51,7 @@ public final class TestSupport {
             "de.quantummaid.quantummaid.integrations.restassured.RestAssuredExtension"
     );
     private final ThreadLocal<TestContext> testContext = ThreadLocal.withInitial(() -> null);
-    private final ThreadLocal<List<TestExtension>> extensions = ThreadLocal.withInitial(Collections::emptyList);
+    private final List<TestExtension> extensions = new CopyOnWriteArrayList<>();
 
     public static TestSupport testSupport() {
         return new TestSupport();
@@ -64,12 +63,11 @@ public final class TestSupport {
 
     public void setExtensions(final List<TestExtension> extensions,
                               final boolean autoload) {
-        final List<TestExtension> allExtensions = new ArrayList<>(extensions);
+        this.extensions.addAll(extensions);
         if (autoload) {
             final List<TestExtension> autoloadedTestExtensions = autoloadTestExtensions();
-            allExtensions.addAll(autoloadedTestExtensions);
+            this.extensions.addAll(autoloadedTestExtensions);
         }
-        this.extensions.set(allExtensions);
     }
 
     public TestContext testContext() {
@@ -82,17 +80,16 @@ public final class TestSupport {
         final String host = "localhost";
         final QuantumMaid quantumMaid = provider.provide(port);
         quantumMaid.runAsynchronously();
-        final TestContext testContext = TestContext.testContext(quantumMaid, port, host);
-        this.testContext.set(testContext);
-        this.extensions.get().forEach(extension -> extension.afterInitialization(testContext));
+        this.testContext.set(TestContext.testContext(quantumMaid, port, host));
+        this.extensions.forEach(extension -> extension.afterInitialization(TestContext.testContext(quantumMaid, port, host)));
     }
 
     public void close() {
-        if (testContext() == null) {
-            return;
+        if (testContext() != null) {
+            final QuantumMaid quantumMaid = testContext().quantumMaid();
+            quantumMaid.close();
         }
-        final QuantumMaid quantumMaid = testContext().quantumMaid();
-        quantumMaid.close();
+        testContext.remove();
     }
 
     public boolean supportsParameter(final String name, final Class<?> type) {

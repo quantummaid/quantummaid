@@ -38,10 +38,7 @@ public final class ZeroArgumentConstructorInstantiator {
         try {
             return (T) zeroArgsConstructor.newInstance();
         } catch (final InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw quantumMaidTestException(
-                    format("cannot instantiate class '%s'", providerClass.getSimpleName()),
-                    e
-            );
+            throw quantumMaidTestException(format("cannot instantiate class '%s'", providerClass.getSimpleName()), e);
         }
     }
 
@@ -49,9 +46,8 @@ public final class ZeroArgumentConstructorInstantiator {
         try {
             return clazz.getConstructor();
         } catch (final NoSuchMethodException e) {
-            throw quantumMaidTestException(format(
-                    "class '%s' has to provide a zero-parameter constructor in order to be usable in QuantumMaid tests",
-                    clazz.getSimpleName()));
+            throw quantumMaidTestException(format("class '%s' has to provide a zero-parameter constructor " +
+                            "in order to be usable in QuantumMaid tests", clazz.getSimpleName()));
         }
     }
 }

@@ -56,8 +56,6 @@ public final class TestContext {
     }
 
     public String url() {
-        final String host = host();
-        final Integer port = port();
         return format("http://%s:%d/", host, port);
     }
 }

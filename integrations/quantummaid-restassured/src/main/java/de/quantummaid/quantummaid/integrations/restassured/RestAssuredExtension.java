@@ -29,6 +29,6 @@ public final class RestAssuredExtension implements TestExtension {
 
     @Override
     public void afterInitialization(final TestContext testContext) {
-        RestAssured.baseURI = testContext.url();
+        RestAssured.baseURI = testContext.url(); // NOSONAR
     }
 }

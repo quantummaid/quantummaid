@@ -10,18 +10,10 @@
 
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.31</version>
+    <version>1.0.32</version>
     <packaging>pom</packaging>
 
     <name>QuantumMaid</name>
-
-    <modules>
-        <module>core</module>
-        <module>integrations</module>
-        <module>quantummaid-bom</module>
-        <module>packagings</module>
-        <module>documentation</module>
-    </modules>
 
     <properties>
         <httpmaid-version>0.9.50</httpmaid-version>
@@ -33,6 +25,7 @@
         <guice-version>4.2.3</guice-version>
 
         <plugin-update-file-checksum>915baffd77985e9da0d3cfee67e149eb</plugin-update-file-checksum>
+        <sonar.coverage.jacoco.xmlReportPaths>../coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <build>
@@ -55,4 +48,39 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>!deployToMavenCentral</name>
+                </property>
+            </activation>
+            <modules>
+                <module>core</module>
+                <module>integrations</module>
+                <module>quantummaid-bom</module>
+                <module>packagings</module>
+                <module>documentation</module>
+                <module>coverage</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>deployToMavenCentral</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>deployToMavenCentral</name>
+                </property>
+            </activation>
+            <modules>
+                <module>core</module>
+                <module>integrations</module>
+                <module>quantummaid-bom</module>
+                <module>packagings</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

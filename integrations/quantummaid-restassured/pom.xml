@@ -5,16 +5,20 @@
     <parent>
         <groupId>de.quantummaid.quantummaid.integrations</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.31</version>
+        <version>1.0.32</version>
     </parent>
 
     <artifactId>quantummaid-restassured</artifactId>
-    <version>1.0.31</version>
+    <version>1.0.32</version>
 
     <properties>
+        <checkstyle.suppressions.location>
+            ${project.basedir}/src/test/checkstyle/checkstyle-suppressions.xml
+        </checkstyle.suppressions.location>
         <spotbugs.excludeFilterFile>
             ${project.basedir}/src/test/spotbugs/spotbugs-exclude.xml
         </spotbugs.excludeFilterFile>
+        <sonar.coverage.jacoco.xmlReportPaths>../../coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <dependencies>
