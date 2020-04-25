@@ -24,6 +24,5 @@
         "-//Puppy Crawl//DTD Suppressions 1.1//EN"
         "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
-    <suppress checks="Regex|TrailingComment" files="QuantumMaid"/>
-    <suppress checks="MagicNumber|Regex|TrailingComment" files="PortUtils" />
+    <suppress checks="TrailingComment" files="RestAssuredExtension"/>
 </suppressions>

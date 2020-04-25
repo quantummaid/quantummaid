@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>de.quantummaid</groupId>
         <artifactId>quantummaid-opensource-parent</artifactId>
-        <version>0.9.33</version>
+        <version>0.9.35</version>
     </parent>
 
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.27</version>
+    <version>1.0.32</version>
     <packaging>pom</packaging>
 
     <name>QuantumMaid</name>
 
     <properties>
-        <httpmaid-version>0.9.47</httpmaid-version>
-        <mapmaid-version>0.9.43</mapmaid-version>
-        <eventmaid-version>0.9.31</eventmaid-version>
-        <documaid-version>0.9.19</documaid-version>
+        <httpmaid-version>0.9.50</httpmaid-version>
+        <mapmaid-version>0.9.46</mapmaid-version>
+        <eventmaid-version>1.0.36</eventmaid-version>
 
         <junit-version>5.6.2</junit-version>
         <lombok-version>1.18.12</lombok-version>

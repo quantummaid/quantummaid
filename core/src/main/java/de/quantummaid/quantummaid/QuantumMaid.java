@@ -33,10 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 import static de.quantummaid.httpmaid.HttpMaid.STARTUP_TIME;
-import static de.quantummaid.httpmaid.purejavaendpoint.PureJavaEndpoint.pureJavaEndpointFor;
+import static de.quantummaid.quantummaid.EndpointCreator.pureJavaEndpointCreator;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
 import static java.lang.Thread.currentThread;
@@ -46,12 +45,13 @@ import static java.time.Duration.between;
 @EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class QuantumMaid implements AutoCloseable {
-    private volatile HttpMaid httpMaid;
-    private final List<Consumer<HttpMaid>> endpoints = new ArrayList<>(1);
+    private HttpMaid httpMaid;
+    private final List<EndpointCreator> endpoints = new ArrayList<>(1);
     private final List<String> endpointUrls = new ArrayList<>(1);
     private final CountDownLatch terminationTrigger = new CountDownLatch(1);
     private final CountDownLatch termination = new CountDownLatch(1);
     private final Thread shutdownHook = new Thread(this::close);
+    private final Logger logger = System.out::println; // NOSONAR
 
     public static QuantumMaid quantumMaid() {
         return new QuantumMaid();
@@ -63,7 +63,7 @@ public final class QuantumMaid implements AutoCloseable {
     }
 
     public QuantumMaid withLocalHostEndpointOnPort(final int port) {
-        this.endpoints.add(httpMaid -> pureJavaEndpointFor(httpMaid).listeningOnThePort(port));
+        this.endpoints.add(pureJavaEndpointCreator(port));
         this.endpointUrls.add(format("http://localhost:%d/", port));
         return this;
     }
@@ -80,9 +80,9 @@ public final class QuantumMaid implements AutoCloseable {
     }
 
     private void run(final CountDownLatch initialization) {
-        try (HttpMaid httpMaid = this.httpMaid) {
+        try (HttpMaid managedHttpMaid = this.httpMaid) {
             final Instant begin = Instant.now();
-            this.endpoints.forEach(endpoint -> endpoint.accept(httpMaid));
+            this.endpoints.forEach(endpoint -> endpoint.createEndpoint(managedHttpMaid));
             final Instant end = Instant.now();
             final Duration endpointStartUpTime = between(begin, end);
             renderSplash(endpointStartUpTime);
@@ -103,15 +103,15 @@ public final class QuantumMaid implements AutoCloseable {
     }
 
     private void renderSplash(final Duration endpointStartupTime) {
-        System.out.println(Logo.LOGO + "\n");
+        logger.log(Logo.LOGO + "\n");
         final Duration httpMaidStartUpTime = httpMaid.getMetaDatum(STARTUP_TIME);
         final long httpMaidMilliseconds = TimeUnit.MILLISECONDS.convert(httpMaidStartUpTime);
         final long endpointsMilliseconds = TimeUnit.MILLISECONDS.convert(endpointStartupTime);
         final long combinedMilliseconds = httpMaidMilliseconds + endpointsMilliseconds;
-        System.out.println(format("Startup took: %sms (%sms initialization, %sms endpoint startup)",
+        logger.log(format("Startup took: %sms (%sms initialization, %sms endpoint startup)",
                 combinedMilliseconds, httpMaidMilliseconds, endpointsMilliseconds));
-        endpointUrls.forEach(url -> System.out.println(format("Serving %s", url)));
-        System.out.println();
+        endpointUrls.forEach(url -> logger.log(format("Serving %s", url)));
+        logger.log("");
     }
 
     private static void awaitCountDownLatch(final CountDownLatch countDownLatch) {

@@ -19,19 +19,17 @@
  * under the License.
  */
 
-package de.quantummaid.quantummaid.integrations.testsupport;
+package de.quantummaid.quantummaid;
 
-public final class QuantumMaidTestException extends RuntimeException {
+import de.quantummaid.httpmaid.HttpMaid;
 
-    private QuantumMaidTestException(final String message, final Throwable cause) {
-        super(message, cause);
+import static de.quantummaid.httpmaid.endpoint.purejavaendpoint.PureJavaEndpoint.pureJavaEndpointFor;
+
+public interface EndpointCreator {
+
+    static EndpointCreator pureJavaEndpointCreator(final int port) {
+        return httpMaid -> pureJavaEndpointFor(httpMaid).listeningOnThePort(port);
     }
 
-    public static QuantumMaidTestException quantumMaidTestException(final String message) {
-        return new QuantumMaidTestException(message, null);
-    }
-
-    public static QuantumMaidTestException quantumMaidTestException(final String message, final Throwable cause) {
-        return new QuantumMaidTestException(message, cause);
-    }
+    void createEndpoint(HttpMaid httpMaid);
 }

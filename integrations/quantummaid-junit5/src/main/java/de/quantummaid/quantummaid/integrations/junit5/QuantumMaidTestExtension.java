@@ -43,7 +43,7 @@ public final class QuantumMaidTestExtension implements
         AfterAllCallback,
         ParameterResolver {
     private final TestSupport testSupport = testSupport();
-    private volatile QuantumMaidTest annotation;
+    private QuantumMaidTest annotation;
 
     @Override
     public void beforeAll(final ExtensionContext context) {
@@ -68,7 +68,7 @@ public final class QuantumMaidTestExtension implements
 
     @Override
     public boolean supportsParameter(final ParameterContext parameterContext,
-                                     final ExtensionContext extensionContext) throws ParameterResolutionException {
+                                     final ExtensionContext extensionContext) {
         final String name = name(parameterContext);
         final Class<?> type = type(parameterContext);
         return testSupport.supportsParameter(name, type);
@@ -76,7 +76,7 @@ public final class QuantumMaidTestExtension implements
 
     @Override
     public Object resolveParameter(final ParameterContext parameterContext,
-                                   final ExtensionContext extensionContext) throws ParameterResolutionException {
+                                   final ExtensionContext extensionContext) {
         final String name = name(parameterContext);
         final Class<?> type = type(parameterContext);
         return testSupport.resolveParameter(name, type);

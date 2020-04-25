@@ -23,6 +23,7 @@ package de.quantummaid.quantummaid.integrations.testsupport.reflection;
 
 import java.util.Optional;
 
+import static de.quantummaid.httpmaid.util.Validators.validateNotNull;
 import static de.quantummaid.httpmaid.util.Validators.validateNotNullNorEmpty;
 import static java.lang.Thread.currentThread;
 import static java.util.Optional.empty;
@@ -36,6 +37,7 @@ public final class Autoloader {
     @SuppressWarnings("unchecked")
     public static <T> Optional<T> load(final String fullyQualifiedClassName, final Class<T> superType) {
         validateNotNullNorEmpty(fullyQualifiedClassName, "fullyQualifiedClassName");
+        validateNotNull(superType, "superType");
         return (Optional<T>) loadClass(fullyQualifiedClassName)
                 .map(ZeroArgumentConstructorInstantiator::instantiate);
     }

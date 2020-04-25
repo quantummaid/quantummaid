@@ -24,20 +24,20 @@ package de.quantummaid.quantummaid.documentation;
 import de.quantummaid.quantummaid.integrations.junit5.QuantumMaidTest;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.Is.is;
-
 @QuantumMaidTest(MyQuantumMaidProvider.class)
-public final class TestWithRestAssured {
+public final class MyTestWithParametersDocumentationTests {
 
-    //Showcase start testWithRestAssured
+    //Showcase start testWithUrl
     @Test
-    public void testWithRestAssured() {
-        given()
-                .when().get("/")
-                .then()
-                .statusCode(200)
-                .body(is("Hello World!"));
+    public void testWithUrl(final String url) {
+        // implement test
     }
-    //Showcase end testWithRestAssured
+    //Showcase end testWithUrl
+
+    //Showcase start testWithHostAndPort
+    @Test
+    public void testWithHostAndPort(final String host, final int port) {
+        // implement test
+    }
+    //Showcase end testWithHostAndPort
 }

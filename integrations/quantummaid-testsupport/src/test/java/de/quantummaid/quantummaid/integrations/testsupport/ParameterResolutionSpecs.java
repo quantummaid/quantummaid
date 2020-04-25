@@ -21,17 +21,25 @@
 
 package de.quantummaid.quantummaid.integrations.testsupport;
 
-public final class QuantumMaidTestException extends RuntimeException {
+import org.junit.jupiter.api.Test;
 
-    private QuantumMaidTestException(final String message, final Throwable cause) {
-        super(message, cause);
+import static de.quantummaid.quantummaid.integrations.testsupport.TestSupport.testSupport;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+public final class ParameterResolutionSpecs {
+
+    @Test
+    public void parameterWithUnknownNameIsNotSupported() {
+        final TestSupport testSupport = testSupport();
+        final boolean supported = testSupport.supportsParameter("foo", String.class);
+        assertThat(supported, is(false));
     }
 
-    public static QuantumMaidTestException quantumMaidTestException(final String message) {
-        return new QuantumMaidTestException(message, null);
-    }
-
-    public static QuantumMaidTestException quantumMaidTestException(final String message, final Throwable cause) {
-        return new QuantumMaidTestException(message, cause);
+    @Test
+    public void parameterWithUnknownTypeIsNotSupported() {
+        final TestSupport testSupport = testSupport();
+        final boolean supported = testSupport.supportsParameter("port", Boolean.class);
+        assertThat(supported, is(false));
     }
 }

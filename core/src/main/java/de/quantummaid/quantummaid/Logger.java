@@ -19,19 +19,8 @@
  * under the License.
  */
 
-package de.quantummaid.quantummaid.integrations.testsupport;
+package de.quantummaid.quantummaid;
 
-public final class QuantumMaidTestException extends RuntimeException {
-
-    private QuantumMaidTestException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    public static QuantumMaidTestException quantumMaidTestException(final String message) {
-        return new QuantumMaidTestException(message, null);
-    }
-
-    public static QuantumMaidTestException quantumMaidTestException(final String message, final Throwable cause) {
-        return new QuantumMaidTestException(message, cause);
-    }
+public interface Logger {
+    void log(String message);
 }

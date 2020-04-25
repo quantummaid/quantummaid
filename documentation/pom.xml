@@ -5,18 +5,19 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.27</version>
+        <version>1.0.32</version>
     </parent>
 
     <artifactId>documentation</artifactId>
-    <version>1.0.27</version>
+    <version>1.0.32</version>
 
     <properties>
         <checkstyle.suppressions.location>
             ${project.basedir}/src/test/checkstyle/checkstyle-suppressions.xml
         </checkstyle.suppressions.location>
         <plugin-update-file-checksum>a9c106f16f2d959e2db68534062e7623</plugin-update-file-checksum>
-        <sonar.coverage.jacoco.xmlReportPaths>../coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>../coverage/target/site/jacoco-aggregate/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <dependencies>
@@ -26,17 +27,35 @@
             <version>1.18.12</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Showcase start httpmaidDependency -->
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>${httpmaid-version}</version>
+            <version>0.9.50</version>
         </dependency>
+        <!-- Showcase end httpmaidDependency -->
+
+        <!-- Showcase start mapmaidDependency -->
+        <dependency>
+            <groupId>de.quantummaid.mapmaid</groupId>
+            <artifactId>core</artifactId>
+            <version>0.9.46</version>
+        </dependency>
+        <!-- Showcase end mapmaidDependency -->
+
+        <!-- Showcase start quantummaidDependency -->
+        <dependency>
+            <groupId>de.quantummaid.quantummaid</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0.32</version>
+        </dependency>
+        <!-- Showcase end quantummaidDependency -->
 
         <!-- Showcase start dependency -->
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-essentials</artifactId>
-            <version>1.0.27</version>
+            <version>1.0.32</version>
         </dependency>
         <!-- Showcase end dependency -->
 
@@ -44,7 +63,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-test-essentials</artifactId>
-            <version>1.0.27</version>
+            <version>1.0.32</version>
             <scope>test</scope>
         </dependency>
         <!-- Showcase end testdependency -->
@@ -58,14 +77,27 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Showcase start surefire -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M4</version>
+                </plugin>
+                <!-- Showcase end surefire -->
+            </plugins>
+        </pluginManagement>
         <plugins>
-            <!-- Showcase start surefire -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M4</version>
+                <configuration>
+                    <includes>
+                        <include>**/*.java</include>
+                    </includes>
+                </configuration>
             </plugin>
-            <!-- Showcase end surefire -->
         </plugins>
     </build>
 </project>

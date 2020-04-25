@@ -26,5 +26,5 @@
 <suppressions>
     <suppress checks="IllegalCatch" files="ConfigurationTest"/>
     <suppress checks="MagicNumber" files="TestWithRestAssured" />
-    <suppress checks="MagicNumber|Regex" files="PortUtils" />
+    <suppress checks="MagicNumber|Regex|TrailingComment" files="PortUtils" />
 </suppressions>

@@ -27,7 +27,6 @@ import java.util.Objects;
 
 import static java.lang.String.format;
 import static java.lang.Thread.currentThread;
-import static java.lang.Thread.sleep;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public final class PortUtils {
@@ -52,11 +51,7 @@ public final class PortUtils {
                 return;
             }
             System.out.println(format("Waiting for port %d (%d/%d)", port, i, maxTries));
-            try {
-                sleep(1_000);
-            } catch (final InterruptedException e) {
-                currentThread().interrupt();
-            }
+            sleep();
         }
         throw new RuntimeException(format("Port %d did not become available in time", port));
     }
@@ -68,11 +63,7 @@ public final class PortUtils {
                 return;
             }
             System.out.println(format("Waiting for port %d to close (%d/%d)", port, i, maxTries));
-            try {
-                sleep(1_000);
-            } catch (final InterruptedException e) {
-                currentThread().interrupt();
-            }
+            sleep();
         }
         throw new RuntimeException(format("Port %d did not close in time", port));
     }
@@ -84,6 +75,14 @@ public final class PortUtils {
             return true;
         } catch (final IOException ignored) {
             return false;
+        }
+    }
+
+    private static void sleep() {
+        try {
+            Thread.sleep(1_000); // NOSONAR
+        } catch (final InterruptedException e) {
+            currentThread().interrupt();
         }
     }
 }
