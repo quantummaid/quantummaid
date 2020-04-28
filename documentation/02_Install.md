@@ -1,4 +1,8 @@
-# Install
+---
+title: "Install"
+weight: 1010300001
+---
+
 All QuantumMaid libraries are available as 
 <a href="https://maven.apache.org/what-is-maven.html" target="_blank">Maven</a> modules.
 
@@ -9,7 +13,7 @@ The following dependency contains all relevant modules to start with a basic Qua
 <dependency>
     <groupId>de.quantummaid.quantummaid.packagings</groupId>
     <artifactId>quantummaid-essentials</artifactId>
-    <version>1.0.34</version>
+    <version>1.0.32</version>
 </dependency>
 ```
 
@@ -29,7 +33,7 @@ The following three modules are the main components of QuantumMaid.
 <dependency>
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>core</artifactId>
-    <version>1.0.34</version>
+    <version>1.0.32</version>
 </dependency>
 ```
 
@@ -39,7 +43,7 @@ HttpMaid handles everything that is related to the web. <!---[CodeSnippet](httpm
 <dependency>
     <groupId>de.quantummaid.httpmaid</groupId>
     <artifactId>core</artifactId>
-    <version>0.9.51</version>
+    <version>0.9.50</version>
 </dependency>
 ```
 
@@ -55,11 +59,11 @@ well as in persistence mechanisms.
 <dependency>
     <groupId>de.quantummaid.mapmaid</groupId>
     <artifactId>core</artifactId>
-    <version>0.9.48</version>
+    <version>0.9.46</version>
 </dependency>
 ```
 
-MapMaid is covered in detail [here]({{< "3_MapMaid/_index.md" >}}).
+MapMaid is covered in detail [here]({{< ref "3_MapMaid/_index.md" >}}).
 
 
 
