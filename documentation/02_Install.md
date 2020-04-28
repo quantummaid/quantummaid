@@ -9,7 +9,7 @@ The following dependency contains all relevant modules to start with a basic Qua
 <dependency>
     <groupId>de.quantummaid.quantummaid.packagings</groupId>
     <artifactId>quantummaid-essentials</artifactId>
-    <version>1.0.33</version>
+    <version>1.0.34</version>
 </dependency>
 ```
 
@@ -29,7 +29,7 @@ The following three modules are the main components of QuantumMaid.
 <dependency>
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>core</artifactId>
-    <version>1.0.33</version>
+    <version>1.0.34</version>
 </dependency>
 ```
 
@@ -43,7 +43,7 @@ HttpMaid handles everything that is related to the web. <!---[CodeSnippet](httpm
 </dependency>
 ```
 
-HttpMaid is covered in detail [here]({{< 2_HttpMaid/_index.md >}}).
+HttpMaid is covered in detail [here]({{< ref "2_HttpMaid/_index.md" >}}).
 
 
 ### MapMaid
@@ -59,7 +59,7 @@ well as in persistence mechanisms.
 </dependency>
 ```
 
-MapMaid is covered in detail [here]({{< 3_MapMaid/_index.md >}}).
+MapMaid is covered in detail [here]({{< "3_MapMaid/_index.md" >}}).
 
 
 
