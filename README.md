@@ -3,7 +3,6 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=de.quantummaid.quantummaid%3Aparent&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=de.quantummaid.quantummaid%3Aparent)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=de.quantummaid.quantummaid%3Aparent&metric=security_rating)](https://sonarcloud.io/dashboard?id=de.quantummaid.quantummaid%3Aparent)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=de.quantummaid.quantummaid%3Aparent&metric=alert_status)](https://sonarcloud.io/dashboard?id=de.quantummaid.quantummaid%3Aparent)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=de.quantummaid.quantummaid%3Aparent&metric=sqale_index)](https://sonarcloud.io/dashboard?id=de.quantummaid.quantummaid%3Aparent)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=de.quantummaid.quantummaid%3Aparent&metric=bugs)](https://sonarcloud.io/dashboard?id=de.quantummaid.quantummaid%3Aparent)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=de.quantummaid.quantummaid%3Aparent&metric=code_smells)](https://sonarcloud.io/dashboard?id=de.quantummaid.quantummaid%3Aparent)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=de.quantummaid.quantummaid%3Aparent&metric=sqale_index)](https://sonarcloud.io/dashboard?id=de.quantummaid.quantummaid%3Aparent)
