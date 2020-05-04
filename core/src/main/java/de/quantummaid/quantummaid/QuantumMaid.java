@@ -26,6 +26,8 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -45,13 +47,14 @@ import static java.time.Duration.between;
 @EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class QuantumMaid implements AutoCloseable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuantumMaid.class);
+
     private HttpMaid httpMaid;
     private final List<EndpointCreator> endpoints = new ArrayList<>(1);
     private final List<String> endpointUrls = new ArrayList<>(1);
     private final CountDownLatch terminationTrigger = new CountDownLatch(1);
     private final CountDownLatch termination = new CountDownLatch(1);
     private final Thread shutdownHook = new Thread(this::close);
-    private final Logger logger = System.out::println; // NOSONAR
 
     public static QuantumMaid quantumMaid() {
         return new QuantumMaid();
@@ -103,15 +106,15 @@ public final class QuantumMaid implements AutoCloseable {
     }
 
     private void renderSplash(final Duration endpointStartupTime) {
-        logger.log(Logo.LOGO + "\n");
+        LOGGER.info("\n" + Logo.LOGO + "\n");
         final Duration httpMaidStartUpTime = httpMaid.getMetaDatum(STARTUP_TIME);
         final long httpMaidMilliseconds = TimeUnit.MILLISECONDS.convert(httpMaidStartUpTime);
         final long endpointsMilliseconds = TimeUnit.MILLISECONDS.convert(endpointStartupTime);
         final long combinedMilliseconds = httpMaidMilliseconds + endpointsMilliseconds;
-        logger.log(format("Startup took: %sms (%sms initialization, %sms endpoint startup)",
-                combinedMilliseconds, httpMaidMilliseconds, endpointsMilliseconds));
-        endpointUrls.forEach(url -> logger.log(format("Serving %s", url)));
-        logger.log("");
+        LOGGER.info("Startup took: {}ms ({}ms initialization, {}ms endpoint startup)",
+                combinedMilliseconds, httpMaidMilliseconds, endpointsMilliseconds);
+        endpointUrls.forEach(url -> LOGGER.info(format("Serving %s", url)));
+        LOGGER.info("Ready.");
     }
 
     private static void awaitCountDownLatch(final CountDownLatch countDownLatch) {
