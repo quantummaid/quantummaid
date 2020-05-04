@@ -5,11 +5,11 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.38</version>
+        <version>1.0.39</version>
     </parent>
 
     <artifactId>coverage</artifactId>
-    <version>1.0.38</version>
+    <version>1.0.39</version>
 
     <properties>
         <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
@@ -19,27 +19,27 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid</groupId>
             <artifactId>core</artifactId>
-            <version>1.0.38</version>
+            <version>1.0.39</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.quantummaid</groupId>
             <artifactId>documentation</artifactId>
-            <version>1.0.38</version>
+            <version>1.0.39</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.quantummaid.integrations</groupId>
             <artifactId>quantummaid-junit5</artifactId>
-            <version>1.0.38</version>
+            <version>1.0.39</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.quantummaid.integrations</groupId>
             <artifactId>quantummaid-restassured</artifactId>
-            <version>1.0.38</version>
+            <version>1.0.39</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.quantummaid.integrations</groupId>
             <artifactId>quantummaid-testsupport</artifactId>
-            <version>1.0.38</version>
+            <version>1.0.39</version>
         </dependency>
     </dependencies>
 
