@@ -22,31 +22,40 @@
 package de.quantummaid.quantummaid.integrations.testsupport;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.net.UnknownHostException;
 
 final class FreePortPool {
     private static final int START_PORT = 9000;
     private static final int HIGHEST_PORT = 65535;
-    private static AtomicInteger currentPort = new AtomicInteger(START_PORT);
+    private static final InetAddress LOCALHOST = localhost();
+    private static int currentPort = START_PORT;
 
     private FreePortPool() {
     }
 
-    static int freePort() {
-        final int port = currentPort.incrementAndGet();
-        if (port >= HIGHEST_PORT) {
-            currentPort.set(START_PORT);
+    static synchronized int freePort() {
+        currentPort = currentPort + 1;
+        if (currentPort >= HIGHEST_PORT) {
+            currentPort = START_PORT;
             return freePort();
         } else {
             try {
-                final ServerSocket serverSocket = new ServerSocket(port);
+                final ServerSocket serverSocket = new ServerSocket(currentPort, 0, LOCALHOST);
                 serverSocket.close();
-                return port;
+                return currentPort;
             } catch (final IOException ex) {
                 return freePort();
             }
         }
     }
 
+    private static InetAddress localhost() {
+        try {
+            return InetAddress.getLocalHost();
+        } catch (final UnknownHostException e) {
+            throw new UnsupportedOperationException("This should never happen", e);
+        }
+    }
 }
