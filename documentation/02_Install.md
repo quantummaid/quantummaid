@@ -43,7 +43,7 @@ HttpMaid handles everything that is related to the web. <!---[CodeSnippet](httpm
 <dependency>
     <groupId>de.quantummaid.httpmaid</groupId>
     <artifactId>core</artifactId>
-    <version>0.9.55</version>
+    <version>0.9.56</version>
 </dependency>
 ```
 
