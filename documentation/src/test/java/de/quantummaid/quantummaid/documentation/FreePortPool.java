@@ -36,6 +36,7 @@ final class FreePortPool {
     }
 
     static synchronized int freePort() {
+        currentPort = currentPort + 1;
         if (currentPort >= HIGHEST_PORT) {
             currentPort = START_PORT;
             return freePort();
