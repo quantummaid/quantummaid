@@ -16,7 +16,7 @@
     <name>QuantumMaid</name>
 
     <properties>
-        <httpmaid-version>0.9.55</httpmaid-version>
+        <httpmaid-version>0.9.56</httpmaid-version>
         <mapmaid-version>0.9.52</mapmaid-version>
         <eventmaid-version>1.0.41</eventmaid-version>
 
