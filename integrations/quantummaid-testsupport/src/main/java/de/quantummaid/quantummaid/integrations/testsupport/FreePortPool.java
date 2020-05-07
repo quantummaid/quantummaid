@@ -36,17 +36,17 @@ final class FreePortPool {
     }
 
     static synchronized int freePort() {
-        currentPort = currentPort + 1;
-        if (currentPort >= HIGHEST_PORT) {
-            currentPort = START_PORT;
-            return freePort();
-        } else {
+        while (true) {
+            currentPort = currentPort + 1;
+            if (currentPort >= HIGHEST_PORT) {
+                currentPort = START_PORT;
+            }
             try {
                 final ServerSocket serverSocket = new ServerSocket(currentPort, 0, LOCALHOST);
                 serverSocket.close();
                 return currentPort;
             } catch (final IOException ex) {
-                return freePort();
+                // next port
             }
         }
     }
