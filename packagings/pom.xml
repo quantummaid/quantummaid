@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.41</version>
+        <version>1.0.42</version>
     </parent>
 
     <groupId>de.quantummaid.quantummaid.packagings</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.41</version>
+    <version>1.0.42</version>
     <packaging>pom</packaging>
 
     <modules>
