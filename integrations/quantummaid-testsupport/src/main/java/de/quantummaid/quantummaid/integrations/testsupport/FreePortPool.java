@@ -46,14 +46,14 @@ final class FreePortPool {
                 serverSocket.close();
                 return currentPort;
             } catch (final IOException ex) {
-                // next port
+                // try next port
             }
         }
     }
 
     private static InetAddress localhost() {
         try {
-            return InetAddress.getLocalHost();
+            return InetAddress.getByName("localhost");
         } catch (final UnknownHostException e) {
             throw new UnsupportedOperationException("This should never happen", e);
         }
