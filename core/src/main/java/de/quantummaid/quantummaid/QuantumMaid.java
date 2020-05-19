@@ -38,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 import static de.quantummaid.httpmaid.HttpMaid.STARTUP_TIME;
 import static de.quantummaid.quantummaid.EndpointCreator.pureJavaEndpointCreator;
+import static de.quantummaid.quantummaid.UniqueAccessManager.claim;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
 import static java.lang.Thread.currentThread;
@@ -61,6 +62,7 @@ public final class QuantumMaid implements AutoCloseable {
     }
 
     public QuantumMaid withHttpMaid(final HttpMaid httpMaid) {
+        claim(httpMaid);
         this.httpMaid = httpMaid;
         return this;
     }

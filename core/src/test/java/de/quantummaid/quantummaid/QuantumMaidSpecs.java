@@ -21,12 +21,15 @@
 
 package de.quantummaid.quantummaid;
 
+import de.quantummaid.httpmaid.HttpMaid;
 import org.junit.jupiter.api.Test;
 
 import static de.quantummaid.httpmaid.HttpMaid.anHttpMaid;
 import static de.quantummaid.quantummaid.PortUtils.assertPortIsClosed;
 import static de.quantummaid.quantummaid.PortUtils.waitForPortToBeAvailable;
 import static de.quantummaid.quantummaid.QuantumMaid.quantumMaid;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public final class QuantumMaidSpecs {
 
@@ -45,5 +48,23 @@ public final class QuantumMaidSpecs {
         quantumMaid.close();
         PortUtils.waitForPortToClose(port);
         assertPortIsClosed(port);
+    }
+
+    @Test
+    public void anHttpMaidInstanceCannotBeBeRegisteredToMoreThanOneQuantumMaidInstance() {
+        final HttpMaid httpMaid = anHttpMaid().build();
+        final QuantumMaid quantumMaid1 = quantumMaid().withHttpMaid(httpMaid);
+        assertThat(quantumMaid1, notNullValue());
+        QuantumMaid quantumMaid2 = null;
+        HttpMaidAlreadyRegisteredException exception = null;
+        try {
+            quantumMaid2 = quantumMaid().withHttpMaid(httpMaid);
+        } catch (final HttpMaidAlreadyRegisteredException e) {
+            exception = e;
+        }
+        assertThat(quantumMaid2, nullValue());
+        assertThat(exception, notNullValue());
+        assertThat(exception.getMessage(), is("HttpMaid instance has already been registered to a QuantumMaid instance. " +
+                "It cannot be registered to more than one QuantumMaid instance."));
     }
 }
