@@ -34,7 +34,7 @@ public final class UniqueAccessManager {
     }
 
     public static synchronized void claim(final HttpMaid httpMaid) {
-        final Boolean isBound = httpMaid.getOptionalMetaDatum(IS_BOUND)
+        final boolean isBound = httpMaid.getOptionalMetaDatum(IS_BOUND)
                 .orElse(false);
         if (isBound) {
             throw httpMaidAlreadyRegisteredException();

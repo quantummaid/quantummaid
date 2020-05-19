@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Testsupport uses only local ports.
 
 ## [1.0.39](https://search.maven.org/artifact/de.quantummaid.quantummaid/core/1.0.39/jar) - 2020-05-04
-### ADDED
+### Added
 - Add usability test documentation.
 ### Changed
 - Replaced logger with SLF4J.
