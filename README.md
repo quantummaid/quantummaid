@@ -11,7 +11,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.quantummaid.quantummaid/core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.quantummaid.quantummaid/core)
 [![Code Size](https://img.shields.io/github/languages/code-size/quantummaid/mapmaid)](https://github.com/quantummaid/quantummaid)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Slack](https://img.shields.io/badge/chat%20on-Slack-brightgreen)](https://join.slack.com/t/quantummaid/shared_invite/zt-cx5qd605-vG10I~WazfgH9WOnXMzl3Q)
+[![Slack](https://img.shields.io/badge/chat%20on-Slack-brightgreen)](https://quantummaid.de/community.html)
 [![Gitter](https://img.shields.io/badge/chat%20on-Gitter-brightgreen)](https://gitter.im/quantum-maid-framework/community)
 [![Twitter](https://img.shields.io/twitter/follow/quantummaid)](https://twitter.com/quantummaid)
 
@@ -39,7 +39,7 @@ You can find easy-to-follow and interesting tutorials [here](https://github.com/
 The QuantumMaid documentation can be found [here](https://quantummaid.de/docs.html).
 
 ## Get in touch
-Feel free to join us on [Slack](https://join.slack.com/t/quantummaid/shared_invite/zt-cx5qd605-vG10I~WazfgH9WOnXMzl3Q)
+Feel free to join us on [Slack](https://quantummaid.de/community.html)
 or [Gitter](https://gitter.im/quantum-maid-framework/community) to ask questions, give feedback or simply discuss software
 architecture with the team behind QuantumMaid. Also, don't forget to visit our [website](https://quantummaid.de) and follow
 us on [Twitter](https://twitter.com/quantummaid)!
