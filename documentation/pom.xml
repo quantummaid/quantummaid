@@ -31,7 +31,7 @@
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.66</version>
+            <version>0.9.68</version>
         </dependency>
         <!-- Showcase end httpmaidDependency -->
 
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>de.quantummaid.mapmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.61</version>
+            <version>0.9.64</version>
         </dependency>
         <!-- Showcase end mapmaidDependency -->
 
@@ -83,7 +83,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M4</version>
+                    <version>3.0.0-M5</version>
                 </plugin>
                 <!-- Showcase end surefire -->
             </plugins>
