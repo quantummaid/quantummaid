@@ -21,7 +21,6 @@
 
 package de.quantummaid.quantummaid.integrations.junit5;
 
-import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.quantummaid.QuantumMaid;
 import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
 
@@ -29,11 +28,8 @@ public final class ExternalProvider implements QuantumMaidProvider {
 
     @Override
     public QuantumMaid provide(final int port) {
-        final HttpMaid httpMaid = HttpMaid.anHttpMaid()
-                .get("/", (request, response) -> response.setBody("from external provider"))
-                .build();
         return QuantumMaid.quantumMaid()
-                .withHttpMaid(httpMaid)
+                .get("/", (request, response) -> response.setBody("from external provider"))
                 .withLocalHostEndpointOnPort(port);
     }
 }

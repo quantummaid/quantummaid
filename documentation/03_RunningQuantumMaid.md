@@ -30,7 +30,7 @@ a try-with-resources statement:
 <!---[CodeSnippet](tryWithResources)-->
 ```java
 try (QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
-        .withHttpMaid(httpMaid)
+        .get("/", (request, response) -> response.setBody("Hello World!"))
         .withLocalHostEndpointOnPort(port)) {
     quantumMaid.runAsynchronously();
     // do something

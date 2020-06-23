@@ -21,7 +21,12 @@
 
 package de.quantummaid.quantummaid;
 
+import de.quantummaid.httpmaid.HttpConfiguration;
 import de.quantummaid.httpmaid.HttpMaid;
+import de.quantummaid.httpmaid.HttpMaidBuilder;
+import de.quantummaid.httpmaid.PerRouteConfigurator;
+import de.quantummaid.httpmaid.chains.Configurator;
+import de.quantummaid.httpmaid.generator.builder.ConditionStage;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +42,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static de.quantummaid.httpmaid.HttpMaid.STARTUP_TIME;
+import static de.quantummaid.httpmaid.HttpMaid.anHttpMaid;
 import static de.quantummaid.quantummaid.EndpointCreator.pureJavaEndpointCreator;
 import static de.quantummaid.quantummaid.UniqueAccessManager.claim;
 import static java.lang.Runtime.getRuntime;
@@ -47,9 +53,10 @@ import static java.time.Duration.between;
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public final class QuantumMaid implements AutoCloseable {
+public final class QuantumMaid implements HttpConfiguration<QuantumMaid>, AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantumMaid.class);
 
+    private final HttpMaidBuilder httpMaidBuilder = anHttpMaid();
     private HttpMaid httpMaid;
     private final List<EndpointCreator> endpoints = new ArrayList<>(1);
     private final List<String> endpointUrls = new ArrayList<>(1);
@@ -61,6 +68,22 @@ public final class QuantumMaid implements AutoCloseable {
         return new QuantumMaid();
     }
 
+    @Override
+    public ConditionStage<QuantumMaid> serving(final Object handler,
+                                               final PerRouteConfigurator... perRouteConfigurators) {
+        return condition -> {
+            httpMaidBuilder.serving(handler, perRouteConfigurators).when(condition);
+            return this;
+        };
+    }
+
+    @Override
+    public QuantumMaid configured(final Configurator configurator) {
+        httpMaidBuilder.configured(configurator);
+        return this;
+    }
+
+    @Deprecated
     public QuantumMaid withHttpMaid(final HttpMaid httpMaid) {
         claim(httpMaid);
         this.httpMaid = httpMaid;
@@ -85,7 +108,7 @@ public final class QuantumMaid implements AutoCloseable {
     }
 
     private void run(final CountDownLatch initialization) {
-        try (HttpMaid managedHttpMaid = this.httpMaid) {
+        try (HttpMaid managedHttpMaid = httpMaid()) {
             final Instant begin = Instant.now();
             this.endpoints.forEach(endpoint -> endpoint.createEndpoint(managedHttpMaid));
             final Instant end = Instant.now();
@@ -96,6 +119,13 @@ public final class QuantumMaid implements AutoCloseable {
             awaitCountDownLatch(terminationTrigger);
         }
         termination.countDown();
+    }
+
+    public HttpMaid httpMaid() {
+        if (httpMaid == null) {
+            httpMaid = httpMaidBuilder.build();
+        }
+        return httpMaid;
     }
 
     @Override

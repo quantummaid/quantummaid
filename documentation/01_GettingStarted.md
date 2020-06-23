@@ -8,7 +8,7 @@ To run an application with the QuantumMaid framework, you need to add the follow
 <dependency>
     <groupId>de.quantummaid.quantummaid.packagings</groupId>
     <artifactId>quantummaid-essentials</artifactId>
-    <version>1.0.50</version>
+    <version>1.0.51</version>
 </dependency>
 ```
 
@@ -18,11 +18,8 @@ You can configure a QuantumMaid application like this:
 <!---[CodeSnippet](configuration)-->
 ```java
 final int port = 8080;
-final HttpMaid httpMaid = HttpMaid.anHttpMaid()
-        .get("/", (request, response) -> response.setBody("Hello World!"))
-        .build();
 final QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
-        .withHttpMaid(httpMaid)
+        .get("/", (request, response) -> response.setBody("Hello World!"))
         .withLocalHostEndpointOnPort(port);
 quantumMaid.runAsynchronously();
 ```

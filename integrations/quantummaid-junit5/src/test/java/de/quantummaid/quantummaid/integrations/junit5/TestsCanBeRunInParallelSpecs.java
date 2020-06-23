@@ -21,7 +21,6 @@
 
 package de.quantummaid.quantummaid.integrations.junit5;
 
-import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.client.HttpMaidClient;
 import de.quantummaid.quantummaid.QuantumMaid;
 import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
@@ -43,18 +42,15 @@ public final class TestsCanBeRunInParallelSpecs implements QuantumMaidProvider {
     @Override
     public QuantumMaid provide(final int port) {
         final AtomicBoolean hasAlreadyBeenCalled = new AtomicBoolean(false);
-        final HttpMaid httpMaid = HttpMaid.anHttpMaid()
+        return QuantumMaid.quantumMaid()
                 .get("/", (request, response) -> {
                     final boolean alreadySet = hasAlreadyBeenCalled.getAndSet(true);
-                    if(!alreadySet) {
+                    if (!alreadySet) {
                         response.setBody("first attempt");
                     } else {
                         response.setBody("not first attempt");
                     }
                 })
-                .build();
-        return QuantumMaid.quantumMaid()
-                .withHttpMaid(httpMaid)
                 .withLocalHostEndpointOnPort(port);
     }
 

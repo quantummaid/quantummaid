@@ -21,7 +21,6 @@
 
 package de.quantummaid.quantummaid.integrations.restassured;
 
-import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.quantummaid.QuantumMaid;
 import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
 import de.quantummaid.quantummaid.integrations.testsupport.TestSupport;
@@ -39,11 +38,8 @@ public final class RestAssuredWithTestSupportOnlySpecs implements QuantumMaidPro
 
     @Override
     public QuantumMaid provide(final int port) {
-        final HttpMaid httpMaid = HttpMaid.anHttpMaid()
-                .get("/", (request, response) -> response.setBody("foo"))
-                .build();
         return QuantumMaid.quantumMaid()
-                .withHttpMaid(httpMaid)
+                .get("/", (request, response) -> response.setBody("foo"))
                 .withLocalHostEndpointOnPort(port);
     }
 
