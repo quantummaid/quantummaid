@@ -5,11 +5,11 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.50</version>
+        <version>1.0.51</version>
     </parent>
 
     <artifactId>quantummaid-bom</artifactId>
-    <version>1.0.50</version>
+    <version>1.0.51</version>
 
     <properties>
         <dependency-update-file-checksum>8f6ea182969b0fcce9fae1bb13579713</dependency-update-file-checksum>

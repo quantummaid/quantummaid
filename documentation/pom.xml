@@ -5,11 +5,11 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.50</version>
+        <version>1.0.51</version>
     </parent>
 
     <artifactId>documentation</artifactId>
-    <version>1.0.50</version>
+    <version>1.0.51</version>
 
     <properties>
         <checkstyle.suppressions.location>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid</groupId>
             <artifactId>core</artifactId>
-            <version>1.0.50</version>
+            <version>1.0.51</version>
         </dependency>
         <!-- Showcase end quantummaidDependency -->
 
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-essentials</artifactId>
-            <version>1.0.50</version>
+            <version>1.0.51</version>
         </dependency>
         <!-- Showcase end dependency -->
 
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-test-essentials</artifactId>
-            <version>1.0.50</version>
+            <version>1.0.51</version>
             <scope>test</scope>
         </dependency>
         <!-- Showcase end testdependency -->

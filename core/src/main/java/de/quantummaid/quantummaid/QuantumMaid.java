@@ -108,7 +108,7 @@ public final class QuantumMaid implements HttpConfiguration<QuantumMaid>, AutoCl
     }
 
     private void run(final CountDownLatch initialization) {
-        try (HttpMaid managedHttpMaid = buildHttpMaid()) {
+        try (HttpMaid managedHttpMaid = httpMaid()) {
             final Instant begin = Instant.now();
             this.endpoints.forEach(endpoint -> endpoint.createEndpoint(managedHttpMaid));
             final Instant end = Instant.now();
@@ -121,7 +121,7 @@ public final class QuantumMaid implements HttpConfiguration<QuantumMaid>, AutoCl
         termination.countDown();
     }
 
-    private HttpMaid buildHttpMaid() {
+    public HttpMaid httpMaid() {
         if (httpMaid == null) {
             httpMaid = httpMaidBuilder.build();
         }
