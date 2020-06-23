@@ -22,9 +22,16 @@
 package de.quantummaid.quantummaid;
 
 import de.quantummaid.httpmaid.HttpMaid;
+import de.quantummaid.httpmaid.client.HttpMaidClient;
+import de.quantummaid.httpmaid.client.SimpleHttpResponseObject;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static de.quantummaid.httpmaid.HttpMaid.anHttpMaid;
+import static de.quantummaid.httpmaid.client.HttpClientRequest.aGetRequestToThePath;
+import static de.quantummaid.httpmaid.client.HttpMaidClient.aHttpMaidClientBypassingRequestsDirectlyTo;
+import static de.quantummaid.httpmaid.exceptions.ExceptionConfigurators.toMapExceptionsOfType;
 import static de.quantummaid.quantummaid.PortUtils.assertPortIsClosed;
 import static de.quantummaid.quantummaid.PortUtils.waitForPortToBeAvailable;
 import static de.quantummaid.quantummaid.QuantumMaid.quantumMaid;
@@ -32,6 +39,41 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public final class QuantumMaidSpecs {
+
+    @Test
+    public void quantumMaidCanDisableAutoloadingOnHttpMaid() {
+        final QuantumMaid quantumMaid1 = quantumMaid()
+                .get("/", (request, response) -> response.setBody(Map.of("foo", "bar")));
+        final HttpMaid httpMaid1 = quantumMaid1.httpMaid();
+        final HttpMaidClient client1 = aHttpMaidClientBypassingRequestsDirectlyTo(httpMaid1)
+                .build();
+        final SimpleHttpResponseObject response1 = client1.issue(aGetRequestToThePath("/"));
+        assertThat(response1.getBody(), is("{\"foo\":\"bar\"}"));
+
+        final QuantumMaid quantumMaid2 = quantumMaid()
+                .disableAutoloading()
+                .get("/", (request, response) -> response.setBody(Map.of("foo", "bar")));
+        final HttpMaid httpMaid2 = quantumMaid2.httpMaid();
+        final HttpMaidClient client2 = aHttpMaidClientBypassingRequestsDirectlyTo(httpMaid2)
+                .build();
+        final SimpleHttpResponseObject response2 = client2.issue(aGetRequestToThePath("/"));
+        assertThat(response2.getBody(), is(""));
+    }
+
+    @Test
+    public void quantumMaidCanConfigureHttpMaid() {
+        final QuantumMaid quantumMaid = quantumMaid()
+                .get("/", (request, response) -> {
+                    throw new UnsupportedOperationException();
+                })
+                .configured(toMapExceptionsOfType(UnsupportedOperationException.class,
+                        (exception, response) -> response.setBody("foo")));
+        final HttpMaid httpMaid = quantumMaid.httpMaid();
+        final HttpMaidClient client1 = aHttpMaidClientBypassingRequestsDirectlyTo(httpMaid)
+                .build();
+        final SimpleHttpResponseObject response1 = client1.issue(aGetRequestToThePath("/"));
+        assertThat(response1.getBody(), is("foo"));
+    }
 
     @Test
     public void quantumMaidClosesHttpMaidOnExit() {
