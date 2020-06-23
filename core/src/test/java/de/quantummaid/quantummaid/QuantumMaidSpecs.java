@@ -88,7 +88,7 @@ public final class QuantumMaidSpecs {
         assertPortIsClosed(port);
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("removal")
     @Test
     public void anHttpMaidInstanceCannotBeBeRegisteredToMoreThanOneQuantumMaidInstance() {
         final HttpMaid httpMaid = anHttpMaid().build();
