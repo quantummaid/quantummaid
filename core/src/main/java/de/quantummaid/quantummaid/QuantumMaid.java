@@ -27,6 +27,9 @@ import de.quantummaid.httpmaid.HttpMaidBuilder;
 import de.quantummaid.httpmaid.PerRouteConfigurator;
 import de.quantummaid.httpmaid.chains.Configurator;
 import de.quantummaid.httpmaid.generator.builder.ConditionStage;
+import de.quantummaid.httpmaid.mapmaid.MapMaidModule;
+import de.quantummaid.httpmaid.usecases.UseCasesModule;
+import de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
@@ -43,8 +46,12 @@ import java.util.concurrent.TimeUnit;
 
 import static de.quantummaid.httpmaid.HttpMaid.STARTUP_TIME;
 import static de.quantummaid.httpmaid.HttpMaid.anHttpMaid;
+import static de.quantummaid.httpmaid.chains.Configurator.toUseModules;
+import static de.quantummaid.httpmaid.mapmaid.MapMaidModule.mapMaidModule;
+import static de.quantummaid.httpmaid.usecases.UseCasesModule.useCasesModule;
 import static de.quantummaid.quantummaid.EndpointCreator.pureJavaEndpointCreator;
 import static de.quantummaid.quantummaid.UniqueAccessManager.claim;
+import static de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory.injectMaidInstantiatorFactory;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
 import static java.lang.Thread.currentThread;
@@ -56,7 +63,7 @@ import static java.time.Duration.between;
 public final class QuantumMaid implements HttpConfiguration<QuantumMaid>, AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantumMaid.class);
 
-    private final HttpMaidBuilder httpMaidBuilder = anHttpMaid();
+    private final HttpMaidBuilder httpMaidBuilder;
     private HttpMaid httpMaid;
     private final List<EndpointCreator> endpoints = new ArrayList<>(1);
     private final List<String> endpointUrls = new ArrayList<>(1);
@@ -65,7 +72,14 @@ public final class QuantumMaid implements HttpConfiguration<QuantumMaid>, AutoCl
     private final Thread shutdownHook = new Thread(this::close);
 
     public static QuantumMaid quantumMaid() {
-        return new QuantumMaid();
+        final UseCasesModule useCasesModule = useCasesModule();
+        final InjectMaidInstantiatorFactory instantiatorFactory = injectMaidInstantiatorFactory();
+        useCasesModule.setUseCaseInstantiatorFactory(instantiatorFactory);
+        final MapMaidModule mapMaidModule = mapMaidModule();
+        final HttpMaidBuilder httpMaidBuilder = anHttpMaid()
+                .configured(toUseModules(useCasesModule, mapMaidModule))
+                .disableAutodectectionOfModules();
+        return new QuantumMaid(httpMaidBuilder);
     }
 
     @Override
@@ -80,11 +94,6 @@ public final class QuantumMaid implements HttpConfiguration<QuantumMaid>, AutoCl
     @Override
     public QuantumMaid configured(final Configurator configurator) {
         httpMaidBuilder.configured(configurator);
-        return this;
-    }
-
-    public QuantumMaid disableAutoloading() {
-        httpMaidBuilder.disableAutodectectionOfModules();
         return this;
     }
 
