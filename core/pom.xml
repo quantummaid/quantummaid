@@ -5,11 +5,11 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.51</version>
+        <version>1.0.52</version>
     </parent>
 
     <artifactId>core</artifactId>
-    <version>1.0.51</version>
+    <version>1.0.52</version>
 
     <properties>
         <checkstyle.suppressions.location>
@@ -29,6 +29,21 @@
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
             <version>${httpmaid-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.quantummaid.httpmaid.integrations</groupId>
+            <artifactId>httpmaid-usecases</artifactId>
+            <version>${httpmaid-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.quantummaid.httpmaid.integrations</groupId>
+            <artifactId>httpmaid-mapmaid</artifactId>
+            <version>${httpmaid-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.quantummaid.injectmaid</groupId>
+            <artifactId>injectmaid</artifactId>
+            <version>${injectmaid-version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -51,12 +66,6 @@
         <dependency>
             <groupId>de.quantummaid.httpmaid.integrations</groupId>
             <artifactId>httpmaid-client</artifactId>
-            <version>${httpmaid-version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.quantummaid.httpmaid.integrations</groupId>
-            <artifactId>httpmaid-mapmaid</artifactId>
             <version>${httpmaid-version}</version>
             <scope>test</scope>
         </dependency>

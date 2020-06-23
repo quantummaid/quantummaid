@@ -5,11 +5,11 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.51</version>
+        <version>1.0.52</version>
     </parent>
 
     <artifactId>quantummaid-bom</artifactId>
-    <version>1.0.51</version>
+    <version>1.0.52</version>
 
     <properties>
         <dependency-update-file-checksum>8f6ea182969b0fcce9fae1bb13579713</dependency-update-file-checksum>
@@ -61,6 +61,11 @@
                 <version>${mapmaid-version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.injectmaid</groupId>
+                <artifactId>injectmaid</artifactId>
+                <version>${injectmaid-version}</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.eventmaid</groupId>

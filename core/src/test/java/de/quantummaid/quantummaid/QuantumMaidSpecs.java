@@ -24,9 +24,8 @@ package de.quantummaid.quantummaid;
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.client.HttpMaidClient;
 import de.quantummaid.httpmaid.client.SimpleHttpResponseObject;
+import de.quantummaid.quantummaid.usecases.ComplexUseCase;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
 
 import static de.quantummaid.httpmaid.HttpMaid.anHttpMaid;
 import static de.quantummaid.httpmaid.client.HttpClientRequest.aGetRequestToThePath;
@@ -41,23 +40,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public final class QuantumMaidSpecs {
 
     @Test
-    public void quantumMaidCanDisableAutoloadingOnHttpMaid() {
-        final QuantumMaid quantumMaid1 = quantumMaid()
-                .get("/", (request, response) -> response.setBody(Map.of("foo", "bar")));
-        final HttpMaid httpMaid1 = quantumMaid1.httpMaid();
-        final HttpMaidClient client1 = aHttpMaidClientBypassingRequestsDirectlyTo(httpMaid1)
+    public void quantumMaidCanInstantiateComplexUseCases() {
+        final QuantumMaid quantumMaid = quantumMaid()
+                .get("/", ComplexUseCase.class);
+        final HttpMaid httpMaid = quantumMaid.httpMaid();
+        final HttpMaidClient client = aHttpMaidClientBypassingRequestsDirectlyTo(httpMaid)
                 .build();
-        final SimpleHttpResponseObject response1 = client1.issue(aGetRequestToThePath("/"));
-        assertThat(response1.getBody(), is("{\"foo\":\"bar\"}"));
-
-        final QuantumMaid quantumMaid2 = quantumMaid()
-                .disableAutoloading()
-                .get("/", (request, response) -> response.setBody(Map.of("foo", "bar")));
-        final HttpMaid httpMaid2 = quantumMaid2.httpMaid();
-        final HttpMaidClient client2 = aHttpMaidClientBypassingRequestsDirectlyTo(httpMaid2)
-                .build();
-        final SimpleHttpResponseObject response2 = client2.issue(aGetRequestToThePath("/"));
-        assertThat(response2.getBody(), is(""));
+        final SimpleHttpResponseObject response = client.issue(aGetRequestToThePath("/"));
+        assertThat(response.getBody(), is("\"abc\""));
     }
 
     @Test
@@ -69,10 +59,10 @@ public final class QuantumMaidSpecs {
                 .configured(toMapExceptionsOfType(UnsupportedOperationException.class,
                         (exception, response) -> response.setBody("foo")));
         final HttpMaid httpMaid = quantumMaid.httpMaid();
-        final HttpMaidClient client1 = aHttpMaidClientBypassingRequestsDirectlyTo(httpMaid)
+        final HttpMaidClient client = aHttpMaidClientBypassingRequestsDirectlyTo(httpMaid)
                 .build();
-        final SimpleHttpResponseObject response1 = client1.issue(aGetRequestToThePath("/"));
-        assertThat(response1.getBody(), is("foo"));
+        final SimpleHttpResponseObject response = client.issue(aGetRequestToThePath("/"));
+        assertThat(response.getBody(), is("foo"));
     }
 
     @Test
