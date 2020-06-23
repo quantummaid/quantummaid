@@ -92,7 +92,7 @@ public final class QuantumMaid implements HttpConfiguration<QuantumMaid>, AutoCl
      * @deprecated Will be removed soon. Configure HTTP aspects directly on QuantumMaid instance instead.
      */
     @SuppressWarnings("java:S1133")
-    @Deprecated(since="1.0.51", forRemoval=true)
+    @Deprecated(since = "1.0.51", forRemoval = true)
     public QuantumMaid withHttpMaid(final HttpMaid httpMaid) {
         claim(httpMaid);
         this.httpMaid = httpMaid;
