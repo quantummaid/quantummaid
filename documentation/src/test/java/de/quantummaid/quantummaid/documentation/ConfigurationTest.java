@@ -21,7 +21,6 @@
 
 package de.quantummaid.quantummaid.documentation;
 
-import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.client.HttpMaidClient;
 import de.quantummaid.quantummaid.QuantumMaid;
 import org.junit.jupiter.api.Test;
@@ -43,11 +42,8 @@ public final class ConfigurationTest {
     public void configuration() {
         //Showcase start configuration
         final int port = 8080;
-        final HttpMaid httpMaid = HttpMaid.anHttpMaid()
-                .get("/", (request, response) -> response.setBody("Hello World!"))
-                .build();
         final QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
-                .withHttpMaid(httpMaid)
+                .get("/", (request, response) -> response.setBody("Hello World!"))
                 .withLocalHostEndpointOnPort(port);
         quantumMaid.runAsynchronously();
         //Showcase end configuration
@@ -78,11 +74,8 @@ public final class ConfigurationTest {
     @Test
     public void runSynchronously() {
         final int port = freePort();
-        final HttpMaid httpMaid = HttpMaid.anHttpMaid()
-                .get("/", (request, response) -> response.setBody("Hello World!"))
-                .build();
         final QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
-                .withHttpMaid(httpMaid)
+                .get("/", (request, response) -> response.setBody("Hello World!"))
                 .withLocalHostEndpointOnPort(port);
 
         final Thread thread = new Thread(() -> {
@@ -105,11 +98,8 @@ public final class ConfigurationTest {
     @Test
     public void runAsynchronously() {
         final int port = freePort();
-        final HttpMaid httpMaid = HttpMaid.anHttpMaid()
-                .get("/", (request, response) -> response.setBody("Hello World!"))
-                .build();
         final QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
-                .withHttpMaid(httpMaid)
+                .get("/", (request, response) -> response.setBody("Hello World!"))
                 .withLocalHostEndpointOnPort(port);
         //Showcase start runAsynchronously
         quantumMaid.runAsynchronously();
@@ -138,12 +128,9 @@ public final class ConfigurationTest {
     @Test
     public void tryWithResources() {
         final int port = freePort();
-        final HttpMaid httpMaid = HttpMaid.anHttpMaid()
-                .get("/", (request, response) -> response.setBody("Hello World!"))
-                .build();
         //Showcase start tryWithResources
         try (QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
-                .withHttpMaid(httpMaid)
+                .get("/", (request, response) -> response.setBody("Hello World!"))
                 .withLocalHostEndpointOnPort(port)) {
             quantumMaid.runAsynchronously();
             // do something

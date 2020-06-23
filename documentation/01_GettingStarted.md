@@ -18,11 +18,8 @@ You can configure a QuantumMaid application like this:
 <!---[CodeSnippet](configuration)-->
 ```java
 final int port = 8080;
-final HttpMaid httpMaid = HttpMaid.anHttpMaid()
-        .get("/", (request, response) -> response.setBody("Hello World!"))
-        .build();
 final QuantumMaid quantumMaid = QuantumMaid.quantumMaid()
-        .withHttpMaid(httpMaid)
+        .get("/", (request, response) -> response.setBody("Hello World!"))
         .withLocalHostEndpointOnPort(port);
 quantumMaid.runAsynchronously();
 ```

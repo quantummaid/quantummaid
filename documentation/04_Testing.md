@@ -38,7 +38,6 @@ To give your testsuite a way to instantiate your QuantumMaid application, implem
 `QuantumMaidProvider` interface:
 <!---[CodeSnippet](testProvider)-->
 ```java
-import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.quantummaid.QuantumMaid;
 import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
 
@@ -46,11 +45,8 @@ public final class MyQuantumMaidProvider implements QuantumMaidProvider {
 
     @Override
     public QuantumMaid provide(final int port) {
-        final HttpMaid httpMaid = HttpMaid.anHttpMaid()
-                .get("/", (request, response) -> response.setBody("Hello World!"))
-                .build();
         return QuantumMaid.quantumMaid()
-                .withHttpMaid(httpMaid)
+                .get("/", (request, response) -> response.setBody("Hello World!"))
                 .withLocalHostEndpointOnPort(port);
     }
 }
@@ -76,7 +72,6 @@ public final class MyTest {
 Alternatively, you can implement the `QuantumMaidProvider` interface in the test class itself and omit the parameter in the annotation:
 <!---[CodeSnippet](inlinedTest)-->
 ```java
-import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.quantummaid.QuantumMaid;
 import de.quantummaid.quantummaid.integrations.junit5.QuantumMaidTest;
 import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
@@ -87,11 +82,8 @@ public final class MyInlinedTest implements QuantumMaidProvider {
 
     @Override
     public QuantumMaid provide(final int port) {
-        final HttpMaid httpMaid = HttpMaid.anHttpMaid()
-                .get("/", (request, response) -> response.setBody("Hello World!"))
-                .build();
         return QuantumMaid.quantumMaid()
-                .withHttpMaid(httpMaid)
+                .get("/", (request, response) -> response.setBody("Hello World!"))
                 .withLocalHostEndpointOnPort(port);
     }
 

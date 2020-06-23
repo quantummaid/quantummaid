@@ -37,11 +37,7 @@ public final class QuantumMaidSpecs {
     public void quantumMaidClosesHttpMaidOnExit() {
         final int port = 1337;
         final QuantumMaid quantumMaid = quantumMaid()
-                .withHttpMaid(
-                        anHttpMaid()
-                                .get("/", (request, response) -> response.setBody("I'm up"))
-                                .build()
-                )
+                .get("/", (request, response) -> response.setBody("I'm up"))
                 .withLocalHostEndpointOnPort(port);
         quantumMaid.runAsynchronously();
         waitForPortToBeAvailable(port);
@@ -50,6 +46,7 @@ public final class QuantumMaidSpecs {
         assertPortIsClosed(port);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void anHttpMaidInstanceCannotBeBeRegisteredToMoreThanOneQuantumMaidInstance() {
         final HttpMaid httpMaid = anHttpMaid().build();

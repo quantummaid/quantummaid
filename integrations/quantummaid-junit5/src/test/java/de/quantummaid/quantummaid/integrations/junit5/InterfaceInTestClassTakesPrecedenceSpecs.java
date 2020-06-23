@@ -21,7 +21,6 @@
 
 package de.quantummaid.quantummaid.integrations.junit5;
 
-import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.client.HttpMaidClient;
 import de.quantummaid.quantummaid.QuantumMaid;
 import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
@@ -37,11 +36,8 @@ public final class InterfaceInTestClassTakesPrecedenceSpecs implements QuantumMa
 
     @Override
     public QuantumMaid provide(final int port) {
-        final HttpMaid httpMaid = HttpMaid.anHttpMaid()
-                .get("/", (request, response) -> response.setBody("from internal provider"))
-                .build();
         return QuantumMaid.quantumMaid()
-                .withHttpMaid(httpMaid)
+                .get("/", (request, response) -> response.setBody("from internal provider"))
                 .withLocalHostEndpointOnPort(port);
     }
 
