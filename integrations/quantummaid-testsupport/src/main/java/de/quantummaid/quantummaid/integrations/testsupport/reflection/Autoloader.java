@@ -21,6 +21,8 @@
 
 package de.quantummaid.quantummaid.integrations.testsupport.reflection;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Optional;
 
 import static de.quantummaid.httpmaid.util.Validators.validateNotNull;
@@ -29,6 +31,8 @@ import static java.lang.Thread.currentThread;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
+@SuppressWarnings("java:S2658")
+@Slf4j
 public final class Autoloader {
 
     private Autoloader() {
@@ -50,6 +54,7 @@ public final class Autoloader {
                     (Class<? extends T>) classLoader.loadClass(fullyQualifiedClassName);
             return of(clazz);
         } catch (final ClassNotFoundException e) {
+            log.trace("Class {} could not been autoloaded", fullyQualifiedClassName, e);
             return empty();
         }
     }

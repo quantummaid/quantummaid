@@ -21,11 +21,14 @@
 
 package de.quantummaid.quantummaid.integrations.testsupport;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.UnknownHostException;
 
+@Slf4j
 final class FreePortPool {
     private static final int START_PORT = 9000;
     private static final int HIGHEST_PORT = 65535;
@@ -46,6 +49,7 @@ final class FreePortPool {
                 serverSocket.close();
                 return currentPort;
             } catch (final IOException ex) {
+                log.trace("Port {} has not been free", currentPort, ex);
                 // try next port
             }
         }

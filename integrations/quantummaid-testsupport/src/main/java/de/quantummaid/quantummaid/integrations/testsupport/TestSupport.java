@@ -58,16 +58,12 @@ public final class TestSupport {
     }
 
     public void setExtensions(final List<TestExtension> extensions) {
-        setExtensions(extensions, false);
+        this.extensions.addAll(extensions);
     }
 
-    public void setExtensions(final List<TestExtension> extensions,
-                              final boolean autoload) {
-        this.extensions.addAll(extensions);
-        if (autoload) {
-            final List<TestExtension> autoloadedTestExtensions = autoloadTestExtensions();
-            this.extensions.addAll(autoloadedTestExtensions);
-        }
+    public void autoloadExtensions() {
+        final List<TestExtension> autoloadedTestExtensions = autoloadTestExtensions();
+        this.extensions.addAll(autoloadedTestExtensions);
     }
 
     public TestContext testContext() {
@@ -81,7 +77,8 @@ public final class TestSupport {
         final QuantumMaid quantumMaid = provider.provide(port);
         quantumMaid.runAsynchronously();
         this.testContext.set(TestContext.testContext(quantumMaid, port, host));
-        this.extensions.forEach(extension -> extension.afterInitialization(TestContext.testContext(quantumMaid, port, host)));
+        this.extensions.forEach(extension ->
+                extension.afterInitialization(TestContext.testContext(quantumMaid, port, host)));
     }
 
     public void close() {
@@ -92,7 +89,7 @@ public final class TestSupport {
         testContext.remove();
     }
 
-    public boolean supportsParameter(final String name, final Class<?> type) {
+    public static boolean supportsParameter(final String name, final Class<?> type) {
         return PARAMETERS.supports(name, type);
     }
 

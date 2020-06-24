@@ -38,7 +38,9 @@ public final class Parameter {
     private final Function<TestContext, Object> provider;
 
     @SuppressWarnings("unchecked")
-    public static <T> Parameter parameter(final String name, final Class<T> type, final Function<TestContext, T> provider) {
+    public static <T> Parameter parameter(final String name,
+                                          final Class<T> type,
+                                          final Function<TestContext, T> provider) {
         return new Parameter(name, type, (Function<TestContext, Object>) provider);
     }
 

@@ -25,6 +25,7 @@ import de.quantummaid.httpmaid.HttpMaid;
 
 import static de.quantummaid.httpmaid.endpoint.purejavaendpoint.PureJavaEndpoint.pureJavaEndpointFor;
 
+@FunctionalInterface
 public interface EndpointCreator {
 
     static EndpointCreator pureJavaEndpointCreator(final int port) {

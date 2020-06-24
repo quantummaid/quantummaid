@@ -23,7 +23,6 @@ package de.quantummaid.quantummaid.integrations.testsupport;
 
 import org.junit.jupiter.api.Test;
 
-import static de.quantummaid.quantummaid.integrations.testsupport.TestSupport.testSupport;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -31,15 +30,13 @@ public final class ParameterResolutionSpecs {
 
     @Test
     public void parameterWithUnknownNameIsNotSupported() {
-        final TestSupport testSupport = testSupport();
-        final boolean supported = testSupport.supportsParameter("foo", String.class);
+        final boolean supported = TestSupport.supportsParameter("foo", String.class);
         assertThat(supported, is(false));
     }
 
     @Test
     public void parameterWithUnknownTypeIsNotSupported() {
-        final TestSupport testSupport = testSupport();
-        final boolean supported = testSupport.supportsParameter("port", Boolean.class);
+        final boolean supported = TestSupport.supportsParameter("port", Boolean.class);
         assertThat(supported, is(false));
     }
 }
