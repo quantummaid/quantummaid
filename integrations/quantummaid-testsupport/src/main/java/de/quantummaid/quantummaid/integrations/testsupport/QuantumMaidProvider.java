@@ -23,6 +23,7 @@ package de.quantummaid.quantummaid.integrations.testsupport;
 
 import de.quantummaid.quantummaid.QuantumMaid;
 
+@FunctionalInterface
 public interface QuantumMaidProvider {
 
     QuantumMaid provide(int port);

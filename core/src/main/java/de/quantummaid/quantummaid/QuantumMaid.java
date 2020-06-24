@@ -156,7 +156,7 @@ public final class QuantumMaid implements HttpConfiguration<QuantumMaid>, AutoCl
     }
 
     private void renderSplash(final Duration endpointStartupTime) {
-        LOGGER.info("\n" + Logo.LOGO + "\n");
+        LOGGER.info("\n" + Logo.LOGO_TEXT + "\n");
         final Duration httpMaidStartUpTime = httpMaid.getMetaDatum(STARTUP_TIME);
         final long httpMaidMilliseconds = TimeUnit.MILLISECONDS.convert(httpMaidStartUpTime);
         final long endpointsMilliseconds = TimeUnit.MILLISECONDS.convert(endpointStartupTime);

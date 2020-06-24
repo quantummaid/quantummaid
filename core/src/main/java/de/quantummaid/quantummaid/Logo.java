@@ -22,7 +22,7 @@
 package de.quantummaid.quantummaid;
 
 public final class Logo {
-    public static final String LOGO = "" +
+    public static final String LOGO_TEXT = "" +
             "   ____                    _                   __  __       _     _ \n" +
             "  / __ \\                  | |                 |  \\/  |     (_)   | |\n" +
             " | |  | |_   _  __ _ _ __ | |_ _   _ _ __ ___ | \\  / | __ _ _  __| |\n" +

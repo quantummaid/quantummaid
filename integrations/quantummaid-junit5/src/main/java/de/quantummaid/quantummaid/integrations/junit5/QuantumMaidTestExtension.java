@@ -25,18 +25,20 @@ import de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidProvider;
 import de.quantummaid.quantummaid.integrations.testsupport.TestExtension;
 import de.quantummaid.quantummaid.integrations.testsupport.TestSupport;
 import de.quantummaid.quantummaid.integrations.testsupport.reflection.ZeroArgumentConstructorInstantiator;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.extension.*;
 
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 
-import static de.quantummaid.quantummaid.integrations.testsupport.reflection.ZeroArgumentConstructorInstantiator.instantiate;
 import static de.quantummaid.quantummaid.integrations.testsupport.QuantumMaidTestException.quantumMaidTestException;
 import static de.quantummaid.quantummaid.integrations.testsupport.TestSupport.testSupport;
+import static de.quantummaid.quantummaid.integrations.testsupport.reflection.ZeroArgumentConstructorInstantiator.instantiate;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
+@RequiredArgsConstructor
 public final class QuantumMaidTestExtension implements
         BeforeAllCallback,
         BeforeEachCallback,
@@ -51,8 +53,11 @@ public final class QuantumMaidTestExtension implements
         final List<TestExtension> extensions = Arrays.stream(annotation.extensions())
                 .map(ZeroArgumentConstructorInstantiator::instantiate)
                 .collect(toList());
+        testSupport.setExtensions(extensions);
         final boolean autoloadExtensions = annotation.autoloadExtensions();
-        testSupport.setExtensions(extensions, autoloadExtensions);
+        if (autoloadExtensions) {
+            testSupport.autoloadExtensions();
+        }
     }
 
     @Override
@@ -71,7 +76,7 @@ public final class QuantumMaidTestExtension implements
                                      final ExtensionContext extensionContext) {
         final String name = name(parameterContext);
         final Class<?> type = type(parameterContext);
-        return testSupport.supportsParameter(name, type);
+        return TestSupport.supportsParameter(name, type);
     }
 
     @Override
@@ -100,7 +105,8 @@ public final class QuantumMaidTestExtension implements
                 .orElseThrow(() -> quantumMaidTestException("test class missing"));
         final QuantumMaidTest[] annotationsByType = testClass.getAnnotationsByType(QuantumMaidTest.class);
         if (annotationsByType.length > 1) {
-            throw quantumMaidTestException(format("multiple occurrences of annotation %s", QuantumMaidTest.class.getSimpleName()));
+            throw quantumMaidTestException(format(
+                    "multiple occurrences of annotation %s", QuantumMaidTest.class.getSimpleName()));
         }
         return annotationsByType[0];
     }

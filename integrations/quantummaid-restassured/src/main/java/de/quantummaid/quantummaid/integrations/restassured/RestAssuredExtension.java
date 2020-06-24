@@ -25,10 +25,11 @@ import de.quantummaid.quantummaid.integrations.testsupport.TestContext;
 import de.quantummaid.quantummaid.integrations.testsupport.TestExtension;
 import io.restassured.RestAssured;
 
+@SuppressWarnings("java:S2696")
 public final class RestAssuredExtension implements TestExtension {
 
     @Override
     public void afterInitialization(final TestContext testContext) {
-        RestAssured.baseURI = testContext.url(); // NOSONAR
+        RestAssured.baseURI = testContext.url();
     }
 }

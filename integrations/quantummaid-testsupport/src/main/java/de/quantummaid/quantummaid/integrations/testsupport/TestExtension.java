@@ -21,6 +21,7 @@
 
 package de.quantummaid.quantummaid.integrations.testsupport;
 
+@FunctionalInterface
 public interface TestExtension {
 
     void afterInitialization(TestContext testContext);
