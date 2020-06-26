@@ -5,11 +5,11 @@
     <parent>
         <groupId>de.quantummaid.quantummaid.integrations</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.54</version>
+        <version>1.0.55</version>
     </parent>
 
     <artifactId>quantummaid-testsupport</artifactId>
-    <version>1.0.54</version>
+    <version>1.0.55</version>
 
     <properties>
         <sonar.coverage.jacoco.xmlReportPaths>../../coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
