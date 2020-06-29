@@ -5,11 +5,10 @@
     <parent>
         <groupId>de.quantummaid.quantummaid.integrations</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.56</version>
+        <version>1.0.57</version>
     </parent>
 
     <artifactId>quantummaid-restassured</artifactId>
-    <version>1.0.56</version>
 
     <properties>
         <checkstyle.suppressions.location>
@@ -31,12 +30,12 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid</groupId>
             <artifactId>core</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.quantummaid.integrations</groupId>
             <artifactId>quantummaid-testsupport</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.rest-assured</groupId>
@@ -46,7 +45,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid.integrations</groupId>
             <artifactId>quantummaid-junit5</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -5,11 +5,10 @@
     <parent>
         <groupId>de.quantummaid.quantummaid.packagings</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.56</version>
+        <version>1.0.57</version>
     </parent>
 
     <artifactId>quantummaid-essentials</artifactId>
-    <version>1.0.56</version>
 
     <dependencies>
         <dependency>
