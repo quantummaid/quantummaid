@@ -30,7 +30,7 @@
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.82</version>
+            <version>0.9.83</version>
         </dependency>
         <!-- Showcase end httpmaidDependency -->
 
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>de.quantummaid.mapmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.70</version>
+            <version>0.9.71</version>
         </dependency>
         <!-- Showcase end mapmaidDependency -->
 
