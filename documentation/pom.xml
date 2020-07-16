@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.62</version>
+        <version>1.0.63</version>
     </parent>
 
     <artifactId>documentation</artifactId>
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.83</version>
+            <version>0.9.84</version>
         </dependency>
         <!-- Showcase end httpmaidDependency -->
 
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid</groupId>
             <artifactId>core</artifactId>
-            <version>1.0.62</version>
+            <version>1.0.63</version>
         </dependency>
         <!-- Showcase end quantummaidDependency -->
 
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-essentials</artifactId>
-            <version>1.0.62</version>
+            <version>1.0.63</version>
         </dependency>
         <!-- Showcase end dependency -->
 
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-test-essentials</artifactId>
-            <version>1.0.62</version>
+            <version>1.0.63</version>
             <scope>test</scope>
         </dependency>
         <!-- Showcase end testdependency -->
