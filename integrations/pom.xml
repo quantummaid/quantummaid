@@ -16,6 +16,7 @@
         <module>quantummaid-testsupport</module>
         <module>quantummaid-junit5</module>
         <module>quantummaid-restassured</module>
+        <module>quantummaid-monolambda</module>
     </modules>
 
     <properties>

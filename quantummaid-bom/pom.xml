@@ -24,6 +24,11 @@
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.integrations</groupId>
+                <artifactId>quantummaid-monolambda</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.quantummaid.integrations</groupId>
                 <artifactId>quantummaid-junit5</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>

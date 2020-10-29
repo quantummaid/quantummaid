@@ -68,14 +68,16 @@ public final class QuantumMaidSpecs {
     @Test
     public void quantumMaidClosesHttpMaidOnExit() {
         final int port = 1337;
-        final QuantumMaid quantumMaid = quantumMaid()
-                .get("/", (request, response) -> response.setBody("I'm up"))
-                .withLocalHostEndpointOnPort(port);
-        quantumMaid.runAsynchronously();
-        waitForPortToBeAvailable(port);
-        quantumMaid.close();
-        PortUtils.waitForPortToClose(port);
-        assertPortIsClosed(port);
+        for (int i = 0; i < 3; ++i) {
+            final QuantumMaid quantumMaid = quantumMaid()
+                    .get("/", (request, response) -> response.setBody("I'm up"))
+                    .withLocalHostEndpointOnPort(port);
+            quantumMaid.runAsynchronously();
+            waitForPortToBeAvailable(port);
+            quantumMaid.close();
+            PortUtils.waitForPortToClose(port);
+            assertPortIsClosed(port);
+        }
     }
 
     @SuppressWarnings("removal")

@@ -23,14 +23,14 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>1.18.16</version>
             <scope>provided</scope>
         </dependency>
         <!-- Showcase start httpmaidDependency -->
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.96</version>
+            <version>0.9.100</version>
         </dependency>
         <!-- Showcase end httpmaidDependency -->
 
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>de.quantummaid.mapmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.88</version>
+            <version>0.9.94</version>
         </dependency>
         <!-- Showcase end mapmaidDependency -->
 

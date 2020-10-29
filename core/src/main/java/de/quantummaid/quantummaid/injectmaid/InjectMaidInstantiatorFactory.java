@@ -25,25 +25,44 @@ import de.quantummaid.httpmaid.usecases.instantiation.UseCaseInstantiator;
 import de.quantummaid.httpmaid.usecases.instantiation.UseCaseInstantiatorFactory;
 import de.quantummaid.injectmaid.InjectMaid;
 import de.quantummaid.injectmaid.InjectMaidBuilder;
+import de.quantummaid.injectmaid.timing.InstantiationTimes;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import static de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiator.injectMaidInstantiator;
 
+@Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class InjectMaidInstantiatorFactory implements UseCaseInstantiatorFactory {
+    private final InjectMaidBuilder builder;
+    private final Predicate<Class<?>> useCaseRegistrationFilter;
 
     public static InjectMaidInstantiatorFactory injectMaidInstantiatorFactory() {
-        return new InjectMaidInstantiatorFactory();
+        return injectMaidInstantiatorFactory(InjectMaid.anInjectMaid(), useCase -> false);
+    }
+
+    public static InjectMaidInstantiatorFactory injectMaidInstantiatorFactory(final InjectMaidBuilder builder,
+                                                                              final Predicate<Class<?>> useCaseRegistrationFilter) {
+        return new InjectMaidInstantiatorFactory(builder, useCaseRegistrationFilter);
     }
 
     @Override
     public UseCaseInstantiator createInstantiator(final List<Class<?>> requiredTypes) {
-        final InjectMaidBuilder builder = InjectMaid.anInjectMaid();
-        requiredTypes.forEach(builder::withType);
+        requiredTypes.stream()
+                .filter(useCase -> !useCaseRegistrationFilter.test(useCase))
+                .forEach(builder::withType);
+        final long startTime = System.currentTimeMillis();
         final InjectMaid injectMaid = builder.build();
+        final long endTime = System.currentTimeMillis();
+        final long time = endTime - startTime;
+        final InstantiationTimes instantiationTimes = injectMaid.instantiationTimes();
+        if (log.isInfoEnabled()) {
+            log.info("construction of InjectMaid took {}ms, details:\n{}", time, instantiationTimes.render());
+        }
         return injectMaidInstantiator(injectMaid);
     }
 }

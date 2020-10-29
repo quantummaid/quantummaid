@@ -23,9 +23,13 @@ package de.quantummaid.quantummaid.injectmaid;
 
 import de.quantummaid.httpmaid.usecases.instantiation.UseCaseInstantiator;
 import de.quantummaid.injectmaid.InjectMaid;
+import de.quantummaid.injectmaid.timing.InstantiationTime;
+import de.quantummaid.injectmaid.timing.TimedInstantiation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class InjectMaidInstantiator implements UseCaseInstantiator {
     private final InjectMaid injectMaid;
@@ -36,6 +40,9 @@ public final class InjectMaidInstantiator implements UseCaseInstantiator {
 
     @Override
     public <T> T instantiate(final Class<T> type) {
-        return injectMaid.getInstance(type);
+        final TimedInstantiation<T> timedInstantiation = injectMaid.getInstanceWithInitializationTime(type);
+        final InstantiationTime instantiationTime = timedInstantiation.instantiationTime();
+        log.info(instantiationTime.render());
+        return timedInstantiation.instance();
     }
 }
