@@ -23,6 +23,7 @@ package de.quantummaid.quantummaid.integrations.monolambda;
 
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.HttpMaidBuilder;
+import de.quantummaid.httpmaid.mapmaid.MapMaidConfigurators;
 import de.quantummaid.httpmaid.mapmaid.MapMaidModule;
 import de.quantummaid.httpmaid.usecases.UseCasesModule;
 import de.quantummaid.injectmaid.InjectMaid;
@@ -41,6 +42,7 @@ import static de.quantummaid.httpmaid.HttpMaid.anHttpMaid;
 import static de.quantummaid.httpmaid.chains.Configurator.toUseModules;
 import static de.quantummaid.httpmaid.mapmaid.MapMaidModule.mapMaidModule;
 import static de.quantummaid.httpmaid.usecases.UseCasesModule.useCasesModule;
+import static de.quantummaid.mapmaid.minimaljson.MinimalJsonMarshallerAndUnmarshaller.minimalJsonMarshallerAndUnmarshaller;
 import static de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory.injectMaidInstantiatorFactory;
 import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambda.fromHttpMaid;
 
@@ -93,7 +95,12 @@ public final class MonoLambdaBuilder {
         final MapMaidModule mapMaidModule = mapMaidModule();
         final HttpMaidBuilder httpMaidBuilder = anHttpMaid()
                 .configured(toUseModules(useCasesModule, mapMaidModule))
+                .configured(MapMaidConfigurators.toConfigureMapMaidUsingRecipe(mapMaidBuilder ->
+                        mapMaidBuilder.withAdvancedSettings(advancedBuilder -> advancedBuilder
+                                .doNotAutoloadMarshallers()
+                                .usingMarshaller(minimalJsonMarshallerAndUnmarshaller()))))
                 .disableAutodectectionOfModules();
+        httpMaidBuilder.disableStartupChecks();
 
         httpConfiguration.accept(httpMaidBuilder);
 
