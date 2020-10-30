@@ -100,7 +100,6 @@ public final class MonoLambdaBuilder {
                                 .doNotAutoloadMarshallers()
                                 .usingMarshaller(minimalJsonMarshallerAndUnmarshaller()))))
                 .disableAutodectectionOfModules();
-        httpMaidBuilder.disableStartupChecks();
 
         httpConfiguration.accept(httpMaidBuilder);
 
