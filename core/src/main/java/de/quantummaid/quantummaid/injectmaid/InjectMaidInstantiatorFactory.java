@@ -45,8 +45,9 @@ public final class InjectMaidInstantiatorFactory implements UseCaseInstantiatorF
         return injectMaidInstantiatorFactory(InjectMaid.anInjectMaid(), useCase -> false);
     }
 
-    public static InjectMaidInstantiatorFactory injectMaidInstantiatorFactory(final InjectMaidBuilder builder,
-                                                                              final Predicate<Class<?>> useCaseRegistrationFilter) {
+    public static InjectMaidInstantiatorFactory injectMaidInstantiatorFactory(
+            final InjectMaidBuilder builder,
+            final Predicate<Class<?>> useCaseRegistrationFilter) {
         return new InjectMaidInstantiatorFactory(builder, useCaseRegistrationFilter);
     }
 
