@@ -71,10 +71,6 @@ public final class MonoLambdaBuilder {
         return this;
     }
 
-    public MonoLambdaBuilder withEnforcedMaxColdstartDuration(final int timeInMilliseconds) {
-        return this;
-    }
-
     public MonoLambdaBuilder skipAutomaticRegistrationOfUseCases() {
         return skipAutomaticRegistrationOfUseCasesThat(useCase -> true);
     }
