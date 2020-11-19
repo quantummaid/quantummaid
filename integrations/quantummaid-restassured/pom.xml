@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid.quantummaid.integrations</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.73</version>
+        <version>1.0.74</version>
     </parent>
 
     <artifactId>quantummaid-restassured</artifactId>
@@ -40,7 +40,7 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>4.3.1</version>
+            <version>4.3.2</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.quantummaid.integrations</groupId>

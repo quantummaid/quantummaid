@@ -23,6 +23,7 @@ package de.quantummaid.quantummaid.integrations.monolambda;
 
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.HttpMaidBuilder;
+import de.quantummaid.httpmaid.awslambdacognitoauthorizer.TokenExtractor;
 import de.quantummaid.httpmaid.mapmaid.MapMaidConfigurators;
 import de.quantummaid.httpmaid.mapmaid.MapMaidModule;
 import de.quantummaid.httpmaid.usecases.UseCasesModule;
@@ -56,6 +57,7 @@ public final class MonoLambdaBuilder {
     private Consumer<InjectMaidBuilder> injectorConfiguration = injectMaidBuilder -> {
     };
     private Predicate<Class<?>> useCaseRegistrationFilter = useCase -> false;
+    private TokenExtractor tokenExtractor = request -> request.queryParameters().parameter("access_token");
 
     public static MonoLambdaBuilder monoLambdaBuilder() {
         return new MonoLambdaBuilder();
@@ -77,6 +79,11 @@ public final class MonoLambdaBuilder {
 
     public MonoLambdaBuilder skipAutomaticRegistrationOfUseCasesThat(final Predicate<Class<?>> filter) {
         this.useCaseRegistrationFilter = filter;
+        return this;
+    }
+
+    public MonoLambdaBuilder withAuthorizationToken(final TokenExtractor tokenExtractor) {
+        this.tokenExtractor = tokenExtractor;
         return this;
     }
 
@@ -107,6 +114,6 @@ public final class MonoLambdaBuilder {
             log.info("construction of HttpMaid took {}ms", time);
         }
 
-        return fromHttpMaid(httpMaid);
+        return fromHttpMaid(httpMaid, tokenExtractor);
     }
 }
