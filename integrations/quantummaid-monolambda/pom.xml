@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid.quantummaid.integrations</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.73</version>
+        <version>1.0.74</version>
     </parent>
 
     <artifactId>quantummaid-monolambda</artifactId>
@@ -32,11 +32,16 @@
         <dependency>
             <groupId>de.quantummaid.mapmaid.integrations</groupId>
             <artifactId>mapmaid-minimal-json</artifactId>
-            <version>0.9.96</version>
+            <version>0.9.97</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.httpmaid.integrations</groupId>
             <artifactId>httpmaid-awslambda-websocket</artifactId>
+            <version>${httpmaid-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.quantummaid.httpmaid.integrations</groupId>
+            <artifactId>httpmaid-awslambda-cognitoauthorizer</artifactId>
             <version>${httpmaid-version}</version>
         </dependency>
 

@@ -24,6 +24,8 @@ package de.quantummaid.quantummaid.integrations.monolambda;
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.awslambda.AwsLambdaEndpoint;
 import de.quantummaid.httpmaid.awslambda.AwsWebsocketLambdaEndpoint;
+import de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoLambdaAuthorizer;
+import de.quantummaid.httpmaid.awslambdacognitoauthorizer.TokenExtractor;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +34,9 @@ import java.util.Map;
 
 import static de.quantummaid.httpmaid.awslambda.AwsLambdaEndpoint.awsLambdaEndpointFor;
 import static de.quantummaid.httpmaid.awslambda.AwsWebsocketLambdaEndpoint.awsWebsocketLambdaEndpointFor;
+import static de.quantummaid.httpmaid.awslambda.EventUtils.isAuthorizationRequest;
 import static de.quantummaid.httpmaid.awslambda.EventUtils.isWebSocketRequest;
+import static de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoLambdaAuthorizer.cognitoLambdaAuthorizer;
 import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambdaBuilder.monoLambdaBuilder;
 
 @Slf4j
@@ -41,22 +45,29 @@ public final class MonoLambda {
     private final HttpMaid httpMaid;
     private final AwsLambdaEndpoint httpEndpoint;
     private final AwsWebsocketLambdaEndpoint websocketEndpoint;
+    private final CognitoLambdaAuthorizer authorizer;
 
     public static MonoLambdaBuilder aMonoLambda() {
         return monoLambdaBuilder();
     }
 
-    static MonoLambda fromHttpMaid(final HttpMaid httpMaid) {
+    static MonoLambda fromHttpMaid(final HttpMaid httpMaid, final TokenExtractor tokenExtractor) {
         final AwsLambdaEndpoint httpEndpoint = awsLambdaEndpointFor(httpMaid);
         final AwsWebsocketLambdaEndpoint websocketEndpoint = awsWebsocketLambdaEndpointFor(httpMaid);
-        return new MonoLambda(httpMaid, httpEndpoint, websocketEndpoint);
+        final CognitoLambdaAuthorizer authorizer = cognitoLambdaAuthorizer(tokenExtractor);
+        return new MonoLambda(httpMaid, httpEndpoint, websocketEndpoint, authorizer);
     }
 
     public Map<String, Object> handleRequest(final Map<String, Object> event) {
         log.info("lambda request: {}", event);
-        if (!isWebSocketRequest(event)) {
+        if (isAuthorizationRequest(event)) {
+            log.info("request has been classified as an authorization request");
+            return authorizer.delegate(event);
+        } else if (!isWebSocketRequest(event)) {
+            log.info("request has been classified as a plain HTTP request");
             return httpEndpoint.delegate(event);
         } else {
+            log.info("request has been classified as a websocket request");
             return websocketEndpoint.delegate(event);
         }
     }
