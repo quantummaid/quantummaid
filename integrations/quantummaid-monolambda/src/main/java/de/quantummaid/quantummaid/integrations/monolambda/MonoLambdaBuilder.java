@@ -23,6 +23,8 @@ package de.quantummaid.quantummaid.integrations.monolambda;
 
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.HttpMaidBuilder;
+import de.quantummaid.httpmaid.awslambdacognitoauthorizer.ContextEnricher;
+import de.quantummaid.httpmaid.awslambdacognitoauthorizer.LambdaAuthorizer;
 import de.quantummaid.httpmaid.awslambdacognitoauthorizer.TokenExtractor;
 import de.quantummaid.httpmaid.mapmaid.MapMaidConfigurators;
 import de.quantummaid.httpmaid.mapmaid.MapMaidModule;
@@ -35,15 +37,19 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static de.quantummaid.httpmaid.HttpMaid.anHttpMaid;
+import static de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoLambdaAuthorizer.cognitoLambdaAuthorizer;
 import static de.quantummaid.httpmaid.chains.Configurator.toUseModules;
 import static de.quantummaid.httpmaid.mapmaid.MapMaidModule.mapMaidModule;
 import static de.quantummaid.httpmaid.usecases.UseCasesModule.useCasesModule;
 import static de.quantummaid.mapmaid.minimaljson.MinimalJsonMarshallerAndUnmarshaller.minimalJsonMarshallerAndUnmarshaller;
+import static de.quantummaid.mapmaid.shared.validators.NotNullValidator.validateNotNull;
 import static de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory.injectMaidInstantiatorFactory;
 import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambda.fromHttpMaid;
 
@@ -52,15 +58,16 @@ import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambda.from
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
 public final class MonoLambdaBuilder {
+    private final String region;
     private Consumer<HttpMaidBuilder> httpConfiguration = httpMaidBuilder -> {
     };
     private Consumer<InjectMaidBuilder> injectorConfiguration = injectMaidBuilder -> {
     };
     private Predicate<Class<?>> useCaseRegistrationFilter = useCase -> false;
-    private TokenExtractor tokenExtractor = request -> request.queryParameters().parameter("access_token");
+    private LambdaAuthorizer lambdaAuthorizer = DummyAuthorizer.dummyAuthorizer();
 
-    public static MonoLambdaBuilder monoLambdaBuilder() {
-        return new MonoLambdaBuilder();
+    public static MonoLambdaBuilder monoLambdaBuilder(final String region) {
+        return new MonoLambdaBuilder(region);
     }
 
     public MonoLambdaBuilder withHttpMaid(final Consumer<HttpMaidBuilder> httpConfiguration) {
@@ -82,9 +89,37 @@ public final class MonoLambdaBuilder {
         return this;
     }
 
-    public MonoLambdaBuilder withAuthorizationToken(final TokenExtractor tokenExtractor) {
-        this.tokenExtractor = tokenExtractor;
+    public MonoLambdaBuilder withLambdaAuthorizer(final LambdaAuthorizer lambdaAuthorizer) {
+        validateNotNull(lambdaAuthorizer, "lambdaAuthorizer");
+        this.lambdaAuthorizer = lambdaAuthorizer;
         return this;
+    }
+
+    public MonoLambdaBuilder withCognitoAuthorization(final String userPoolId,
+                                                      final String userPoolClientId,
+                                                      final TokenExtractor tokenExtractor) {
+        return withCognitoAuthorization(
+                userPoolId,
+                userPoolClientId,
+                tokenExtractor,
+                (request, event, getUserResponse, authorizationToken) -> Map.of()
+        );
+    }
+
+    public MonoLambdaBuilder withCognitoAuthorization(final String userPoolId,
+                                                      final String userPoolClientId,
+                                                      final TokenExtractor tokenExtractor,
+                                                      final ContextEnricher contextEnricher) {
+        final String issuerUrl = String.format("https://cognito-idp.%s.amazonaws.com/%s", region, userPoolId);
+        final CognitoIdentityProviderClient client = CognitoIdentityProviderClient.create();
+        final LambdaAuthorizer authorizer = cognitoLambdaAuthorizer(
+                client,
+                issuerUrl,
+                userPoolClientId,
+                tokenExtractor,
+                contextEnricher
+        );
+        return withLambdaAuthorizer(authorizer);
     }
 
     public MonoLambda build() {
@@ -114,6 +149,6 @@ public final class MonoLambdaBuilder {
             log.info("construction of HttpMaid took {}ms", time);
         }
 
-        return fromHttpMaid(httpMaid, tokenExtractor);
+        return fromHttpMaid(httpMaid, region, lambdaAuthorizer);
     }
 }
