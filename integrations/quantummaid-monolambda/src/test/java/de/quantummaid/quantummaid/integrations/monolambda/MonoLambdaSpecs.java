@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import static de.quantummaid.httpmaid.client.HttpClientRequest.aGetRequestToThePath;
 import static de.quantummaid.httpmaid.client.HttpMaidClient.aHttpMaidClientBypassingRequestsDirectlyTo;
 import static de.quantummaid.injectmaid.api.ReusePolicy.EAGER_SINGLETON;
-import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambda.aMonoLambda;
+import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambda.aMonoLambdaInRegion;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,7 +38,7 @@ public final class MonoLambdaSpecs {
 
     @Test
     public void monoLambda() {
-        final MonoLambda monoLambda = aMonoLambda()
+        final MonoLambda monoLambda = aMonoLambdaInRegion("foo")
                 .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
                         .get("/", (request, response) -> response.setBody("foo"))
                 )
@@ -53,7 +53,7 @@ public final class MonoLambdaSpecs {
 
     @Test
     public void monoLambdaAutoregistersUseCasesInInjectMaid() {
-        final MonoLambda monoLambda = aMonoLambda()
+        final MonoLambda monoLambda = aMonoLambdaInRegion("foo")
                 .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
                         .get("/", FooUseCase.class)
                 )
@@ -68,7 +68,7 @@ public final class MonoLambdaSpecs {
     public void monoLambdaCanRemoveUseCasesFromAutoregistration() {
         Exception exception = null;
         try {
-            aMonoLambda()
+            aMonoLambdaInRegion("foo")
                     .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
                             .get("/", FooUseCase.class)
                     )
@@ -84,7 +84,7 @@ public final class MonoLambdaSpecs {
 
     @Test
     public void monoLambdaCanHaveCustomUseCaseRegistrations() {
-        final MonoLambda monoLambda = aMonoLambda()
+        final MonoLambda monoLambda = aMonoLambdaInRegion("foo")
                 .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
                         .get("/", FooUseCase.class)
                 )
