@@ -56,4 +56,32 @@
         <packageUrl regex="true">^pkg:maven/org\.codehaus\.groovy/groovy\-json@.*$</packageUrl>
         <cpe>cpe:/a:apache:groovy</cpe>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: httpclient-4.5.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents/httpclient@.*$</packageUrl>
+        <cpe>cpe:/a:apache:httpclient</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: httpclient-4.5.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents/httpclient@.*$</packageUrl>
+        <vulnerabilityName>CVE-2020-13956</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-databind-2.10.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-databind@.*$</packageUrl>
+        <cpe>cpe:/a:fasterxml:jackson</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-databind-2.10.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-databind@.*$</packageUrl>
+        <cpe>cpe:/a:fasterxml:jackson-databind</cpe>
+    </suppress>
 </suppressions>
