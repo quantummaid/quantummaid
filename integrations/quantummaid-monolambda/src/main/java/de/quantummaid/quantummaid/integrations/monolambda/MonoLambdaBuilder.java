@@ -69,7 +69,13 @@ public final class MonoLambdaBuilder {
     private WebsocketAuthorizer websocketAuthorizer;
     private AdditionalWebsocketDataProvider additionalWebsocketDataProvider;
 
+    public static MonoLambdaBuilder monoLambdaBuilder() {
+        final String region = System.getenv("AWS_REGION");
+        return monoLambdaBuilder(region);
+    }
+
     public static MonoLambdaBuilder monoLambdaBuilder(final String region) {
+        validateNotNull(region, "region");
         return new MonoLambdaBuilder(region);
     }
 
@@ -98,7 +104,8 @@ public final class MonoLambdaBuilder {
         return this;
     }
 
-    public MonoLambdaBuilder withAdditionalWebsocketDataProvider(final AdditionalWebsocketDataProvider additionalWebsocketDataProvider) {
+    public MonoLambdaBuilder withAdditionalWebsocketDataProvider(
+            final AdditionalWebsocketDataProvider additionalWebsocketDataProvider) {
         validateNotNull(additionalWebsocketDataProvider, "additionalWebsocketDataProvider");
         this.additionalWebsocketDataProvider = additionalWebsocketDataProvider;
         return this;

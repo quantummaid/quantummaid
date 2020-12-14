@@ -40,6 +40,11 @@
             <artifactId>quantummaid-testsupport</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>de.quantummaid.quantummaid.integrations</groupId>
+            <artifactId>quantummaid-monolambda</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
