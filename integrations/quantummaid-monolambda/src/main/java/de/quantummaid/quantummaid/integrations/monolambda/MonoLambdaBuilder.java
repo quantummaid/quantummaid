@@ -23,12 +23,14 @@ package de.quantummaid.quantummaid.integrations.monolambda;
 
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.HttpMaidBuilder;
-import de.quantummaid.httpmaid.awslambdacognitoauthorizer.ContextEnricher;
-import de.quantummaid.httpmaid.awslambdacognitoauthorizer.LambdaAuthorizer;
+import de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoContextEnricher;
+import de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoWebsocketAuthorizer;
 import de.quantummaid.httpmaid.awslambdacognitoauthorizer.TokenExtractor;
 import de.quantummaid.httpmaid.mapmaid.MapMaidConfigurators;
 import de.quantummaid.httpmaid.mapmaid.MapMaidModule;
 import de.quantummaid.httpmaid.usecases.UseCasesModule;
+import de.quantummaid.httpmaid.websockets.additionaldata.AdditionalWebsocketDataProvider;
+import de.quantummaid.httpmaid.websockets.authorization.WebsocketAuthorizer;
 import de.quantummaid.injectmaid.InjectMaid;
 import de.quantummaid.injectmaid.InjectMaidBuilder;
 import de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory;
@@ -39,15 +41,15 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static de.quantummaid.httpmaid.HttpMaid.anHttpMaid;
-import static de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoLambdaAuthorizer.cognitoLambdaAuthorizer;
 import static de.quantummaid.httpmaid.chains.Configurator.toUseModules;
 import static de.quantummaid.httpmaid.mapmaid.MapMaidModule.mapMaidModule;
 import static de.quantummaid.httpmaid.usecases.UseCasesModule.useCasesModule;
+import static de.quantummaid.httpmaid.websockets.WebsocketConfigurators.toAuthorizeWebsocketsUsing;
+import static de.quantummaid.httpmaid.websockets.WebsocketConfigurators.toStoreAdditionalDataInWebsocketContext;
 import static de.quantummaid.mapmaid.minimaljson.MinimalJsonMarshallerAndUnmarshaller.minimalJsonMarshallerAndUnmarshaller;
 import static de.quantummaid.mapmaid.shared.validators.NotNullValidator.validateNotNull;
 import static de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory.injectMaidInstantiatorFactory;
@@ -64,7 +66,8 @@ public final class MonoLambdaBuilder {
     private Consumer<InjectMaidBuilder> injectorConfiguration = injectMaidBuilder -> {
     };
     private Predicate<Class<?>> useCaseRegistrationFilter = useCase -> false;
-    private LambdaAuthorizer lambdaAuthorizer = DummyAuthorizer.dummyAuthorizer();
+    private WebsocketAuthorizer websocketAuthorizer;
+    private AdditionalWebsocketDataProvider additionalWebsocketDataProvider;
 
     public static MonoLambdaBuilder monoLambdaBuilder(final String region) {
         return new MonoLambdaBuilder(region);
@@ -89,37 +92,38 @@ public final class MonoLambdaBuilder {
         return this;
     }
 
-    public MonoLambdaBuilder withLambdaAuthorizer(final LambdaAuthorizer lambdaAuthorizer) {
-        validateNotNull(lambdaAuthorizer, "lambdaAuthorizer");
-        this.lambdaAuthorizer = lambdaAuthorizer;
+    public MonoLambdaBuilder withWebsocketAuthorizer(final WebsocketAuthorizer authorizer) {
+        validateNotNull(authorizer, "authorizer");
+        this.websocketAuthorizer = authorizer;
+        return this;
+    }
+
+    public MonoLambdaBuilder withAdditionalWebsocketDataProvider(final AdditionalWebsocketDataProvider additionalWebsocketDataProvider) {
+        validateNotNull(additionalWebsocketDataProvider, "additionalWebsocketDataProvider");
+        this.additionalWebsocketDataProvider = additionalWebsocketDataProvider;
         return this;
     }
 
     public MonoLambdaBuilder withCognitoAuthorization(final String userPoolId,
                                                       final String userPoolClientId,
                                                       final TokenExtractor tokenExtractor) {
-        return withCognitoAuthorization(
-                userPoolId,
-                userPoolClientId,
+        final CognitoIdentityProviderClient client = CognitoIdentityProviderClient.create();
+        final String issuerUrl = String.format("https://cognito-idp.%s.amazonaws.com/%s", region, userPoolId);
+        final CognitoWebsocketAuthorizer authorizer = CognitoWebsocketAuthorizer.cognitoWebsocketAuthorizer(
+                client,
                 tokenExtractor,
-                (request, event, getUserResponse, authorizationToken) -> Map.of()
+                issuerUrl,
+                userPoolClientId
         );
+        return withWebsocketAuthorizer(authorizer);
     }
 
     public MonoLambdaBuilder withCognitoAuthorization(final String userPoolId,
                                                       final String userPoolClientId,
                                                       final TokenExtractor tokenExtractor,
-                                                      final ContextEnricher contextEnricher) {
-        final String issuerUrl = String.format("https://cognito-idp.%s.amazonaws.com/%s", region, userPoolId);
-        final CognitoIdentityProviderClient client = CognitoIdentityProviderClient.create();
-        final LambdaAuthorizer authorizer = cognitoLambdaAuthorizer(
-                client,
-                issuerUrl,
-                userPoolClientId,
-                tokenExtractor,
-                contextEnricher
-        );
-        return withLambdaAuthorizer(authorizer);
+                                                      final CognitoContextEnricher contextEnricher) {
+        withCognitoAuthorization(userPoolId, userPoolClientId, tokenExtractor);
+        return withAdditionalWebsocketDataProvider(contextEnricher);
     }
 
     public MonoLambda build() {
@@ -139,6 +143,13 @@ public final class MonoLambdaBuilder {
                                 .usingMarshaller(minimalJsonMarshallerAndUnmarshaller()))))
                 .disableAutodectectionOfModules();
 
+        if (websocketAuthorizer != null) {
+            httpMaidBuilder.configured(toAuthorizeWebsocketsUsing(websocketAuthorizer));
+        }
+        if (additionalWebsocketDataProvider != null) {
+            httpMaidBuilder.configured(toStoreAdditionalDataInWebsocketContext(additionalWebsocketDataProvider));
+        }
+
         httpConfiguration.accept(httpMaidBuilder);
 
         final long startTime = System.currentTimeMillis();
@@ -149,6 +160,6 @@ public final class MonoLambdaBuilder {
             log.info("construction of HttpMaid took {}ms", time);
         }
 
-        return fromHttpMaid(httpMaid, region, lambdaAuthorizer);
+        return fromHttpMaid(httpMaid, region);
     }
 }

@@ -24,7 +24,7 @@ package de.quantummaid.quantummaid.integrations.monolambda;
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.awslambda.AwsLambdaEndpoint;
 import de.quantummaid.httpmaid.awslambda.AwsWebsocketLambdaEndpoint;
-import de.quantummaid.httpmaid.awslambdacognitoauthorizer.LambdaAuthorizer;
+import de.quantummaid.httpmaid.awslambda.authorizer.LambdaWebsocketAuthorizer;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +35,7 @@ import static de.quantummaid.httpmaid.awslambda.AwsLambdaEndpoint.awsLambdaEndpo
 import static de.quantummaid.httpmaid.awslambda.AwsWebsocketLambdaEndpoint.awsWebsocketLambdaEndpointFor;
 import static de.quantummaid.httpmaid.awslambda.EventUtils.isAuthorizationRequest;
 import static de.quantummaid.httpmaid.awslambda.EventUtils.isWebSocketRequest;
+import static de.quantummaid.httpmaid.awslambda.authorizer.LambdaWebsocketAuthorizer.lambdaWebsocketAuthorizer;
 import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambdaBuilder.monoLambdaBuilder;
 
 @Slf4j
@@ -43,18 +44,18 @@ public final class MonoLambda {
     private final HttpMaid httpMaid;
     private final AwsLambdaEndpoint httpEndpoint;
     private final AwsWebsocketLambdaEndpoint websocketEndpoint;
-    private final LambdaAuthorizer authorizer;
+    private final LambdaWebsocketAuthorizer authorizer;
 
     public static MonoLambdaBuilder aMonoLambdaInRegion(final String region) {
         return monoLambdaBuilder(region);
     }
 
     static MonoLambda fromHttpMaid(final HttpMaid httpMaid,
-                                   final String region,
-                                   final LambdaAuthorizer lambdaAuthorizer) {
+                                   final String region) {
         final AwsLambdaEndpoint httpEndpoint = awsLambdaEndpointFor(httpMaid);
         final AwsWebsocketLambdaEndpoint websocketEndpoint = awsWebsocketLambdaEndpointFor(httpMaid, region);
-        return new MonoLambda(httpMaid, httpEndpoint, websocketEndpoint, lambdaAuthorizer);
+        final LambdaWebsocketAuthorizer authorizer = lambdaWebsocketAuthorizer(httpMaid);
+        return new MonoLambda(httpMaid, httpEndpoint, websocketEndpoint, authorizer);
     }
 
     public Map<String, Object> handleRequest(final Map<String, Object> event) {
