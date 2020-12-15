@@ -1,0 +1,17 @@
+<ruleset comparisonMethod="maven"
+         xmlns="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0 http://mojo.codehaus.org/versions-maven-plugin/xsd/rule-2.0.0.xsd">
+    <rules>
+        <rule groupId="org.junit.jupiter" artifactId="junit-jupiter-api" comparisonMethod="maven">
+            <ignoreVersions>
+                <ignoreVersion>5.7.0-M1</ignoreVersion>
+            </ignoreVersions>
+        </rule>
+        <rule groupId="org.junit.jupiter" artifactId="junit-jupiter-engine" comparisonMethod="maven">
+            <ignoreVersions>
+                <ignoreVersion>5.7.0-M1</ignoreVersion>
+            </ignoreVersions>
+        </rule>
+    </rules>
+</ruleset>

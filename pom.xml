@@ -10,14 +10,14 @@
 
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.77</version>
+    <version>1.0.78</version>
     <packaging>pom</packaging>
 
     <name>QuantumMaid</name>
 
     <properties>
         <httpmaid-version>0.9.110</httpmaid-version>
-        <injectmaid-version>0.0.35</injectmaid-version>
+        <injectmaid-version>0.0.37</injectmaid-version>
         <mapmaid-version>0.9.100</mapmaid-version>
         <eventmaid-version>1.0.62</eventmaid-version>
 
