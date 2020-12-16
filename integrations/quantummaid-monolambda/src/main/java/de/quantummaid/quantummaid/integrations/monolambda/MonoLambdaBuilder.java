@@ -26,14 +26,10 @@ import de.quantummaid.httpmaid.HttpMaidBuilder;
 import de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoContextEnricher;
 import de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoWebsocketAuthorizer;
 import de.quantummaid.httpmaid.awslambdacognitoauthorizer.TokenExtractor;
-import de.quantummaid.httpmaid.mapmaid.MapMaidConfigurators;
-import de.quantummaid.httpmaid.mapmaid.MapMaidModule;
-import de.quantummaid.httpmaid.usecases.UseCasesModule;
 import de.quantummaid.httpmaid.websockets.additionaldata.AdditionalWebsocketDataProvider;
 import de.quantummaid.httpmaid.websockets.authorization.WebsocketAuthorizer;
-import de.quantummaid.injectmaid.InjectMaid;
 import de.quantummaid.injectmaid.InjectMaidBuilder;
-import de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory;
+import de.quantummaid.mapmaid.minimaljson.MinimalJsonMarshallerAndUnmarshaller;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
@@ -44,16 +40,10 @@ import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityPr
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import static de.quantummaid.httpmaid.HttpMaid.anHttpMaid;
-import static de.quantummaid.httpmaid.chains.Configurator.toUseModules;
-import static de.quantummaid.httpmaid.mapmaid.MapMaidModule.mapMaidModule;
-import static de.quantummaid.httpmaid.usecases.UseCasesModule.useCasesModule;
-import static de.quantummaid.httpmaid.websockets.WebsocketConfigurators.toAuthorizeWebsocketsUsing;
-import static de.quantummaid.httpmaid.websockets.WebsocketConfigurators.toStoreAdditionalDataInWebsocketContext;
 import static de.quantummaid.mapmaid.minimaljson.MinimalJsonMarshallerAndUnmarshaller.minimalJsonMarshallerAndUnmarshaller;
 import static de.quantummaid.mapmaid.shared.validators.NotNullValidator.validateNotNull;
-import static de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory.injectMaidInstantiatorFactory;
 import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambda.fromHttpMaid;
+import static de.quantummaid.quantummaid.monolambda.MonoLambdaSharedLogic.buildHttpMaid;
 
 @ToString
 @EqualsAndHashCode
@@ -134,39 +124,15 @@ public final class MonoLambdaBuilder {
     }
 
     public MonoLambda build() {
-        final InjectMaidBuilder injectMaidBuilder = InjectMaid.anInjectMaid();
-        injectorConfiguration.accept(injectMaidBuilder);
-
-        final UseCasesModule useCasesModule = useCasesModule();
-        final InjectMaidInstantiatorFactory instantiatorFactory =
-                injectMaidInstantiatorFactory(injectMaidBuilder, useCaseRegistrationFilter);
-        useCasesModule.setUseCaseInstantiatorFactory(instantiatorFactory);
-        final MapMaidModule mapMaidModule = mapMaidModule();
-        final HttpMaidBuilder httpMaidBuilder = anHttpMaid()
-                .configured(toUseModules(useCasesModule, mapMaidModule))
-                .configured(MapMaidConfigurators.toConfigureMapMaidUsingRecipe(mapMaidBuilder ->
-                        mapMaidBuilder.withAdvancedSettings(advancedBuilder -> advancedBuilder
-                                .doNotAutoloadMarshallers()
-                                .usingMarshaller(minimalJsonMarshallerAndUnmarshaller()))))
-                .disableAutodectectionOfModules();
-
-        if (websocketAuthorizer != null) {
-            httpMaidBuilder.configured(toAuthorizeWebsocketsUsing(websocketAuthorizer));
-        }
-        if (additionalWebsocketDataProvider != null) {
-            httpMaidBuilder.configured(toStoreAdditionalDataInWebsocketContext(additionalWebsocketDataProvider));
-        }
-
-        httpConfiguration.accept(httpMaidBuilder);
-
-        final long startTime = System.currentTimeMillis();
-        final HttpMaid httpMaid = httpMaidBuilder.build();
-        final long endTime = System.currentTimeMillis();
-        final long time = endTime - startTime;
-        if (log.isInfoEnabled()) {
-            log.info("construction of HttpMaid took {}ms", time);
-        }
-
+        final MinimalJsonMarshallerAndUnmarshaller marshallerAndUnmarshaller = minimalJsonMarshallerAndUnmarshaller();
+        final HttpMaid httpMaid = buildHttpMaid(
+                httpConfiguration,
+                injectorConfiguration,
+                useCaseRegistrationFilter,
+                marshallerAndUnmarshaller,
+                websocketAuthorizer,
+                additionalWebsocketDataProvider
+        );
         return fromHttpMaid(httpMaid, region);
     }
 }
