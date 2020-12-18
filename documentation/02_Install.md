@@ -13,7 +13,7 @@ The following dependency contains all relevant modules to start with a basic Qua
 <dependency>
     <groupId>de.quantummaid.quantummaid.packagings</groupId>
     <artifactId>quantummaid-essentials</artifactId>
-    <version>1.0.79</version>
+    <version>1.0.80</version>
 </dependency>
 ```
 
@@ -33,7 +33,7 @@ The following three modules are the main components of QuantumMaid.
 <dependency>
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>core</artifactId>
-    <version>1.0.79</version>
+    <version>1.0.80</version>
 </dependency>
 ```
 

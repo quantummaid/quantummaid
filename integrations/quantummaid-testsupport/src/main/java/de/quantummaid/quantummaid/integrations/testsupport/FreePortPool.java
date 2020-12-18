@@ -29,7 +29,7 @@ import java.net.ServerSocket;
 import java.net.UnknownHostException;
 
 @Slf4j
-final class FreePortPool {
+public final class FreePortPool {
     private static final int START_PORT = 9000;
     private static final int HIGHEST_PORT = 65535;
     private static final InetAddress LOCALHOST = localhost();
@@ -38,7 +38,7 @@ final class FreePortPool {
     private FreePortPool() {
     }
 
-    static synchronized int freePort() {
+    public static synchronized int freePort() {
         while (true) {
             currentPort = currentPort + 1;
             if (currentPort >= HIGHEST_PORT) {
