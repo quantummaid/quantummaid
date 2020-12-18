@@ -39,7 +39,6 @@ import java.util.function.Predicate;
 import static de.quantummaid.mapmaid.minimaljson.MinimalJsonMarshallerAndUnmarshaller.minimalJsonMarshallerAndUnmarshaller;
 import static de.quantummaid.mapmaid.shared.validators.NotNullValidator.validateNotNull;
 import static de.quantummaid.quantummaid.integrations.testmonolambda.TestMonoLambda.fromHttpMaid;
-import static de.quantummaid.quantummaid.integrations.testsupport.FreePortPool.freePort;
 import static de.quantummaid.quantummaid.monolambda.MonoLambdaSharedLogic.buildHttpMaid;
 
 @ToString
@@ -55,11 +54,6 @@ public final class TestMonoLambdaBuilder {
     private Predicate<Class<?>> useCaseRegistrationFilter = useCase -> false;
     private WebsocketAuthorizer websocketAuthorizer;
     private AdditionalWebsocketDataProvider additionalWebsocketDataProvider;
-
-    public static TestMonoLambdaBuilder testMonoLambdaBuilder() {
-        final int port = freePort();
-        return new TestMonoLambdaBuilder(port);
-    }
 
     public static TestMonoLambdaBuilder testMonoLambdaBuilder(final int port) {
         return new TestMonoLambdaBuilder(port);
