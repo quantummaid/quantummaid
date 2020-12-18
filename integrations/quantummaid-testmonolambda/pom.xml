@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid.quantummaid.integrations</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.79</version>
+        <version>1.0.80</version>
     </parent>
 
     <artifactId>quantummaid-testmonolambda</artifactId>
@@ -30,6 +30,11 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>de.quantummaid.quantummaid.integrations</groupId>
+            <artifactId>quantummaid-testsupport</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>de.quantummaid.mapmaid.integrations</groupId>
             <artifactId>mapmaid-minimal-json</artifactId>
             <version>0.9.100</version>
@@ -39,13 +44,12 @@
             <artifactId>httpmaid-jetty-websockets</artifactId>
             <version>${httpmaid-version}</version>
         </dependency>
-
         <dependency>
             <groupId>de.quantummaid.httpmaid.integrations</groupId>
             <artifactId>httpmaid-client</artifactId>
             <version>${httpmaid-version}</version>
-            <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>

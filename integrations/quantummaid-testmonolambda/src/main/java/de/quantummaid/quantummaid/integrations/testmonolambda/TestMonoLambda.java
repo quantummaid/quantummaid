@@ -22,10 +22,12 @@
 package de.quantummaid.quantummaid.integrations.testmonolambda;
 
 import de.quantummaid.httpmaid.HttpMaid;
+import de.quantummaid.httpmaid.client.HttpMaidClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import static de.quantummaid.httpmaid.client.HttpMaidClient.aHttpMaidClientForTheHost;
 import static de.quantummaid.httpmaid.jetty.JettyWebsocketEndpoint.jettyWebsocketEndpoint;
 import static de.quantummaid.quantummaid.integrations.testmonolambda.TestMonoLambdaBuilder.testMonoLambdaBuilder;
 
@@ -33,6 +35,7 @@ import static de.quantummaid.quantummaid.integrations.testmonolambda.TestMonoLam
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestMonoLambda implements AutoCloseable {
     private final HttpMaid httpMaid;
+    private final int port;
 
     public static TestMonoLambdaBuilder aTestMonoLambda(final int port) {
         return testMonoLambdaBuilder(port);
@@ -40,11 +43,22 @@ public final class TestMonoLambda implements AutoCloseable {
 
     static TestMonoLambda fromHttpMaid(final HttpMaid httpMaid, final int port) {
         jettyWebsocketEndpoint(httpMaid, port);
-        return new TestMonoLambda(httpMaid);
+        return new TestMonoLambda(httpMaid, port);
     }
 
     public HttpMaid httpMaid() {
         return httpMaid;
+    }
+
+    public int port() {
+        return port;
+    }
+
+    public HttpMaidClient connectClient() {
+        return aHttpMaidClientForTheHost("localhost")
+                .withThePort(port)
+                .viaHttp()
+                .build();
     }
 
     @Override
