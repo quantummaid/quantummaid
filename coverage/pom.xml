@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.81</version>
+        <version>1.0.82</version>
     </parent>
 
     <artifactId>coverage</artifactId>
@@ -43,6 +43,11 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid.integrations</groupId>
             <artifactId>quantummaid-monolambda</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.quantummaid.quantummaid.integrations</groupId>
+            <artifactId>quantummaid-testmonolambda</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
