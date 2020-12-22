@@ -15,7 +15,7 @@ dependency:
 <dependency>
     <groupId>de.quantummaid.quantummaid.packagings</groupId>
     <artifactId>quantummaid-test-essentials</artifactId>
-    <version>1.0.81</version>
+    <version>1.0.82</version>
     <scope>test</scope>
 </dependency>
 ```

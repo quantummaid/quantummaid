@@ -19,10 +19,11 @@
  * under the License.
  */
 
-package de.quantummaid.quantummaid.integrations.monolambda;
+package de.quantummaid.quantummaid.integrations.testmonolambda;
 
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.client.HttpMaidClient;
+import de.quantummaid.httpmaid.client.SimpleHttpResponseObject;
 import de.quantummaid.injectmaid.InjectMaidException;
 import org.junit.jupiter.api.Test;
 
@@ -30,9 +31,9 @@ import java.util.Map;
 
 import static de.quantummaid.httpmaid.client.HttpClientRequest.aGetRequestToThePath;
 import static de.quantummaid.httpmaid.client.HttpMaidClient.aHttpMaidClientBypassingRequestsDirectlyTo;
-import static de.quantummaid.httpmaid.http.Http.StatusCodes.OK;
+import static de.quantummaid.httpmaid.websockets.authorization.AuthorizationDecision.fail;
 import static de.quantummaid.injectmaid.api.ReusePolicy.EAGER_SINGLETON;
-import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambda.aMonoLambdaInRegion;
+import static de.quantummaid.quantummaid.integrations.testmonolambda.TestMonoLambda.aTestMonoLambda;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -40,8 +41,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public final class MonoLambdaSpecs {
 
     @Test
-    public void monoLambda() {
-        final MonoLambda monoLambda = aMonoLambdaInRegion("foo")
+    public void testMonoLambda() {
+        final TestMonoLambda monoLambda = aTestMonoLambda()
                 .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
                         .get("/", (request, response) -> response.setBody("foo"))
                 )
@@ -55,8 +56,8 @@ public final class MonoLambdaSpecs {
     }
 
     @Test
-    public void monoLambdaAutoregistersUseCasesInInjectMaid() {
-        final MonoLambda monoLambda = aMonoLambdaInRegion("foo")
+    public void testMonoLambdaAutoregistersUseCasesInInjectMaid() {
+        final TestMonoLambda monoLambda = aTestMonoLambda()
                 .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
                         .get("/", FooUseCase.class)
                 )
@@ -68,10 +69,10 @@ public final class MonoLambdaSpecs {
     }
 
     @Test
-    public void monoLambdaCanRemoveUseCasesFromAutoregistration() {
+    public void testMonoLambdaCanRemoveUseCasesFromAutoregistration() {
         Exception exception = null;
         try {
-            aMonoLambdaInRegion("foo")
+            aTestMonoLambda()
                     .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
                             .get("/", FooUseCase.class)
                     )
@@ -82,12 +83,12 @@ public final class MonoLambdaSpecs {
         }
         assertThat(exception, notNullValue());
         assertThat(exception.getMessage(), is("Cannot instantiate unregistered type " +
-                "'de.quantummaid.quantummaid.integrations.monolambda.FooUseCase'"));
+                "'de.quantummaid.quantummaid.integrations.testmonolambda.FooUseCase'"));
     }
 
     @Test
-    public void monoLambdaCanHaveCustomUseCaseRegistrations() {
-        final MonoLambda monoLambda = aMonoLambdaInRegion("foo")
+    public void testMonoLambdaCanHaveCustomUseCaseRegistrations() {
+        final TestMonoLambda monoLambda = aTestMonoLambda()
                 .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
                         .get("/", FooUseCase.class)
                 )
@@ -101,35 +102,28 @@ public final class MonoLambdaSpecs {
     }
 
     @Test
-    public void monoLambdaCanRegisterCognitoAuthorizer() {
-        aMonoLambdaInRegion("foo")
-                .withCognitoAuthorization(
-                        "a",
-                        "b",
-                        request -> "c",
-                        (request, getUserResponse, authorizationToken) -> Map.of()
-                )
+    public void testMonoLambdaCanHaveAdditionalWebsocketDataProvider() {
+        aTestMonoLambda()
+                .withAdditionalWebsocketDataProvider(request -> Map.of())
                 .build();
     }
 
     @Test
-    public void monoLambdaCanHandleRequest() {
-        final MonoLambda monoLambda = aMonoLambdaInRegion("foo")
-                .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
-                        .get("/", (request, response) -> response.setBody("abc"))
-                )
+    public void testMonoLambdaCanHaveWebsocketAuthorizer() {
+        aTestMonoLambda()
+                .withWebsocketAuthorizer(request -> fail())
                 .build();
+    }
 
-        final Map<String, Object> response = monoLambda.handleRequest(Map.of(
-                "requestContext", Map.of(),
-                "httpMethod", "GET",
-                "path", "/"
-        ));
-
-        assertThat(response, is(Map.of(
-                "statusCode", OK,
-                "multiValueHeaders", Map.of(),
-                "body", "abc"
-        )));
+    @Test
+    public void testMonoLambdaCanConnectClient() {
+        try (TestMonoLambda testMonoLambda = aTestMonoLambda()
+                .withHttpMaid(builder -> builder.get("/", (request, response) -> response.setBody("abc")))
+                .build()) {
+            try (HttpMaidClient client = testMonoLambda.connectClient()) {
+                final SimpleHttpResponseObject response = client.issue(aGetRequestToThePath("/"));
+                assertThat(response.getBody(), is("abc"));
+            }
+        }
     }
 }
