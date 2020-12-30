@@ -29,6 +29,11 @@
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.integrations</groupId>
+                <artifactId>quantummaid-testmonolambda</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.quantummaid.integrations</groupId>
                 <artifactId>quantummaid-junit5</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
@@ -52,29 +57,116 @@
                 <artifactId>quantummaid-test-essentials</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
+
             <dependency>
-                <groupId>de.quantummaid</groupId>
-                <artifactId>httpmaid-bom</artifactId>
+                <groupId>de.quantummaid.httpmaid</groupId>
+                <artifactId>core</artifactId>
                 <version>${httpmaid-version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>de.quantummaid.httpmaid.examples</groupId>
+                <artifactId>aws-lambda</artifactId>
+                <version>${httpmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.httpmaid.examples</groupId>
+                <artifactId>aws-lambda-cognitoauthorizer</artifactId>
+                <version>${httpmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.httpmaid.examples</groupId>
+                <artifactId>aws-lambda-websocket</artifactId>
+                <version>${httpmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.httpmaid.integrations</groupId>
+                <artifactId>httpmaid-client</artifactId>
+                <version>${httpmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.httpmaid.integrations</groupId>
+                <artifactId>httpmaid-events</artifactId>
+                <version>${httpmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.httpmaid.integrations</groupId>
+                <artifactId>httpmaid-jetty</artifactId>
+                <version>${httpmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.httpmaid.integrations</groupId>
+                <artifactId>httpmaid-jetty-websockets</artifactId>
+                <version>${httpmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.httpmaid.integrations</groupId>
+                <artifactId>httpmaid-jsr356</artifactId>
+                <version>${httpmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.httpmaid.integrations</groupId>
+                <artifactId>httpmaid-mapmaid</artifactId>
+                <version>${httpmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.httpmaid.integrations</groupId>
+                <artifactId>httpmaid-multipart</artifactId>
+                <version>${httpmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.httpmaid.integrations</groupId>
+                <artifactId>httpmaid-servlet</artifactId>
+                <version>${httpmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.httpmaid.integrations</groupId>
+                <artifactId>httpmaid-usecases</artifactId>
+                <version>${httpmaid-version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>de.quantummaid.mapmaid</groupId>
-                <artifactId>mapmaid-bom</artifactId>
+                <artifactId>core</artifactId>
                 <version>${mapmaid-version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>de.quantummaid.mapmaid.integrations</groupId>
+                <artifactId>mapmaid-dynamodb</artifactId>
+                <version>${mapmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.mapmaid.integrations</groupId>
+                <artifactId>mapmaid-jackson</artifactId>
+                <version>${mapmaid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.quantummaid.mapmaid.integrations</groupId>
+                <artifactId>mapmaid-minimal-json</artifactId>
+                <version>${mapmaid-version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>de.quantummaid.injectmaid</groupId>
-                <artifactId>injectmaid</artifactId>
+                <artifactId>core</artifactId>
                 <version>${injectmaid-version}</version>
             </dependency>
+
             <dependency>
                 <groupId>de.quantummaid.eventmaid</groupId>
                 <artifactId>core</artifactId>
                 <version>${eventmaid-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>de.quantummaid.usecasemaid</groupId>
+                <artifactId>core</artifactId>
+                <version>${usecasemaid-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>de.quantummaid.reflectmaid</groupId>
+                <artifactId>reflectmaid-parent</artifactId>
+                <version>${reflectmaid-version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
