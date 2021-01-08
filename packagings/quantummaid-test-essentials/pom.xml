@@ -5,30 +5,27 @@
     <parent>
         <groupId>de.quantummaid.quantummaid.packagings</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.82</version>
+        <version>1.0.84</version>
     </parent>
 
     <artifactId>quantummaid-test-essentials</artifactId>
 
     <properties>
-        <dependency-update-file-checksum>a949b51c3f94b8f3e02a109cd954d9a5</dependency-update-file-checksum>
+        <dependency-update-file-checksum>8f6ea182969b0fcce9fae1bb13579713</dependency-update-file-checksum>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>de.quantummaid.quantummaid</groupId>
             <artifactId>core</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.quantummaid.integrations</groupId>
             <artifactId>quantummaid-junit5</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.quantummaid.integrations</groupId>
             <artifactId>quantummaid-restassured</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 </project>
