@@ -5,31 +5,44 @@
     <parent>
         <groupId>de.quantummaid</groupId>
         <artifactId>quantummaid-opensource-parent</artifactId>
-        <version>0.9.69</version>
+        <version>0.9.71</version>
     </parent>
 
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.82</version>
+    <version>1.0.84</version>
     <packaging>pom</packaging>
 
     <name>QuantumMaid</name>
 
     <properties>
-        <httpmaid-version>0.9.112</httpmaid-version>
-        <injectmaid-version>0.0.39</injectmaid-version>
-        <mapmaid-version>0.9.103</mapmaid-version>
+        <httpmaid-version>0.9.113</httpmaid-version>
+        <injectmaid-version>0.0.40</injectmaid-version>
+        <mapmaid-version>0.9.104</mapmaid-version>
         <eventmaid-version>1.0.62</eventmaid-version>
         <usecasemaid-version>0.0.16</usecasemaid-version>
-        <reflectmaid-version>0.1.49</reflectmaid-version>
+        <reflectmaid-version>0.1.50</reflectmaid-version>
 
         <junit-version>5.7.0</junit-version>
         <lombok-version>1.18.16</lombok-version>
         <guice-version>4.2.3</guice-version>
 
+        <dependency-update-file-checksum>8f6ea182969b0fcce9fae1bb13579713</dependency-update-file-checksum>
         <plugin-update-file-checksum>915baffd77985e9da0d3cfee67e149eb</plugin-update-file-checksum>
         <sonar.coverage.jacoco.xmlReportPaths>../coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>de.quantummaid.quantummaid</groupId>
+                <artifactId>quantummaid-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
@@ -45,6 +58,40 @@
                         </goals>
                         <phase>validate</phase>
                         <configuration>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven-enforcer-plugin-version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-checksum</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.6</version>
+                                </requireMavenVersion>
+                                <requireFileChecksum>
+                                    <message>Outdated dependencies detected</message>
+                                    <file>target/dependency-updates.txt</file>
+                                    <checksum>${dependency-update-file-checksum}</checksum>
+                                    <type>md5</type>
+                                </requireFileChecksum>
+                                <requireFileChecksum>
+                                    <message>Outdated plugins detected</message>
+                                    <file>target/plugin-updates.txt</file>
+                                    <checksum>${plugin-update-file-checksum}</checksum>
+                                    <type>md5</type>
+                                </requireFileChecksum>
+                            </rules>
+                            <fail>true</fail>
                         </configuration>
                     </execution>
                 </executions>
