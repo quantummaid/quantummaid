@@ -8,7 +8,7 @@ To run an application with the QuantumMaid framework, you need to add the follow
 <dependency>
     <groupId>de.quantummaid.quantummaid.packagings</groupId>
     <artifactId>quantummaid-essentials</artifactId>
-    <version>1.0.85</version>
+    <version>1.0.86</version>
 </dependency>
 ```
 
