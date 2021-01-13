@@ -26,6 +26,7 @@ import de.quantummaid.httpmaid.client.HttpMaidClient;
 import de.quantummaid.injectmaid.InjectMaidException;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static de.quantummaid.httpmaid.client.HttpClientRequest.aGetRequestToThePath;
@@ -113,7 +114,7 @@ public final class MonoLambdaSpecs {
     }
 
     @Test
-    public void monoLambdaCanHandleRequest() {
+    public void monoLambdaCanHandleHttpRequest() {
         final MonoLambda monoLambda = aMonoLambdaInRegion("foo")
                 .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
                         .get("/", (request, response) -> response.setBody("abc"))
@@ -131,5 +132,52 @@ public final class MonoLambdaSpecs {
                 "multiValueHeaders", Map.of(),
                 "body", "abc"
         )));
+    }
+
+    @Test
+    public void monoLambdaCanHandleAuthRequest() {
+        final MonoLambda monoLambda = aMonoLambdaInRegion("foo")
+                .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
+                        .get("/", (request, response) -> response.setBody("abc"))
+                )
+                .build();
+
+        final Map<String, Object> response = monoLambda.handleRequest(Map.of(
+                "requestContext", Map.of("connectionId", "foo"),
+                "type", "REQUEST",
+                "methodArn", "xyz"
+        ));
+        final Object policyDocument = response.get("policyDocument");
+
+        assertThat(policyDocument, is(Map.of(
+                "Statement", List.of(Map.of(
+                        "Effect", "Allow",
+                        "Resource", "xyz",
+                        "Action", "execute-api:Invoke"
+                )),
+                "Version", "2012-10-17"
+                )
+        ));
+    }
+
+    @Test
+    public void monoLambdaCanHandleWebsocketRequest() {
+        final MonoLambda monoLambda = aMonoLambdaInRegion("foo")
+                .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
+                        .get("/", (request, response) -> response.setBody("abc"))
+                )
+                .build();
+
+        final Map<String, Object> response = monoLambda.handleRequest(Map.of(
+                "requestContext", Map.of(
+                        "connectionId", "foo",
+                        "eventType", "CONNECT",
+                        "stage", "a",
+                        "apiId", "b"
+                ),
+                "type", "CONNECT"
+        ));
+
+        assertThat(response, is(Map.of()));
     }
 }
