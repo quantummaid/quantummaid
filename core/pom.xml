@@ -64,12 +64,6 @@
             <artifactId>httpmaid-client</artifactId>
             <version>${httpmaid-version}</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>de.quantummaid.mapmaid.integrations</groupId>
