@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid</groupId>
         <artifactId>quantummaid-opensource-parent</artifactId>
-        <version>0.9.71</version>
+        <version>0.9.72</version>
     </parent>
 
     <groupId>de.quantummaid.quantummaid</groupId>
@@ -66,21 +66,21 @@
             <dependency>
                 <groupId>de.quantummaid.mapmaid</groupId>
                 <artifactId>mapmaid-bom</artifactId>
-                <version>0.9.104</version>
+                <version>0.9.105</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.injectmaid</groupId>
                 <artifactId>injectmaid-bom</artifactId>
-                <version>0.0.40</version>
+                <version>0.0.41</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.httpmaid</groupId>
                 <artifactId>httpmaid-bom</artifactId>
-                <version>0.9.113</version>
+                <version>0.9.114</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -94,13 +94,13 @@
             <dependency>
                 <groupId>de.quantummaid.usecasemaid</groupId>
                 <artifactId>core</artifactId>
-                <version>0.0.16</version>
+                <version>0.0.17</version>
             </dependency>
 
             <dependency>
                 <groupId>de.quantummaid.reflectmaid</groupId>
                 <artifactId>reflectmaid-parent</artifactId>
-                <version>0.1.50</version>
+                <version>0.1.51</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
