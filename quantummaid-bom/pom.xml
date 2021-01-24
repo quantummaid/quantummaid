@@ -10,7 +10,7 @@
 
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>quantummaid-bom</artifactId>
-    <version>1.0.88</version>
+    <version>1.0.89</version>
     <packaging>pom</packaging>
 
     <name>QuantumMaid - BOM</name>
@@ -25,48 +25,48 @@
             <dependency>
                 <groupId>de.quantummaid.quantummaid</groupId>
                 <artifactId>core</artifactId>
-                <version>1.0.88</version>
+                <version>1.0.89</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.integrations</groupId>
                 <artifactId>quantummaid-monolambda</artifactId>
-                <version>1.0.88</version>
+                <version>1.0.89</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.integrations</groupId>
                 <artifactId>quantummaid-testmonolambda</artifactId>
-                <version>1.0.88</version>
+                <version>1.0.89</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.integrations</groupId>
                 <artifactId>quantummaid-junit5</artifactId>
-                <version>1.0.88</version>
+                <version>1.0.89</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.integrations</groupId>
                 <artifactId>quantummaid-restassured</artifactId>
-                <version>1.0.88</version>
+                <version>1.0.89</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.integrations</groupId>
                 <artifactId>quantummaid-testsupport</artifactId>
-                <version>1.0.88</version>
+                <version>1.0.89</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.packagings</groupId>
                 <artifactId>quantummaid-essentials</artifactId>
-                <version>1.0.88</version>
+                <version>1.0.89</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.packagings</groupId>
                 <artifactId>quantummaid-test-essentials</artifactId>
-                <version>1.0.88</version>
+                <version>1.0.89</version>
             </dependency>
 
             <dependency>
                 <groupId>de.quantummaid.mapmaid</groupId>
                 <artifactId>mapmaid-bom</artifactId>
-                <version>0.9.107</version>
+                <version>0.9.108</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -80,7 +80,7 @@
             <dependency>
                 <groupId>de.quantummaid.httpmaid</groupId>
                 <artifactId>httpmaid-bom</artifactId>
-                <version>0.9.116</version>
+                <version>0.9.120</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -100,7 +100,7 @@
             <dependency>
                 <groupId>de.quantummaid.reflectmaid</groupId>
                 <artifactId>reflectmaid-parent</artifactId>
-                <version>0.1.51</version>
+                <version>0.1.52</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
