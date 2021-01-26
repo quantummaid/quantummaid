@@ -57,7 +57,7 @@ public final class QuantumMaidSpecs {
                     throw new UnsupportedOperationException();
                 })
                 .configured(toMapExceptionsOfType(UnsupportedOperationException.class,
-                        (exception, response) -> response.setBody("foo")));
+                        (exception, request, response) -> response.setBody("foo")));
         final HttpMaid httpMaid = quantumMaid.httpMaid();
         final HttpMaidClient client = aHttpMaidClientBypassingRequestsDirectlyTo(httpMaid)
                 .build();
