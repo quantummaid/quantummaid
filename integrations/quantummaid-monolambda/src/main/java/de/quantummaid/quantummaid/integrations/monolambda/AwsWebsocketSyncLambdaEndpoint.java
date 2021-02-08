@@ -24,8 +24,6 @@ package de.quantummaid.quantummaid.integrations.monolambda;
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.awslambda.AwsLambdaEvent;
 import de.quantummaid.httpmaid.awslambda.AwsWebsocketConnectionInformation;
-import de.quantummaid.httpmaid.awslambda.AwsWebsocketSender;
-import de.quantummaid.httpmaid.awslambda.apigateway.ApiGatewayClientFactory;
 import de.quantummaid.httpmaid.chains.MetaDataKey;
 import de.quantummaid.httpmaid.http.Headers;
 import de.quantummaid.httpmaid.http.QueryParameters;
@@ -49,7 +47,6 @@ import static de.quantummaid.httpmaid.awslambda.AwsWebsocketSender.AWS_WEBSOCKET
 import static de.quantummaid.httpmaid.awslambda.MapDeserializer.mapFromString;
 import static de.quantummaid.httpmaid.awslambda.WebsocketEventUtils.extractHeaders;
 import static de.quantummaid.httpmaid.awslambda.WebsocketEventUtils.extractQueryParameters;
-import static de.quantummaid.httpmaid.awslambda.apigateway.DefaultApiGatewayClientFactory.defaultApiGatewayClientFactory;
 import static de.quantummaid.httpmaid.awslambda.authorizer.LambdaWebsocketAuthorizer.*;
 import static de.quantummaid.httpmaid.util.Validators.validateNotNull;
 import static de.quantummaid.httpmaid.util.Validators.validateNotNullNorEmpty;

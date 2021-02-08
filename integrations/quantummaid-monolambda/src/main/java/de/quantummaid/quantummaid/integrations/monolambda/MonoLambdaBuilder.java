@@ -59,7 +59,7 @@ public final class MonoLambdaBuilder {
     private Predicate<Class<?>> useCaseRegistrationFilter = useCase -> false;
     private WebsocketAuthorizer websocketAuthorizer;
     private AdditionalWebsocketDataProvider additionalWebsocketDataProvider;
-    private ApiGatewaySyncClientFactory apiGatewayClientFactory = null;
+    private ApiGatewaySyncClientFactory apiGatewayClientFactory;
 
     public static MonoLambdaBuilder monoLambdaBuilder() {
         final String region = System.getenv("AWS_REGION");
@@ -117,17 +117,17 @@ public final class MonoLambdaBuilder {
         return withWebsocketAuthorizer(authorizer);
     }
 
-    public MonoLambdaBuilder withApiGatewayClientFactory(final ApiGatewaySyncClientFactory apiGatewayClientFactory) {
-        this.apiGatewayClientFactory = apiGatewayClientFactory;
-        return this;
-    }
-
     public MonoLambdaBuilder withCognitoAuthorization(final String userPoolId,
                                                       final String userPoolClientId,
                                                       final TokenExtractor tokenExtractor,
                                                       final CognitoContextEnricher contextEnricher) {
         withCognitoAuthorization(userPoolId, userPoolClientId, tokenExtractor);
         return withAdditionalWebsocketDataProvider(contextEnricher);
+    }
+
+    public MonoLambdaBuilder withApiGatewayClientFactory(final ApiGatewaySyncClientFactory apiGatewayClientFactory) {
+        this.apiGatewayClientFactory = apiGatewayClientFactory;
+        return this;
     }
 
     public MonoLambda build() {
