@@ -42,6 +42,7 @@ import java.util.function.Predicate;
 
 import static de.quantummaid.mapmaid.minimaljson.MinimalJsonMarshallerAndUnmarshaller.minimalJsonMarshallerAndUnmarshaller;
 import static de.quantummaid.mapmaid.shared.validators.NotNullValidator.validateNotNull;
+import static de.quantummaid.quantummaid.integrations.monolambda.DefaultApiGatewaySyncClientFactory.defaultApiGatewayClientFactory;
 import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambda.fromHttpMaid;
 import static de.quantummaid.quantummaid.monolambda.MonoLambdaSharedLogic.buildHttpMaid;
 
@@ -58,6 +59,7 @@ public final class MonoLambdaBuilder {
     private Predicate<Class<?>> useCaseRegistrationFilter = useCase -> false;
     private WebsocketAuthorizer websocketAuthorizer;
     private AdditionalWebsocketDataProvider additionalWebsocketDataProvider;
+    private ApiGatewaySyncClientFactory apiGatewayClientFactory;
 
     public static MonoLambdaBuilder monoLambdaBuilder() {
         final String region = System.getenv("AWS_REGION");
@@ -123,8 +125,16 @@ public final class MonoLambdaBuilder {
         return withAdditionalWebsocketDataProvider(contextEnricher);
     }
 
+    public MonoLambdaBuilder withApiGatewayClientFactory(final ApiGatewaySyncClientFactory apiGatewayClientFactory) {
+        this.apiGatewayClientFactory = apiGatewayClientFactory;
+        return this;
+    }
+
     public MonoLambda build() {
         final MinimalJsonMarshallerAndUnmarshaller marshallerAndUnmarshaller = minimalJsonMarshallerAndUnmarshaller();
+        if (apiGatewayClientFactory == null) {
+            apiGatewayClientFactory = defaultApiGatewayClientFactory();
+        }
         final HttpMaid httpMaid = buildHttpMaid(
                 httpConfiguration,
                 injectorConfiguration,
@@ -133,6 +143,6 @@ public final class MonoLambdaBuilder {
                 websocketAuthorizer,
                 additionalWebsocketDataProvider
         );
-        return fromHttpMaid(httpMaid, region);
+        return fromHttpMaid(httpMaid, region, apiGatewayClientFactory);
     }
 }

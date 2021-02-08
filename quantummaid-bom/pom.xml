@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.quantummaid</groupId>
         <artifactId>quantummaid-opensource-parent</artifactId>
-        <version>0.9.72</version>
+        <version>0.9.75</version>
     </parent>
 
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>quantummaid-bom</artifactId>
-    <version>1.0.92</version>
+    <version>1.0.93</version>
     <packaging>pom</packaging>
 
     <name>QuantumMaid - BOM</name>
@@ -25,62 +25,62 @@
             <dependency>
                 <groupId>de.quantummaid.quantummaid</groupId>
                 <artifactId>core</artifactId>
-                <version>1.0.92</version>
+                <version>1.0.93</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.integrations</groupId>
                 <artifactId>quantummaid-monolambda</artifactId>
-                <version>1.0.92</version>
+                <version>1.0.93</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.integrations</groupId>
                 <artifactId>quantummaid-testmonolambda</artifactId>
-                <version>1.0.92</version>
+                <version>1.0.93</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.integrations</groupId>
                 <artifactId>quantummaid-junit5</artifactId>
-                <version>1.0.92</version>
+                <version>1.0.93</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.integrations</groupId>
                 <artifactId>quantummaid-restassured</artifactId>
-                <version>1.0.92</version>
+                <version>1.0.93</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.integrations</groupId>
                 <artifactId>quantummaid-testsupport</artifactId>
-                <version>1.0.92</version>
+                <version>1.0.93</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.packagings</groupId>
                 <artifactId>quantummaid-essentials</artifactId>
-                <version>1.0.92</version>
+                <version>1.0.93</version>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.quantummaid.packagings</groupId>
                 <artifactId>quantummaid-test-essentials</artifactId>
-                <version>1.0.92</version>
+                <version>1.0.93</version>
             </dependency>
 
             <dependency>
                 <groupId>de.quantummaid.mapmaid</groupId>
                 <artifactId>mapmaid-bom</artifactId>
-                <version>0.9.109</version>
+                <version>0.9.111</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.injectmaid</groupId>
                 <artifactId>injectmaid-bom</artifactId>
-                <version>0.0.44</version>
+                <version>0.0.46</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>de.quantummaid.httpmaid</groupId>
                 <artifactId>httpmaid-bom</artifactId>
-                <version>0.9.122</version>
+                <version>0.9.124</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -94,13 +94,13 @@
             <dependency>
                 <groupId>de.quantummaid.usecasemaid</groupId>
                 <artifactId>core</artifactId>
-                <version>0.0.19</version>
+                <version>0.0.21</version>
             </dependency>
 
             <dependency>
                 <groupId>de.quantummaid.reflectmaid</groupId>
                 <artifactId>reflectmaid-parent</artifactId>
-                <version>0.1.52</version>
+                <version>0.1.54</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

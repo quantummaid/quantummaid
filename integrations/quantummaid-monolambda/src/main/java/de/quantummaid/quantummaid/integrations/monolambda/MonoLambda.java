@@ -23,7 +23,6 @@ package de.quantummaid.quantummaid.integrations.monolambda;
 
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.awslambda.AwsLambdaEndpoint;
-import de.quantummaid.httpmaid.awslambda.AwsWebsocketLambdaEndpoint;
 import de.quantummaid.httpmaid.awslambda.authorizer.LambdaWebsocketAuthorizer;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +31,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 
 import static de.quantummaid.httpmaid.awslambda.AwsLambdaEndpoint.awsLambdaEndpointFor;
-import static de.quantummaid.httpmaid.awslambda.AwsWebsocketLambdaEndpoint.awsWebsocketLambdaEndpointFor;
 import static de.quantummaid.httpmaid.awslambda.EventUtils.isAuthorizationRequest;
 import static de.quantummaid.httpmaid.awslambda.EventUtils.isWebSocketRequest;
 import static de.quantummaid.httpmaid.awslambda.authorizer.LambdaWebsocketAuthorizer.lambdaWebsocketAuthorizer;
+import static de.quantummaid.quantummaid.integrations.monolambda.AwsWebsocketSyncLambdaEndpoint.awsWebsocketSyncLambdaEndpointFor;
 import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambdaBuilder.monoLambdaBuilder;
 
 @Slf4j
@@ -43,7 +42,7 @@ import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambdaBuild
 public final class MonoLambda {
     private final HttpMaid httpMaid;
     private final AwsLambdaEndpoint httpEndpoint;
-    private final AwsWebsocketLambdaEndpoint websocketEndpoint;
+    private final AwsWebsocketSyncLambdaEndpoint websocketEndpoint;
     private final LambdaWebsocketAuthorizer authorizer;
 
     public static MonoLambdaBuilder aMonoLambdaInRegion(final String region) {
@@ -51,9 +50,14 @@ public final class MonoLambda {
     }
 
     static MonoLambda fromHttpMaid(final HttpMaid httpMaid,
-                                   final String region) {
+                                   final String region,
+                                   final ApiGatewaySyncClientFactory apiGatewayClientFactory) {
         final AwsLambdaEndpoint httpEndpoint = awsLambdaEndpointFor(httpMaid);
-        final AwsWebsocketLambdaEndpoint websocketEndpoint = awsWebsocketLambdaEndpointFor(httpMaid, region);
+        final AwsWebsocketSyncLambdaEndpoint websocketEndpoint = awsWebsocketSyncLambdaEndpointFor(
+                httpMaid,
+                region,
+                apiGatewayClientFactory
+        );
         final LambdaWebsocketAuthorizer authorizer = lambdaWebsocketAuthorizer(httpMaid);
         return new MonoLambda(httpMaid, httpEndpoint, websocketEndpoint, authorizer);
     }
