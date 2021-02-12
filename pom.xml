@@ -10,7 +10,7 @@
 
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.93</version>
+    <version>1.0.94</version>
     <packaging>pom</packaging>
 
     <name>QuantumMaid</name>
