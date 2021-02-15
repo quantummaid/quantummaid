@@ -23,6 +23,7 @@ package de.quantummaid.quantummaid.integrations.monolambda;
 
 import software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiClient;
 
+@FunctionalInterface
 public interface ApiGatewaySyncClientFactory {
     ApiGatewayManagementApiClient provide(String endpointUrl);
 }

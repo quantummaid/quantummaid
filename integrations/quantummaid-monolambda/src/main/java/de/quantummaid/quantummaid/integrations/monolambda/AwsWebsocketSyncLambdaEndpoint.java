@@ -100,7 +100,8 @@ public final class AwsWebsocketSyncLambdaEndpoint {
         final String connectionId = requestContext.getAsString("connectionId");
         final String stage = requestContext.getAsString("stage");
         final String apiId = requestContext.getAsString("apiId");
-        final AwsWebsocketConnectionInformation connectionInformation = awsWebsocketConnectionInformation(connectionId, stage, apiId, region);
+        final AwsWebsocketConnectionInformation connectionInformation =
+                awsWebsocketConnectionInformation(connectionId, stage, apiId, region);
         if (CONNECT_EVENT_TYPE.equals(eventType)) {
             handleConnect(event, connectionInformation);
             return emptyMap();
@@ -110,7 +111,8 @@ public final class AwsWebsocketSyncLambdaEndpoint {
         } else if (MESSAGE_EVENT_TYPE.equals(eventType)) {
             return handleMessage(event, connectionInformation);
         } else {
-            throw new UnsupportedOperationException(format("Unsupported lambda event type '%s' with event '%s'", eventType, event));
+            throw new UnsupportedOperationException(format("Unsupported lambda event type '%s' with event '%s'",
+                    eventType, event));
         }
     }
 

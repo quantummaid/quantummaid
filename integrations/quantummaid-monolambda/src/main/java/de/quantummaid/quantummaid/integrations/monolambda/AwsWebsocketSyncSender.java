@@ -68,7 +68,11 @@ public final class AwsWebsocketSyncSender implements WebsocketSender<AwsWebsocke
                                     .connectionId(connectionId)
                                     .data(SdkBytes.fromUtf8String(message))
                                     .build();
-                            client.postToConnection(request);
+                            try {
+                                client.postToConnection(request);
+                            } catch (final Throwable throwable) {
+                                onException.accept(connectionInformation, throwable);
+                            }
                         });
             }
         });
@@ -87,7 +91,11 @@ public final class AwsWebsocketSyncSender implements WebsocketSender<AwsWebsocke
                             final DeleteConnectionRequest request = DeleteConnectionRequest.builder()
                                     .connectionId(connectionId)
                                     .build();
-                            client.deleteConnection(request);
+                            try {
+                                client.deleteConnection(request);
+                            } catch (final Throwable throwable) {
+                                onException.accept(connectionInformation, throwable);
+                            }
                         });
             }
         });
