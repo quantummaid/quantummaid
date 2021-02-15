@@ -28,7 +28,7 @@
         <guice-version>4.2.3</guice-version>
 
         <dependency-update-file-checksum>8f6ea182969b0fcce9fae1bb13579713</dependency-update-file-checksum>
-        <plugin-update-file-checksum>915baffd77985e9da0d3cfee67e149eb</plugin-update-file-checksum>
+        <plugin-update-file-checksum>35fe547b725ca8e71b0d13c8c21894df</plugin-update-file-checksum>
         <sonar.coverage.jacoco.xmlReportPaths>../coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
@@ -43,61 +43,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>de.quantummaid</groupId>
-                <artifactId>documaid</artifactId>
-                <version>${documaid-version}</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <phase>validate</phase>
-                        <configuration>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>${maven-enforcer-plugin-version}</version>
-                <executions>
-                    <execution>
-                        <id>enforce-checksum</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <phase>process-resources</phase>
-                        <configuration>
-                            <rules>
-                                <requireMavenVersion>
-                                    <version>3.6</version>
-                                </requireMavenVersion>
-                                <requireFileChecksum>
-                                    <message>Outdated dependencies detected</message>
-                                    <file>target/dependency-updates.txt</file>
-                                    <checksum>${dependency-update-file-checksum}</checksum>
-                                    <type>md5</type>
-                                </requireFileChecksum>
-                                <requireFileChecksum>
-                                    <message>Outdated plugins detected</message>
-                                    <file>target/plugin-updates.txt</file>
-                                    <checksum>${plugin-update-file-checksum}</checksum>
-                                    <type>md5</type>
-                                </requireFileChecksum>
-                            </rules>
-                            <fail>true</fail>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
     <profiles>
         <profile>
