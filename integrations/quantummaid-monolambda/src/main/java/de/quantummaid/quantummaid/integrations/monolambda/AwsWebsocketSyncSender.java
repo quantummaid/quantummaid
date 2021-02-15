@@ -70,8 +70,8 @@ public final class AwsWebsocketSyncSender implements WebsocketSender<AwsWebsocke
                                     .build();
                             try {
                                 client.postToConnection(request);
-                            } catch (final Throwable throwable) {
-                                onException.accept(connectionInformation, throwable);
+                            } catch (final Exception e) {
+                                onException.accept(connectionInformation, e);
                             }
                         });
             }
@@ -93,8 +93,8 @@ public final class AwsWebsocketSyncSender implements WebsocketSender<AwsWebsocke
                                     .build();
                             try {
                                 client.deleteConnection(request);
-                            } catch (final Throwable throwable) {
-                                onException.accept(connectionInformation, throwable);
+                            } catch (final Exception e) {
+                                onException.accept(connectionInformation, e);
                             }
                         });
             }
