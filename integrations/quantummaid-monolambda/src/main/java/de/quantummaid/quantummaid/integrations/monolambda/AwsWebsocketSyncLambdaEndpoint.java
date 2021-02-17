@@ -25,12 +25,11 @@ import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.awslambda.AwsLambdaEvent;
 import de.quantummaid.httpmaid.awslambda.AwsWebsocketConnectionInformation;
 import de.quantummaid.httpmaid.chains.MetaDataKey;
-import de.quantummaid.httpmaid.http.Headers;
-import de.quantummaid.httpmaid.http.QueryParameters;
+import de.quantummaid.httpmaid.endpoint.RawResponse;
 import de.quantummaid.httpmaid.websockets.authorization.AuthorizationDecision;
 import de.quantummaid.httpmaid.websockets.endpoint.RawWebsocketConnectBuilder;
-import de.quantummaid.httpmaid.websockets.endpoint.RawWebsocketMessage;
 import de.quantummaid.httpmaid.websockets.registry.ConnectionInformation;
+import de.quantummaid.httpmaid.websockets.registry.WebsocketRegistryEntry;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
@@ -45,14 +44,16 @@ import static de.quantummaid.httpmaid.awslambda.AwsWebsocketAuthorizationExcepti
 import static de.quantummaid.httpmaid.awslambda.AwsWebsocketConnectionInformation.awsWebsocketConnectionInformation;
 import static de.quantummaid.httpmaid.awslambda.AwsWebsocketSender.AWS_WEBSOCKET_SENDER;
 import static de.quantummaid.httpmaid.awslambda.MapDeserializer.mapFromString;
-import static de.quantummaid.httpmaid.awslambda.WebsocketEventUtils.extractHeaders;
-import static de.quantummaid.httpmaid.awslambda.WebsocketEventUtils.extractQueryParameters;
-import static de.quantummaid.httpmaid.awslambda.authorizer.LambdaWebsocketAuthorizer.*;
+import static de.quantummaid.httpmaid.awslambda.authorizer.LambdaWebsocketAuthorizer.REGISTRY_ENTRY_KEY;
+import static de.quantummaid.httpmaid.awslambda.authorizer.LambdaWebsocketAuthorizer.authorize;
+import static de.quantummaid.httpmaid.awslambda.registry.EntryDeserializer.deserializeEntry;
 import static de.quantummaid.httpmaid.util.Validators.validateNotNull;
 import static de.quantummaid.httpmaid.util.Validators.validateNotNullNorEmpty;
-import static de.quantummaid.httpmaid.websockets.WebsocketMetaDataKeys.ADDITIONAL_WEBSOCKET_DATA;
+import static de.quantummaid.httpmaid.websockets.WebsocketMetaDataKeys.WEBSOCKET_REGISTRY_ENTRY;
+import static de.quantummaid.httpmaid.websockets.authorization.AuthorizationDecision.AUTHORIZATION_DECISION;
 import static de.quantummaid.httpmaid.websockets.endpoint.RawWebsocketConnectBuilder.rawWebsocketConnectBuilder;
 import static de.quantummaid.httpmaid.websockets.endpoint.RawWebsocketDisconnect.rawWebsocketDisconnect;
+import static de.quantummaid.httpmaid.websockets.endpoint.RawWebsocketMessage.rawWebsocketMessage;
 import static de.quantummaid.httpmaid.websockets.endpoint.RawWebsocketMessage.rawWebsocketMessageWithMetaData;
 import static de.quantummaid.quantummaid.integrations.monolambda.AwsWebsocketSyncSender.awsWebsocketSyncSender;
 import static java.lang.String.format;
@@ -83,12 +84,6 @@ public final class AwsWebsocketSyncLambdaEndpoint {
         return new AwsWebsocketSyncLambdaEndpoint(httpMaid, region);
     }
 
-    private static Map<String, Object> extractAdditionalData(final AwsLambdaEvent authorizerContext) {
-        final String serializedAdditionalWebsocketData = authorizerContext
-                .getAsString(ADDITIONAL_DATA_KEY);
-        return mapFromString(serializedAdditionalWebsocketData);
-    }
-
     public Map<String, Object> delegate(final Map<String, Object> event) {
         final AwsLambdaEvent awsLambdaEvent = awsLambdaEvent(event);
         return handleWebsocketRequest(awsLambdaEvent);
@@ -100,8 +95,7 @@ public final class AwsWebsocketSyncLambdaEndpoint {
         final String connectionId = requestContext.getAsString("connectionId");
         final String stage = requestContext.getAsString("stage");
         final String apiId = requestContext.getAsString("apiId");
-        final AwsWebsocketConnectionInformation connectionInformation =
-                awsWebsocketConnectionInformation(connectionId, stage, apiId, region);
+        final AwsWebsocketConnectionInformation connectionInformation = awsWebsocketConnectionInformation(connectionId, stage, apiId, region);
         if (CONNECT_EVENT_TYPE.equals(eventType)) {
             handleConnect(event, connectionInformation);
             return emptyMap();
@@ -111,34 +105,28 @@ public final class AwsWebsocketSyncLambdaEndpoint {
         } else if (MESSAGE_EVENT_TYPE.equals(eventType)) {
             return handleMessage(event, connectionInformation);
         } else {
-            throw new UnsupportedOperationException(format("Unsupported lambda event type '%s' with event '%s'",
-                    eventType, event));
+            throw new UnsupportedOperationException(format("Unsupported lambda event type '%s' with event '%s'", eventType, event));
         }
     }
 
     private void handleConnect(final AwsLambdaEvent event,
                                final AwsWebsocketConnectionInformation connectionInformation) {
-        final Map<String, Object> additionalWebsocketData;
+        final WebsocketRegistryEntry websocketRegistryEntry;
         if (isAlreadyAuthorized(event)) {
-            additionalWebsocketData = extractAdditionalData(event
-                    .getMap(REQUEST_CONTEXT_KEY)
-                    .getMap(AUTHORIZER_KEY));
+            websocketRegistryEntry = extractWebsocketRegistryEntry(event, connectionInformation);
         } else {
-            final AuthorizationDecision authorizationDecision = authorize(event, httpMaid);
+            final RawResponse authorizationResponse = authorize(event, httpMaid);
+            final AuthorizationDecision authorizationDecision = authorizationResponse.metaData().get(AUTHORIZATION_DECISION);
             if (!authorizationDecision.isAuthorized()) {
                 throw awsWebsocketAuthorizationException();
             }
-            additionalWebsocketData = authorizationDecision.additionalData();
+            websocketRegistryEntry = authorizationResponse.metaData().get(WEBSOCKET_REGISTRY_ENTRY);
         }
         httpMaid.handleRequest(() -> {
             final RawWebsocketConnectBuilder builder = rawWebsocketConnectBuilder();
             builder.withConnectionInformation(AWS_WEBSOCKET_SENDER, connectionInformation);
             builder.withAdditionalMetaData(AWS_LAMBDA_EVENT, event);
-            final QueryParameters queryParameters = extractQueryParameters(event);
-            builder.withQueryParameters(queryParameters);
-            final Headers headers = extractHeaders(event);
-            builder.withHeaders(headers);
-            builder.withAdditionalMetaData(ADDITIONAL_WEBSOCKET_DATA, additionalWebsocketData);
+            builder.withRegistryEntry(websocketRegistryEntry);
             return builder.build();
         }, ignored -> {
         });
@@ -157,29 +145,10 @@ public final class AwsWebsocketSyncLambdaEndpoint {
             final String body = event.getAsString("body");
             final Map<MetaDataKey<?>, Object> additionalMetaData = Map.of(AWS_LAMBDA_EVENT, event);
             if (isAlreadyAuthorized(event)) {
-                final AwsLambdaEvent authorizerContext = event
-                        .getMap(REQUEST_CONTEXT_KEY)
-                        .getMap(AUTHORIZER_KEY);
-                final String serializedEvent = authorizerContext
-                        .getAsString(AUTHORIZER_EVENT_KEY);
-                final Map<String, Object> authorizerEventMap = mapFromString(serializedEvent);
-                final AwsLambdaEvent authorizerEvent = awsLambdaEvent(authorizerEventMap);
-                final QueryParameters queryParameters = extractQueryParameters(authorizerEvent);
-                final Headers headers = extractHeaders(authorizerEvent);
-                final Map<String, Object> additionalData = extractAdditionalData(authorizerContext);
-                return rawWebsocketMessageWithMetaData(
-                        connectionInformation,
-                        body,
-                        queryParameters,
-                        headers,
-                        additionalData,
-                        additionalMetaData
-                );
+                final WebsocketRegistryEntry registryEntry = extractWebsocketRegistryEntry(event, connectionInformation);
+                return rawWebsocketMessageWithMetaData(connectionInformation, body, registryEntry, additionalMetaData);
             } else {
-                return RawWebsocketMessage.rawWebsocketMessage(connectionInformation,
-                        body,
-                        additionalMetaData
-                );
+                return rawWebsocketMessage(connectionInformation, body, additionalMetaData);
             }
         }, response -> {
             final LinkedHashMap<String, Object> responseMap = new LinkedHashMap<>();
@@ -191,5 +160,14 @@ public final class AwsWebsocketSyncLambdaEndpoint {
     private boolean isAlreadyAuthorized(final AwsLambdaEvent event) {
         final AwsLambdaEvent context = event.getMap(REQUEST_CONTEXT_KEY);
         return context.containsKey(AUTHORIZER_KEY);
+    }
+
+    private static WebsocketRegistryEntry extractWebsocketRegistryEntry(final AwsLambdaEvent event,
+                                                                        final ConnectionInformation connectionInformation) {
+        final AwsLambdaEvent authorizerContext = event.getMap(REQUEST_CONTEXT_KEY).getMap(AUTHORIZER_KEY);
+        final String serializedRegistryEntry = authorizerContext
+                .getAsString(REGISTRY_ENTRY_KEY);
+        final Map<String, Object> map = mapFromString(serializedRegistryEntry);
+        return deserializeEntry(connectionInformation, map);
     }
 }
