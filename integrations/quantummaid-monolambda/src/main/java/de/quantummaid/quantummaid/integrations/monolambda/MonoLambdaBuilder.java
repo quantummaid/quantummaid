@@ -23,6 +23,8 @@ package de.quantummaid.quantummaid.integrations.monolambda;
 
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.HttpMaidBuilder;
+import de.quantummaid.httpmaid.awslambda.sender.apigateway.ApiGatewayClientFactory;
+import de.quantummaid.httpmaid.awslambda.sender.apigateway.LowLevelFactory;
 import de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoContextEnricher;
 import de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoWebsocketAuthorizer;
 import de.quantummaid.httpmaid.awslambdacognitoauthorizer.TokenExtractor;
@@ -35,14 +37,18 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiAsyncClient;
+import software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import static de.quantummaid.httpmaid.awslambda.sender.apigateway.async.ApiGatewayAsyncClientFactory.asyncApiGatewayClientFactory;
+import static de.quantummaid.httpmaid.awslambda.sender.apigateway.sync.ApiGatewaySyncClientFactory.defaultSyncApiGatewayClientFactory;
+import static de.quantummaid.httpmaid.awslambda.sender.apigateway.sync.ApiGatewaySyncClientFactory.syncApiGatewayClientFactory;
 import static de.quantummaid.mapmaid.minimaljson.MinimalJsonMarshallerAndUnmarshaller.minimalJsonMarshallerAndUnmarshaller;
 import static de.quantummaid.mapmaid.shared.validators.NotNullValidator.validateNotNull;
-import static de.quantummaid.quantummaid.integrations.monolambda.DefaultApiGatewaySyncClientFactory.defaultApiGatewayClientFactory;
 import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambda.fromHttpMaid;
 import static de.quantummaid.quantummaid.monolambda.MonoLambdaSharedLogic.buildHttpMaid;
 
@@ -59,7 +65,7 @@ public final class MonoLambdaBuilder {
     private Predicate<Class<?>> useCaseRegistrationFilter = useCase -> false;
     private WebsocketAuthorizer websocketAuthorizer;
     private AdditionalWebsocketDataProvider additionalWebsocketDataProvider;
-    private ApiGatewaySyncClientFactory apiGatewayClientFactory;
+    private ApiGatewayClientFactory apiGatewayClientFactory;
 
     public static MonoLambdaBuilder monoLambdaBuilder() {
         final String region = System.getenv("AWS_REGION");
@@ -125,15 +131,27 @@ public final class MonoLambdaBuilder {
         return withAdditionalWebsocketDataProvider(contextEnricher);
     }
 
-    public MonoLambdaBuilder withApiGatewayClientFactory(final ApiGatewaySyncClientFactory apiGatewayClientFactory) {
+    public MonoLambdaBuilder withApiGatewayClientFactory(final ApiGatewayClientFactory apiGatewayClientFactory) {
         this.apiGatewayClientFactory = apiGatewayClientFactory;
+        return this;
+    }
+
+    public MonoLambdaBuilder withSynchronousApiGatewayClientFactory(
+            final LowLevelFactory<ApiGatewayManagementApiClient> clientFactory) {
+        this.apiGatewayClientFactory = syncApiGatewayClientFactory(clientFactory);
+        return this;
+    }
+
+    public MonoLambdaBuilder withAsynchronousApiGatewayClientFactory(
+            final LowLevelFactory<ApiGatewayManagementApiAsyncClient> clientFactory) {
+        this.apiGatewayClientFactory = asyncApiGatewayClientFactory(clientFactory);
         return this;
     }
 
     public MonoLambda build() {
         final MinimalJsonMarshallerAndUnmarshaller marshallerAndUnmarshaller = minimalJsonMarshallerAndUnmarshaller();
         if (apiGatewayClientFactory == null) {
-            apiGatewayClientFactory = defaultApiGatewayClientFactory();
+            apiGatewayClientFactory = defaultSyncApiGatewayClientFactory();
         }
         final HttpMaid httpMaid = buildHttpMaid(
                 httpConfiguration,
