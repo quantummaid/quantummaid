@@ -24,6 +24,7 @@ package de.quantummaid.quantummaid.integrations.testmonolambda;
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.client.HttpMaidClient;
 import de.quantummaid.quantummaid.integrations.testsupport.FreePortPool;
+import de.quantummaid.reflectmaid.ReflectMaid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,13 +39,19 @@ public final class TestMonoLambda implements AutoCloseable {
     private final HttpMaid httpMaid;
     private final int port;
 
-    public static TestMonoLambdaBuilder aTestMonoLambda(final int port) {
-        return testMonoLambdaBuilder(port);
-    }
-
     public static TestMonoLambdaBuilder aTestMonoLambda() {
         final int port = FreePortPool.freePort();
-        return testMonoLambdaBuilder(port);
+        return aTestMonoLambda(port);
+    }
+
+    public static TestMonoLambdaBuilder aTestMonoLambda(final int port) {
+        final ReflectMaid reflectMaid = ReflectMaid.aReflectMaid();
+        return aTestMonoLambda(reflectMaid, port);
+    }
+
+    public static TestMonoLambdaBuilder aTestMonoLambda(final ReflectMaid reflectMaid,
+                                                        final int port) {
+        return testMonoLambdaBuilder(reflectMaid, port);
     }
 
     static TestMonoLambda fromHttpMaid(final HttpMaid httpMaid, final int port) {

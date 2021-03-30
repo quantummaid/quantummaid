@@ -30,6 +30,7 @@ import de.quantummaid.httpmaid.generator.builder.ConditionStage;
 import de.quantummaid.httpmaid.mapmaid.MapMaidModule;
 import de.quantummaid.httpmaid.usecases.UseCasesModule;
 import de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory;
+import de.quantummaid.reflectmaid.ReflectMaid;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
@@ -72,11 +73,16 @@ public final class QuantumMaid implements HttpConfiguration<QuantumMaid>, AutoCl
     private final Thread shutdownHook = new Thread(this::close);
 
     public static QuantumMaid quantumMaid() {
+        final ReflectMaid reflectMaid = ReflectMaid.aReflectMaid();
+        return quantumMaid(reflectMaid);
+    }
+
+    public static QuantumMaid quantumMaid(final ReflectMaid reflectMaid) {
         final UseCasesModule useCasesModule = useCasesModule();
-        final InjectMaidInstantiatorFactory instantiatorFactory = injectMaidInstantiatorFactory();
+        final InjectMaidInstantiatorFactory instantiatorFactory = injectMaidInstantiatorFactory(reflectMaid);
         useCasesModule.setUseCaseInstantiatorFactory(instantiatorFactory);
         final MapMaidModule mapMaidModule = mapMaidModule();
-        final HttpMaidBuilder httpMaidBuilder = anHttpMaid()
+        final HttpMaidBuilder httpMaidBuilder = anHttpMaid(reflectMaid)
                 .configured(toUseModules(useCasesModule, mapMaidModule))
                 .disableAutodectectionOfModules();
         return new QuantumMaid(httpMaidBuilder);
