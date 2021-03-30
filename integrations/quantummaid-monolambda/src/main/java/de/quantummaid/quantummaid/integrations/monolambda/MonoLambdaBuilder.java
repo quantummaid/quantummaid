@@ -32,6 +32,7 @@ import de.quantummaid.httpmaid.websockets.additionaldata.AdditionalWebsocketData
 import de.quantummaid.httpmaid.websockets.authorization.WebsocketAuthorizer;
 import de.quantummaid.injectmaid.InjectMaidBuilder;
 import de.quantummaid.mapmaid.minimaljson.MinimalJsonMarshallerAndUnmarshaller;
+import de.quantummaid.reflectmaid.ReflectMaid;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,7 @@ import static de.quantummaid.quantummaid.monolambda.MonoLambdaSharedLogic.buildH
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
 public final class MonoLambdaBuilder {
+    private final ReflectMaid reflectMaid;
     private final String region;
     private Consumer<HttpMaidBuilder> httpConfiguration = httpMaidBuilder -> {
     };
@@ -67,14 +69,10 @@ public final class MonoLambdaBuilder {
     private AdditionalWebsocketDataProvider additionalWebsocketDataProvider;
     private ApiGatewayClientFactory apiGatewayClientFactory;
 
-    public static MonoLambdaBuilder monoLambdaBuilder() {
-        final String region = System.getenv("AWS_REGION");
-        return monoLambdaBuilder(region);
-    }
-
-    public static MonoLambdaBuilder monoLambdaBuilder(final String region) {
+    public static MonoLambdaBuilder monoLambdaBuilder(final ReflectMaid reflectMaid,
+                                                      final String region) {
         validateNotNull(region, "region");
-        return new MonoLambdaBuilder(region);
+        return new MonoLambdaBuilder(reflectMaid, region);
     }
 
     public MonoLambdaBuilder withHttpMaid(final Consumer<HttpMaidBuilder> httpConfiguration) {
@@ -154,6 +152,7 @@ public final class MonoLambdaBuilder {
             apiGatewayClientFactory = defaultSyncApiGatewayClientFactory();
         }
         final HttpMaid httpMaid = buildHttpMaid(
+                reflectMaid,
                 httpConfiguration,
                 injectorConfiguration,
                 useCaseRegistrationFilter,

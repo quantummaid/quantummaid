@@ -27,6 +27,7 @@ import de.quantummaid.httpmaid.websockets.additionaldata.AdditionalWebsocketData
 import de.quantummaid.httpmaid.websockets.authorization.WebsocketAuthorizer;
 import de.quantummaid.injectmaid.InjectMaidBuilder;
 import de.quantummaid.mapmaid.minimaljson.MinimalJsonMarshallerAndUnmarshaller;
+import de.quantummaid.reflectmaid.ReflectMaid;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,7 @@ import static de.quantummaid.quantummaid.monolambda.MonoLambdaSharedLogic.buildH
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
 public final class TestMonoLambdaBuilder {
+    private final ReflectMaid reflectMaid;
     private final int port;
     private Consumer<HttpMaidBuilder> httpConfiguration = httpMaidBuilder -> {
     };
@@ -55,8 +57,9 @@ public final class TestMonoLambdaBuilder {
     private WebsocketAuthorizer websocketAuthorizer;
     private AdditionalWebsocketDataProvider additionalWebsocketDataProvider;
 
-    public static TestMonoLambdaBuilder testMonoLambdaBuilder(final int port) {
-        return new TestMonoLambdaBuilder(port);
+    public static TestMonoLambdaBuilder testMonoLambdaBuilder(final ReflectMaid reflectMaid,
+                                                              final int port) {
+        return new TestMonoLambdaBuilder(reflectMaid, port);
     }
 
     public TestMonoLambdaBuilder withHttpMaid(final Consumer<HttpMaidBuilder> httpConfiguration) {
@@ -94,6 +97,7 @@ public final class TestMonoLambdaBuilder {
     public TestMonoLambda build() {
         final MinimalJsonMarshallerAndUnmarshaller marshallerAndUnmarshaller = minimalJsonMarshallerAndUnmarshaller();
         final HttpMaid httpMaid = buildHttpMaid(
+                reflectMaid,
                 httpConfiguration,
                 injectorConfiguration,
                 useCaseRegistrationFilter,

@@ -31,6 +31,7 @@ import de.quantummaid.injectmaid.InjectMaid;
 import de.quantummaid.injectmaid.InjectMaidBuilder;
 import de.quantummaid.mapmaid.builder.MarshallerAndUnmarshaller;
 import de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory;
+import de.quantummaid.reflectmaid.ReflectMaid;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Consumer;
@@ -51,13 +52,14 @@ public final class MonoLambdaSharedLogic {
     private MonoLambdaSharedLogic() {
     }
 
-    public static HttpMaid buildHttpMaid(final Consumer<HttpMaidBuilder> httpConfiguration,
+    public static HttpMaid buildHttpMaid(final ReflectMaid reflectMaid,
+                                         final Consumer<HttpMaidBuilder> httpConfiguration,
                                          final Consumer<InjectMaidBuilder> injectorConfiguration,
                                          final Predicate<Class<?>> useCaseRegistrationFilter,
                                          final MarshallerAndUnmarshaller<String> marshallerAndUnmarshaller,
                                          final WebsocketAuthorizer websocketAuthorizer,
                                          final AdditionalWebsocketDataProvider additionalWebsocketDataProvider) {
-        final InjectMaidBuilder injectMaidBuilder = InjectMaid.anInjectMaid();
+        final InjectMaidBuilder injectMaidBuilder = InjectMaid.anInjectMaid(reflectMaid);
         injectorConfiguration.accept(injectMaidBuilder);
         final UseCasesModule useCasesModule = useCasesModule();
 
@@ -68,7 +70,7 @@ public final class MonoLambdaSharedLogic {
 
         final MapMaidModule mapMaidModule = mapMaidModule();
 
-        final HttpMaidBuilder httpMaidBuilder = anHttpMaid()
+        final HttpMaidBuilder httpMaidBuilder = anHttpMaid(reflectMaid)
                 .configured(toUseModules(useCasesModule, mapMaidModule))
                 .configured(toConfigureMapMaidUsingRecipe(mapMaidBuilder ->
                         mapMaidBuilder.withAdvancedSettings(advancedBuilder -> advancedBuilder

@@ -26,6 +26,7 @@ import de.quantummaid.httpmaid.usecases.instantiation.UseCaseInstantiatorFactory
 import de.quantummaid.injectmaid.InjectMaid;
 import de.quantummaid.injectmaid.InjectMaidBuilder;
 import de.quantummaid.injectmaid.timing.InstantiationTimes;
+import de.quantummaid.reflectmaid.ReflectMaid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +42,8 @@ public final class InjectMaidInstantiatorFactory implements UseCaseInstantiatorF
     private final InjectMaidBuilder builder;
     private final Predicate<Class<?>> useCaseRegistrationFilter;
 
-    public static InjectMaidInstantiatorFactory injectMaidInstantiatorFactory() {
-        return injectMaidInstantiatorFactory(InjectMaid.anInjectMaid(), useCase -> false);
+    public static InjectMaidInstantiatorFactory injectMaidInstantiatorFactory(final ReflectMaid reflectMaid) {
+        return injectMaidInstantiatorFactory(InjectMaid.anInjectMaid(reflectMaid), useCase -> false);
     }
 
     public static InjectMaidInstantiatorFactory injectMaidInstantiatorFactory(

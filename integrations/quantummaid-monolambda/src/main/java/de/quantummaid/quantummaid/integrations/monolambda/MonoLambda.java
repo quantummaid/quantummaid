@@ -26,6 +26,7 @@ import de.quantummaid.httpmaid.awslambda.AwsLambdaEndpoint;
 import de.quantummaid.httpmaid.awslambda.AwsWebsocketLambdaEndpoint;
 import de.quantummaid.httpmaid.awslambda.authorizer.LambdaWebsocketAuthorizer;
 import de.quantummaid.httpmaid.awslambda.sender.apigateway.ApiGatewayClientFactory;
+import de.quantummaid.reflectmaid.ReflectMaid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,8 +47,19 @@ public final class MonoLambda {
     private final AwsWebsocketLambdaEndpoint websocketEndpoint;
     private final LambdaWebsocketAuthorizer authorizer;
 
+    public static MonoLambdaBuilder aMonoLambda() {
+        final String region = System.getenv("AWS_REGION");
+        return aMonoLambdaInRegion(region);
+    }
+
     public static MonoLambdaBuilder aMonoLambdaInRegion(final String region) {
-        return monoLambdaBuilder(region);
+        final ReflectMaid reflectMaid = ReflectMaid.aReflectMaid();
+        return monoLambdaBuilder(reflectMaid, region);
+    }
+
+    public static MonoLambdaBuilder aMonoLambdaInRegion(final ReflectMaid reflectMaid,
+                                                        final String region) {
+        return monoLambdaBuilder(reflectMaid, region);
     }
 
     static MonoLambda fromHttpMaid(final HttpMaid httpMaid,
