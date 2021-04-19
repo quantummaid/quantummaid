@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.99</version>
+        <version>1.0.100</version>
     </parent>
 
     <groupId>de.quantummaid.quantummaid.packagings</groupId>
