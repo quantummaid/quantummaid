@@ -10,21 +10,21 @@
 
     <groupId>de.quantummaid.quantummaid</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.99</version>
+    <version>1.0.100</version>
     <packaging>pom</packaging>
 
     <name>QuantumMaid</name>
 
     <properties>
-        <httpmaid-version>0.9.133</httpmaid-version>
-        <injectmaid-version>0.1.2</injectmaid-version>
-        <mapmaid-version>0.10.1</mapmaid-version>
+        <httpmaid-version>0.9.134</httpmaid-version>
+        <injectmaid-version>0.1.3</injectmaid-version>
+        <mapmaid-version>0.10.3</mapmaid-version>
         <eventmaid-version>1.0.62</eventmaid-version>
         <usecasemaid-version>0.0.22</usecasemaid-version>
-        <reflectmaid-version>0.2.3</reflectmaid-version>
+        <reflectmaid-version>0.2.7</reflectmaid-version>
 
         <junit-version>5.8.0-M1</junit-version>
-        <lombok-version>1.18.18</lombok-version>
+        <lombok-version>1.18.20</lombok-version>
         <guice-version>4.2.3</guice-version>
 
         <dependency-update-file-checksum>8f6ea182969b0fcce9fae1bb13579713</dependency-update-file-checksum>
