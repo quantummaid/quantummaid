@@ -49,6 +49,11 @@ public final class TestMonoLambda implements AutoCloseable {
         return aTestMonoLambda(reflectMaid, port);
     }
 
+    public static TestMonoLambdaBuilder aTestMonoLambda(final ReflectMaid reflectMaid) {
+        final int port = FreePortPool.freePort();
+        return testMonoLambdaBuilder(reflectMaid, port);
+    }
+
     public static TestMonoLambdaBuilder aTestMonoLambda(final ReflectMaid reflectMaid,
                                                         final int port) {
         return testMonoLambdaBuilder(reflectMaid, port);
