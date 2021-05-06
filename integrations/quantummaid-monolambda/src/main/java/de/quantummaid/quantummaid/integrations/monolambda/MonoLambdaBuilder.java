@@ -26,8 +26,8 @@ import de.quantummaid.httpmaid.HttpMaidBuilder;
 import de.quantummaid.httpmaid.awslambda.sender.apigateway.ApiGatewayClientFactory;
 import de.quantummaid.httpmaid.awslambda.sender.apigateway.LowLevelFactory;
 import de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoContextEnricher;
-import de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoWebsocketAuthorizer;
 import de.quantummaid.httpmaid.awslambdacognitoauthorizer.TokenExtractor;
+import de.quantummaid.httpmaid.runtimeconfiguration.RuntimeConfigurationValueProvider;
 import de.quantummaid.httpmaid.websockets.additionaldata.AdditionalWebsocketDataProvider;
 import de.quantummaid.httpmaid.websockets.authorization.WebsocketAuthorizer;
 import de.quantummaid.injectmaid.InjectMaidBuilder;
@@ -44,10 +44,12 @@ import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityPr
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static de.quantummaid.httpmaid.awslambda.sender.apigateway.async.ApiGatewayAsyncClientFactory.asyncApiGatewayClientFactory;
 import static de.quantummaid.httpmaid.awslambda.sender.apigateway.sync.ApiGatewaySyncClientFactory.defaultSyncApiGatewayClientFactory;
 import static de.quantummaid.httpmaid.awslambda.sender.apigateway.sync.ApiGatewaySyncClientFactory.syncApiGatewayClientFactory;
+import static de.quantummaid.httpmaid.awslambdacognitoauthorizer.CognitoWebsocketAuthorizer.cognitoWebsocketAuthorizer;
 import static de.quantummaid.mapmaid.minimaljson.MinimalJsonMarshallerAndUnmarshaller.minimalJsonMarshallerAndUnmarshaller;
 import static de.quantummaid.mapmaid.shared.validators.NotNullValidator.validateNotNull;
 import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambda.fromHttpMaid;
@@ -65,7 +67,7 @@ public final class MonoLambdaBuilder {
     private Consumer<InjectMaidBuilder> injectorConfiguration = injectMaidBuilder -> {
     };
     private Predicate<Class<?>> useCaseRegistrationFilter = useCase -> false;
-    private WebsocketAuthorizer websocketAuthorizer;
+    private RuntimeConfigurationValueProvider<WebsocketAuthorizer> websocketAuthorizer;
     private AdditionalWebsocketDataProvider additionalWebsocketDataProvider;
     private ApiGatewayClientFactory apiGatewayClientFactory;
 
@@ -95,6 +97,10 @@ public final class MonoLambdaBuilder {
     }
 
     public MonoLambdaBuilder withWebsocketAuthorizer(final WebsocketAuthorizer authorizer) {
+        return withWebsocketAuthorizer(() -> authorizer);
+    }
+
+    public MonoLambdaBuilder withWebsocketAuthorizer(final RuntimeConfigurationValueProvider<WebsocketAuthorizer> authorizer) {
         validateNotNull(authorizer, "authorizer");
         this.websocketAuthorizer = authorizer;
         return this;
@@ -110,19 +116,36 @@ public final class MonoLambdaBuilder {
     public MonoLambdaBuilder withCognitoAuthorization(final String userPoolId,
                                                       final String userPoolClientId,
                                                       final TokenExtractor tokenExtractor) {
-        final CognitoIdentityProviderClient client = CognitoIdentityProviderClient.create();
-        final String issuerUrl = String.format("https://cognito-idp.%s.amazonaws.com/%s", region, userPoolId);
-        final CognitoWebsocketAuthorizer authorizer = CognitoWebsocketAuthorizer.cognitoWebsocketAuthorizer(
-                client,
-                tokenExtractor,
-                issuerUrl,
-                userPoolClientId
-        );
-        return withWebsocketAuthorizer(authorizer);
+        return withCognitoAuthorization(() -> userPoolId, () -> userPoolClientId, tokenExtractor);
+    }
+
+    public MonoLambdaBuilder withCognitoAuthorization(final Supplier<String> userPoolId,
+                                                      final Supplier<String> userPoolClientId,
+                                                      final TokenExtractor tokenExtractor) {
+        return withWebsocketAuthorizer(() -> {
+            final CognitoIdentityProviderClient client = CognitoIdentityProviderClient.create();
+            final String suppliedUserPoolId = userPoolId.get();
+            final String issuerUrl = String.format("https://cognito-idp.%s.amazonaws.com/%s", region, suppliedUserPoolId);
+            final String suppliedUserPoolClientId = userPoolClientId.get();
+            return cognitoWebsocketAuthorizer(
+                    client,
+                    tokenExtractor,
+                    issuerUrl,
+                    suppliedUserPoolClientId
+            );
+        });
     }
 
     public MonoLambdaBuilder withCognitoAuthorization(final String userPoolId,
                                                       final String userPoolClientId,
+                                                      final TokenExtractor tokenExtractor,
+                                                      final CognitoContextEnricher contextEnricher) {
+        withCognitoAuthorization(() -> userPoolId, () -> userPoolClientId, tokenExtractor);
+        return withAdditionalWebsocketDataProvider(contextEnricher);
+    }
+
+    public MonoLambdaBuilder withCognitoAuthorization(final Supplier<String> userPoolId,
+                                                      final Supplier<String> userPoolClientId,
                                                       final TokenExtractor tokenExtractor,
                                                       final CognitoContextEnricher contextEnricher) {
         withCognitoAuthorization(userPoolId, userPoolClientId, tokenExtractor);
