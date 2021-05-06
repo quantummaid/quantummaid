@@ -65,7 +65,7 @@
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.135</version>
+            <version>0.9.136</version>
         </dependency>
         <!-- Showcase end httpmaidDependency -->
 
