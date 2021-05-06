@@ -24,6 +24,7 @@ package de.quantummaid.quantummaid.monolambda;
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.HttpMaidBuilder;
 import de.quantummaid.httpmaid.mapmaid.MapMaidModule;
+import de.quantummaid.httpmaid.runtimeconfiguration.RuntimeConfigurationValueProvider;
 import de.quantummaid.httpmaid.usecases.UseCasesModule;
 import de.quantummaid.httpmaid.websockets.additionaldata.AdditionalWebsocketDataProvider;
 import de.quantummaid.httpmaid.websockets.authorization.WebsocketAuthorizer;
@@ -57,7 +58,7 @@ public final class MonoLambdaSharedLogic {
                                          final Consumer<InjectMaidBuilder> injectorConfiguration,
                                          final Predicate<Class<?>> useCaseRegistrationFilter,
                                          final MarshallerAndUnmarshaller<String> marshallerAndUnmarshaller,
-                                         final WebsocketAuthorizer websocketAuthorizer,
+                                         final RuntimeConfigurationValueProvider<WebsocketAuthorizer> websocketAuthorizer,
                                          final AdditionalWebsocketDataProvider additionalWebsocketDataProvider) {
         final InjectMaidBuilder injectMaidBuilder = InjectMaid.anInjectMaid(reflectMaid);
         injectorConfiguration.accept(injectMaidBuilder);

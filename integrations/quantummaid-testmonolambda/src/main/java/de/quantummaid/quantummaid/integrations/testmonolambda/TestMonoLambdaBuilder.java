@@ -23,6 +23,7 @@ package de.quantummaid.quantummaid.integrations.testmonolambda;
 
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.HttpMaidBuilder;
+import de.quantummaid.httpmaid.runtimeconfiguration.RuntimeConfigurationValueProvider;
 import de.quantummaid.httpmaid.websockets.additionaldata.AdditionalWebsocketDataProvider;
 import de.quantummaid.httpmaid.websockets.authorization.WebsocketAuthorizer;
 import de.quantummaid.injectmaid.InjectMaidBuilder;
@@ -54,7 +55,7 @@ public final class TestMonoLambdaBuilder {
     private Consumer<InjectMaidBuilder> injectorConfiguration = injectMaidBuilder -> {
     };
     private Predicate<Class<?>> useCaseRegistrationFilter = useCase -> false;
-    private WebsocketAuthorizer websocketAuthorizer;
+    private RuntimeConfigurationValueProvider<WebsocketAuthorizer> websocketAuthorizer;
     private AdditionalWebsocketDataProvider additionalWebsocketDataProvider;
 
     public static TestMonoLambdaBuilder testMonoLambdaBuilder(final ReflectMaid reflectMaid,
@@ -82,6 +83,10 @@ public final class TestMonoLambdaBuilder {
     }
 
     public TestMonoLambdaBuilder withWebsocketAuthorizer(final WebsocketAuthorizer authorizer) {
+        return withWebsocketAuthorizer(() -> authorizer);
+    }
+
+    public TestMonoLambdaBuilder withWebsocketAuthorizer(final RuntimeConfigurationValueProvider<WebsocketAuthorizer> authorizer) {
         validateNotNull(authorizer, "authorizer");
         this.websocketAuthorizer = authorizer;
         return this;
