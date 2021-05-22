@@ -21,9 +21,13 @@
 
 package de.quantummaid.quantummaid.integrations.testsupport;
 
+import de.quantummaid.quantummaid.integrations.testsupport.reflection.ZeroArgumentConstructorInstantiator;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStream;
+
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public final class ParameterResolutionSpecs {
@@ -38,5 +42,30 @@ public final class ParameterResolutionSpecs {
     public void parameterWithUnknownTypeIsNotSupported() {
         final boolean supported = TestSupport.supportsParameter("port", Boolean.class);
         assertThat(supported, is(false));
+    }
+
+    @Test
+    public void testClassWithoutConstructor() {
+        QuantumMaidTestException exception = null;
+        try {
+            ZeroArgumentConstructorInstantiator.instantiate(int.class);
+        } catch (final QuantumMaidTestException e) {
+            exception = e;
+        }
+        assertThat(exception, is(notNullValue()));
+        assertThat(exception.getMessage(), is("class 'int' has to provide a zero-parameter constructor in" +
+                " order to be usable in QuantumMaid tests"));
+    }
+
+    @Test
+    public void testClassWithoutPermissionToCallConstructor() {
+        QuantumMaidTestException exception = null;
+        try {
+            ZeroArgumentConstructorInstantiator.instantiate(InputStream.class);
+        } catch (final QuantumMaidTestException e) {
+            exception = e;
+        }
+        assertThat(exception, is(notNullValue()));
+        assertThat(exception.getMessage(), is("cannot instantiate class 'InputStream'"));
     }
 }
