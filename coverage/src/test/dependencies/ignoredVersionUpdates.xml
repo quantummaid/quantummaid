@@ -8,5 +8,11 @@
         </ignoreVersion>
     </ignoreVersions>
     <rules>
+        <rule groupId="software.amazon.awssdk">
+            <ignoreVersions>
+                <ignoreVersion type="regex">.*\.[0-79]</ignoreVersion>
+                <ignoreVersion type="regex">.*\.[1-9][0-79]</ignoreVersion>
+            </ignoreVersions>
+        </rule>
     </rules>
 </ruleset>
