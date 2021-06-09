@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.105</version>
+        <version>1.0.106</version>
     </parent>
 
     <artifactId>documentation</artifactId>
@@ -18,6 +18,7 @@
         <plugin-update-file-checksum>a9c106f16f2d959e2db68534062e7623</plugin-update-file-checksum>
         <sonar.coverage.jacoco.xmlReportPaths>../coverage/target/site/jacoco-aggregate/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
+        <kotlin.version>1.4.32</kotlin.version>
     </properties>
 
     <dependencyManagement>
@@ -25,17 +26,17 @@
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib</artifactId>
-                <version>1.5.0</version>
+                <version>${kotlin.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib-jdk7</artifactId>
-                <version>1.5.0</version>
+                <version>${kotlin.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib-jdk8</artifactId>
-                <version>1.5.0</version>
+                <version>${kotlin.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
@@ -65,7 +66,7 @@
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.138</version>
+            <version>0.9.139</version>
         </dependency>
         <!-- Showcase end httpmaidDependency -->
 
@@ -73,7 +74,7 @@
         <dependency>
             <groupId>de.quantummaid.mapmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.10.7</version>
+            <version>0.10.12</version>
         </dependency>
         <!-- Showcase end mapmaidDependency -->
 
@@ -81,7 +82,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid</groupId>
             <artifactId>core</artifactId>
-            <version>1.0.105</version>
+            <version>1.0.106</version>
         </dependency>
         <!-- Showcase end quantummaidDependency -->
 
@@ -89,7 +90,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-essentials</artifactId>
-            <version>1.0.105</version>
+            <version>1.0.106</version>
         </dependency>
         <!-- Showcase end dependency -->
 
@@ -97,7 +98,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-test-essentials</artifactId>
-            <version>1.0.105</version>
+            <version>1.0.106</version>
             <scope>test</scope>
         </dependency>
         <!-- Showcase end testdependency -->
