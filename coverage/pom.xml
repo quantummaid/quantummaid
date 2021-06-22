@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.107</version>
+        <version>1.0.108</version>
     </parent>
 
     <artifactId>coverage</artifactId>
@@ -32,7 +32,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.30</version>
+                <version>1.7.31</version>
             </dependency>
             <dependency>
                 <groupId>org.reactivestreams</groupId>
@@ -87,7 +87,7 @@
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>bom</artifactId>
-                <version>2.16.78</version>
+                <version>2.16.88</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.107</version>
+        <version>1.0.108</version>
     </parent>
 
     <artifactId>documentation</artifactId>
@@ -66,7 +66,7 @@
         <dependency>
             <groupId>de.quantummaid.httpmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.140</version>
+            <version>0.9.141</version>
         </dependency>
         <!-- Showcase end httpmaidDependency -->
 
@@ -74,7 +74,7 @@
         <dependency>
             <groupId>de.quantummaid.mapmaid</groupId>
             <artifactId>core</artifactId>
-            <version>0.10.14</version>
+            <version>0.10.15</version>
         </dependency>
         <!-- Showcase end mapmaidDependency -->
 
@@ -82,7 +82,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid</groupId>
             <artifactId>core</artifactId>
-            <version>1.0.107</version>
+            <version>1.0.108</version>
         </dependency>
         <!-- Showcase end quantummaidDependency -->
 
@@ -90,7 +90,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-essentials</artifactId>
-            <version>1.0.107</version>
+            <version>1.0.108</version>
         </dependency>
         <!-- Showcase end dependency -->
 
@@ -98,7 +98,7 @@
         <dependency>
             <groupId>de.quantummaid.quantummaid.packagings</groupId>
             <artifactId>quantummaid-test-essentials</artifactId>
-            <version>1.0.107</version>
+            <version>1.0.108</version>
             <scope>test</scope>
         </dependency>
         <!-- Showcase end testdependency -->
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.30</version>
+            <version>1.7.31</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
