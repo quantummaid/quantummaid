@@ -14,10 +14,5 @@
                 <ignoreVersion type="regex">.*\.[1-9][0-79]</ignoreVersion>
             </ignoreVersions>
         </rule>
-        <rule groupId="org.jetbrains.kotlin" comparisonMethod="maven">
-            <ignoreVersions>
-                <ignoreVersion type="regex">1\.5\..*</ignoreVersion>
-            </ignoreVersions>
-        </rule>
     </rules>
 </ruleset>
