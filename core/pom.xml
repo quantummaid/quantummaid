@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid.quantummaid</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.108</version>
+        <version>1.0.109</version>
     </parent>
 
     <artifactId>core</artifactId>
@@ -16,7 +16,7 @@
         </checkstyle.suppressions.location>
         <dependency-update-file-checksum>42f33b16b7099885cd5becc23c104f35</dependency-update-file-checksum>
         <plugin-update-file-checksum>35fe547b725ca8e71b0d13c8c21894df</plugin-update-file-checksum>
-        <kotlin.version>1.4.32</kotlin.version>
+        <kotlin.version>1.5.20</kotlin.version>
     </properties>
 
     <dependencyManagement>
