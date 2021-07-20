@@ -27,9 +27,7 @@ import de.quantummaid.httpmaid.HttpMaidBuilder;
 import de.quantummaid.httpmaid.PerRouteConfigurator;
 import de.quantummaid.httpmaid.chains.Configurator;
 import de.quantummaid.httpmaid.generator.builder.ConditionStage;
-import de.quantummaid.httpmaid.mapmaid.MapMaidModule;
 import de.quantummaid.httpmaid.usecases.UseCasesModule;
-import de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory;
 import de.quantummaid.reflectmaid.ReflectMaid;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -48,11 +46,9 @@ import java.util.concurrent.TimeUnit;
 import static de.quantummaid.httpmaid.HttpMaid.STARTUP_TIME;
 import static de.quantummaid.httpmaid.HttpMaid.anHttpMaid;
 import static de.quantummaid.httpmaid.chains.Configurator.toUseModules;
-import static de.quantummaid.httpmaid.mapmaid.MapMaidModule.mapMaidModule;
 import static de.quantummaid.httpmaid.usecases.UseCasesModule.useCasesModule;
 import static de.quantummaid.quantummaid.EndpointCreator.pureJavaEndpointCreator;
 import static de.quantummaid.quantummaid.UniqueAccessManager.claim;
-import static de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory.injectMaidInstantiatorFactory;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
 import static java.lang.Thread.currentThread;
@@ -79,11 +75,8 @@ public final class QuantumMaid implements HttpConfiguration<QuantumMaid>, AutoCl
 
     public static QuantumMaid quantumMaid(final ReflectMaid reflectMaid) {
         final UseCasesModule useCasesModule = useCasesModule();
-        final InjectMaidInstantiatorFactory instantiatorFactory = injectMaidInstantiatorFactory(reflectMaid);
-        useCasesModule.setUseCaseInstantiatorFactory(instantiatorFactory);
-        final MapMaidModule mapMaidModule = mapMaidModule();
         final HttpMaidBuilder httpMaidBuilder = anHttpMaid(reflectMaid)
-                .configured(toUseModules(useCasesModule, mapMaidModule))
+                .configured(toUseModules(useCasesModule))
                 .disableAutodectectionOfModules();
         return new QuantumMaid(httpMaidBuilder);
     }

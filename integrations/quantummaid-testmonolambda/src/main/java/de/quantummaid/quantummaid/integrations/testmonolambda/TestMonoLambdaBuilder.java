@@ -36,7 +36,6 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import static de.quantummaid.mapmaid.minimaljson.MinimalJsonMarshallerAndUnmarshaller.minimalJsonMarshallerAndUnmarshaller;
 import static de.quantummaid.mapmaid.shared.validators.NotNullValidator.validateNotNull;
@@ -54,7 +53,6 @@ public final class TestMonoLambdaBuilder {
     };
     private Consumer<InjectMaidBuilder> injectorConfiguration = injectMaidBuilder -> {
     };
-    private Predicate<Class<?>> useCaseRegistrationFilter = useCase -> false;
     private RuntimeConfigurationValueProvider<WebsocketAuthorizer> websocketAuthorizer;
     private AdditionalWebsocketDataProvider additionalWebsocketDataProvider;
 
@@ -70,15 +68,6 @@ public final class TestMonoLambdaBuilder {
 
     public TestMonoLambdaBuilder withInjectMaid(final Consumer<InjectMaidBuilder> injectorConfiguration) {
         this.injectorConfiguration = injectorConfiguration;
-        return this;
-    }
-
-    public TestMonoLambdaBuilder skipAutomaticRegistrationOfUseCases() {
-        return skipAutomaticRegistrationOfUseCasesThat(useCase -> true);
-    }
-
-    public TestMonoLambdaBuilder skipAutomaticRegistrationOfUseCasesThat(final Predicate<Class<?>> filter) {
-        this.useCaseRegistrationFilter = filter;
         return this;
     }
 
@@ -105,7 +94,6 @@ public final class TestMonoLambdaBuilder {
                 reflectMaid,
                 httpConfiguration,
                 injectorConfiguration,
-                useCaseRegistrationFilter,
                 marshallerAndUnmarshaller,
                 websocketAuthorizer,
                 additionalWebsocketDataProvider
