@@ -23,7 +23,6 @@ package de.quantummaid.quantummaid.integrations.monolambda;
 
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.client.HttpMaidClient;
-import de.quantummaid.injectmaid.InjectMaidException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -35,7 +34,6 @@ import static de.quantummaid.httpmaid.http.Http.StatusCodes.OK;
 import static de.quantummaid.injectmaid.api.ReusePolicy.EAGER_SINGLETON;
 import static de.quantummaid.quantummaid.integrations.monolambda.MonoLambda.aMonoLambdaInRegion;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public final class MonoLambdaSpecs {
@@ -69,30 +67,11 @@ public final class MonoLambdaSpecs {
     }
 
     @Test
-    public void monoLambdaCanRemoveUseCasesFromAutoregistration() {
-        Exception exception = null;
-        try {
-            aMonoLambdaInRegion("foo")
-                    .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
-                            .get("/", FooUseCase.class)
-                    )
-                    .skipAutomaticRegistrationOfUseCases()
-                    .build();
-        } catch (final InjectMaidException e) {
-            exception = e;
-        }
-        assertThat(exception, notNullValue());
-        assertThat(exception.getMessage(), is("Cannot instantiate unregistered type " +
-                "'de.quantummaid.quantummaid.integrations.monolambda.FooUseCase'"));
-    }
-
-    @Test
     public void monoLambdaCanHaveCustomUseCaseRegistrations() {
         final MonoLambda monoLambda = aMonoLambdaInRegion("foo")
                 .withHttpMaid(httpMaidBuilder -> httpMaidBuilder
                         .get("/", FooUseCase.class)
                 )
-                .skipAutomaticRegistrationOfUseCasesThat(aClass -> aClass.equals(FooUseCase.class))
                 .withInjectMaid(injectMaidBuilder -> injectMaidBuilder.withType(FooUseCase.class, EAGER_SINGLETON))
                 .build();
         final HttpMaid httpMaid = monoLambda.httpMaid();

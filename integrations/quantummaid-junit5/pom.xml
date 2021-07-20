@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.quantummaid.quantummaid.integrations</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.109</version>
+        <version>1.1.0</version>
     </parent>
 
     <artifactId>quantummaid-junit5</artifactId>
@@ -19,7 +19,7 @@
         </spotbugs.excludeFilterFile>
         <dependency-update-file-checksum>42f33b16b7099885cd5becc23c104f35</dependency-update-file-checksum>
         <sonar.coverage.jacoco.xmlReportPaths>../../coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-        <kotlin.version>1.5.20</kotlin.version>
+        <kotlin.version>1.5.21</kotlin.version>
     </properties>
 
     <dependencyManagement>

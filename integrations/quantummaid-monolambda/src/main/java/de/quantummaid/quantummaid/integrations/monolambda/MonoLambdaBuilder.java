@@ -88,15 +88,6 @@ public final class MonoLambdaBuilder {
         return this;
     }
 
-    public MonoLambdaBuilder skipAutomaticRegistrationOfUseCases() {
-        return skipAutomaticRegistrationOfUseCasesThat(useCase -> true);
-    }
-
-    public MonoLambdaBuilder skipAutomaticRegistrationOfUseCasesThat(final Predicate<Class<?>> filter) {
-        this.useCaseRegistrationFilter = filter;
-        return this;
-    }
-
     public MonoLambdaBuilder withWebsocketAuthorizer(final WebsocketAuthorizer authorizer) {
         return withWebsocketAuthorizer(() -> authorizer);
     }
@@ -190,7 +181,6 @@ public final class MonoLambdaBuilder {
                 reflectMaid,
                 httpConfiguration,
                 injectorConfiguration,
-                useCaseRegistrationFilter,
                 marshallerAndUnmarshaller,
                 websocketAuthorizer,
                 additionalWebsocketDataProvider

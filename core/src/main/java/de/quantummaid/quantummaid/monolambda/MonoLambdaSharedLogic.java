@@ -23,7 +23,6 @@ package de.quantummaid.quantummaid.monolambda;
 
 import de.quantummaid.httpmaid.HttpMaid;
 import de.quantummaid.httpmaid.HttpMaidBuilder;
-import de.quantummaid.httpmaid.mapmaid.MapMaidModule;
 import de.quantummaid.httpmaid.runtimeconfiguration.RuntimeConfigurationValueProvider;
 import de.quantummaid.httpmaid.usecases.UseCasesModule;
 import de.quantummaid.httpmaid.websockets.additionaldata.AdditionalWebsocketDataProvider;
@@ -31,21 +30,18 @@ import de.quantummaid.httpmaid.websockets.authorization.WebsocketAuthorizer;
 import de.quantummaid.injectmaid.InjectMaid;
 import de.quantummaid.injectmaid.InjectMaidBuilder;
 import de.quantummaid.mapmaid.builder.MarshallerAndUnmarshaller;
-import de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory;
 import de.quantummaid.reflectmaid.ReflectMaid;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import static de.quantummaid.httpmaid.HttpMaid.anHttpMaid;
 import static de.quantummaid.httpmaid.chains.Configurator.toUseModules;
-import static de.quantummaid.httpmaid.mapmaid.MapMaidConfigurators.toConfigureMapMaidUsingRecipe;
-import static de.quantummaid.httpmaid.mapmaid.MapMaidModule.mapMaidModule;
+import static de.quantummaid.httpmaid.usecases.UseCaseConfigurators.withGlobalScopedDependencies;
+import static de.quantummaid.httpmaid.usecases.UseCaseConfigurators.withMapperConfiguration;
 import static de.quantummaid.httpmaid.usecases.UseCasesModule.useCasesModule;
 import static de.quantummaid.httpmaid.websockets.WebsocketConfigurators.toAuthorizeWebsocketsUsing;
 import static de.quantummaid.httpmaid.websockets.WebsocketConfigurators.toStoreAdditionalDataInWebsocketContext;
-import static de.quantummaid.quantummaid.injectmaid.InjectMaidInstantiatorFactory.injectMaidInstantiatorFactory;
 
 @Slf4j
 public final class MonoLambdaSharedLogic {
@@ -56,7 +52,6 @@ public final class MonoLambdaSharedLogic {
     public static HttpMaid buildHttpMaid(final ReflectMaid reflectMaid,
                                          final Consumer<HttpMaidBuilder> httpConfiguration,
                                          final Consumer<InjectMaidBuilder> injectorConfiguration,
-                                         final Predicate<Class<?>> useCaseRegistrationFilter,
                                          final MarshallerAndUnmarshaller<String> marshallerAndUnmarshaller,
                                          final RuntimeConfigurationValueProvider<WebsocketAuthorizer> websocketAuthorizer,
                                          final AdditionalWebsocketDataProvider additionalWebsocketDataProvider) {
@@ -64,19 +59,15 @@ public final class MonoLambdaSharedLogic {
         injectorConfiguration.accept(injectMaidBuilder);
         final UseCasesModule useCasesModule = useCasesModule();
 
-        final InjectMaidInstantiatorFactory instantiatorFactory =
-                injectMaidInstantiatorFactory(injectMaidBuilder, useCaseRegistrationFilter);
-
-        useCasesModule.setUseCaseInstantiatorFactory(instantiatorFactory);
-
-        final MapMaidModule mapMaidModule = mapMaidModule();
-
         final HttpMaidBuilder httpMaidBuilder = anHttpMaid(reflectMaid)
-                .configured(toUseModules(useCasesModule, mapMaidModule))
-                .configured(toConfigureMapMaidUsingRecipe(mapMaidBuilder ->
-                        mapMaidBuilder.withAdvancedSettings(advancedBuilder -> advancedBuilder
-                                .doNotAutoloadMarshallers()
-                                .usingMarshaller(marshallerAndUnmarshaller))))
+                .configured(toUseModules(useCasesModule))
+                .configured(withGlobalScopedDependencies(injectorConfiguration::accept))
+                .configured(withMapperConfiguration(builder -> builder
+                                .withAdvancedSettings(advancedBuilder -> advancedBuilder
+                                        .doNotAutoloadMarshallers()
+                                        .usingMarshaller(marshallerAndUnmarshaller))
+                        )
+                )
                 .disableAutodectectionOfModules();
 
         if (websocketAuthorizer != null) {
