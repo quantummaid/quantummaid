@@ -18,7 +18,7 @@
         <plugin-update-file-checksum>a9c106f16f2d959e2db68534062e7623</plugin-update-file-checksum>
         <sonar.coverage.jacoco.xmlReportPaths>../coverage/target/site/jacoco-aggregate/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
-        <kotlin.version>1.5.21</kotlin.version>
+        <kotlin.version>1.6.0</kotlin.version>
     </properties>
 
     <dependencyManagement>
